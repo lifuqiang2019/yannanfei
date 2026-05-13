@@ -6,24 +6,73 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{
-  width:100%;height:100%;overflow:hidden;
-  background:#F5F6F7;
+  width:100%;min-height:100vh;overflow-x:hidden;
+  background: #F5F6F7;
+  background-attachment: fixed;
+  background-size: cover;
   font-family:'PingFang SC','Noto Sans SC','Microsoft YaHei',sans-serif;
 }
 #wrap{
-  width:100%;height:100%;
+  width:100%;min-height:100vh;
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
-  padding:0 16px;
+  padding:0 16px 80px 16px;
+  position:relative;
+}
+/* ── Bottom shadow ── */
+#wrap::after{
+  content:'';
+  position:fixed;
+  bottom:0;left:0;right:0;
+  height:120px;
+  background: linear-gradient(to top, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.03) 40%, transparent 100%);
+  pointer-events:none;
+  z-index:10;
 }
 #chart{width:100%;max-width:1480px}
-#head{text-align:center;margin-bottom:12px;pointer-events:none}
-#head h1{font-size:21px;font-weight:200;letter-spacing:11px;color:#D05D61}
-#head p{font-size:9px;letter-spacing:4.5px;color:#A8A8A8;margin-top:5px;text-transform:uppercase}
-#legend{display:flex;gap:26px;margin-bottom:10px;pointer-events:none;align-items:center}
-.leg{display:flex;align-items:center;gap:7px;font-size:9px;letter-spacing:2px;color:#888888}
-.leg-dot{width:7px;height:7px;border-radius:50%}
-.leg-sep{color:#CCCCCC;font-size:10px}
+#head{text-align:center;margin-bottom:20px;pointer-events:none}
+#head h1{font-size:30px;font-weight:400;letter-spacing:8px;color:#522324}
+#head p{font-size:14px;letter-spacing:2px;color:#B29999;margin-top:8px}
+#legend{
+  display:flex;gap:26px;margin-bottom:20px;pointer-events:none;align-items:center;
+  flex-wrap:wrap;justify-content:center;
+}
+.leg{display:flex;align-items:center;gap:7px;font-size:12px;letter-spacing:1px;color:#6E5D5D}
+.leg-dot{width:8px;height:8px;border-radius:50%}
+.leg-sep{color:#B29999;font-size:12px}
+/* ── Right-side curved line chart ── */
+#right-panel{
+  position:absolute;
+  right:0;top:0;
+  width:320px;height:100%;
+  display:flex;flex-direction:column;
+  background:rgba(255,255,255,0.5);
+  backdrop-filter:blur(8px);
+  border-left:1px solid rgba(0,0,0,0.06);
+  padding:80px 20px 20px 20px;
+}
+#chart-legend{
+  display:flex;flex-direction:column;gap:12px;
+  margin-bottom:16px;
+}
+.chart-leg-item{
+  display:flex;align-items:center;gap:10px;
+  cursor:pointer;
+  padding:6px 10px;
+  border-radius:6px;
+  transition:background 0.2s,opacity 0.2s;
+  opacity:1;
+}
+.chart-leg-item.dimmed{opacity:0.25}
+.chart-leg-item:hover{background:rgba(0,0,0,0.04)}
+.chart-leg-line{
+  width:28px;height:3px;
+  border-radius:2px;
+}
+.chart-leg-info{display:flex;flex-direction:column;gap:1px}
+.chart-leg-cn{font-size:11px;letter-spacing:1px;color:#444}
+.chart-leg-la{font-size:8px;color:#999;font-style:italic}
+#line-chart-svg{flex:1;min-height:0}
 svg{display:block;overflow:visible}
 @keyframes breathe{
   0%,100%{transform:scale(1);opacity:.4}
@@ -42,17 +91,17 @@ svg{display:block;overflow:visible}
 }
 .hov-on .glow-ring{animation:breathe 2.6s ease-in-out infinite}
 .hov-on .glow-core{animation:pulse-core 2.6s ease-in-out infinite}
-.h-date{font-size:9.5px;letter-spacing:1.5px}
-.h-val{font-size:17px;font-weight:100;letter-spacing:.4px}
-.h-rec{font-size:7.5px;letter-spacing:1px}
+.h-date{font-size:12px;letter-spacing:1px;color:#6E5D5D}
+.h-val{font-size:18px;font-weight:400;letter-spacing:0.5px;color:#522324}
+.h-rec{font-size:10px;letter-spacing:0.5px;color:#B29999}
 /* ── Back-to-home button ── */
 #home-btn{
-  position:fixed;top:22px;left:28px;
-  display:flex;align-items:center;gap:7px;
-  padding:7px 14px;
-  border:1px solid rgba(0,0,0,0.09);
+  position:fixed;top:36px;left:45px;
+  display:flex;align-items:center;gap:8px;
+  padding:8px 16px;
+  border:1px solid rgba(82,35,36,0.15);
   border-radius:20px;
-  background:rgba(255,255,255,0.72);
+  background:rgba(255,255,255,0.8);
   backdrop-filter:blur(10px);
   cursor:pointer;
   z-index:50;
@@ -61,25 +110,59 @@ svg{display:block;overflow:visible}
   outline:none;
 }
 #home-btn:hover{
-  border-color:rgba(208,93,97,0.35);
-  background:rgba(255,255,255,0.92);
+  border-color:rgba(82,35,36,0.4);
+  background:rgba(255,255,255,0.95);
 }
-#home-btn .arr{font-size:11px;color:#AAAAAA;transition:color .3s,transform .3s}
-#home-btn .lbl{font-size:9px;letter-spacing:3.5px;text-indent:3.5px;color:#888888;
+#home-btn .arr{font-size:12px;color:#B29999;transition:color .3s,transform .3s}
+#home-btn .lbl{font-size:12px;letter-spacing:2px;color:#6E5D5D;
   font-family:'PingFang SC','Noto Sans SC','Microsoft YaHei',sans-serif;
   transition:color .3s;}
-#home-btn:hover .arr{color:#D05D61;transform:translateX(-2px)}
-#home-btn:hover .lbl{color:#D05D61}
+#home-btn:hover .arr{color:#522324;transform:translateX(-2px)}
+#home-btn:hover .lbl{color:#522324}
 /* Page transitions */
 body{opacity:0;transition:opacity .5s ease}
 body.visible{opacity:1}
 body.leaving{opacity:0}
+/* ── Feather reflection ── */
+.feather-reflection{
+  transform-origin:center top;
+  opacity:0.12;
+  filter:blur(1.5px);
+}
+/* ── Next page arrow ── */
+#next-btn{
+  position:fixed;right:45px;top:50%;
+  transform:translateY(-50%);
+  display:flex;align-items:center;justify-content:center;
+  width:48px;height:48px;
+  border:1px solid rgba(82,35,36,0.15);
+  border-radius:50%;
+  background:rgba(255,255,255,0.8);
+  backdrop-filter:blur(10px);
+  cursor:pointer;
+  z-index:50;
+  text-decoration:none;
+  transition:border-color .3s,background .3s,transform .3s;
+}
+#next-btn:hover{
+  border-color:rgba(82,35,36,0.4);
+  background:rgba(255,255,255,0.95);
+  transform:translateY(-50%) translateX(3px);
+}
+#next-btn .arr{
+  font-size:18px;color:#B29999;
+  transition:color .3s;
+}
+#next-btn:hover .arr{color:#522324}
 </style>
 </head>
 <body>
-<a id="home-btn" href="index.html" title="返回首页">
-  <span class="arr">←</span>
-  <span class="lbl">首页</span>
+<a id="home-btn" href="javascript:history.back()" title="返回上一页">
+  <span class="arr"><</span>
+  <span class="lbl">返回</span>
+</a>
+<a id="next-btn" href="typical.html" title="下一页">
+  <span class="arr">→</span>
 </a>
 <div id="wrap">
   <div id="head">
@@ -98,6 +181,10 @@ body.leaving{opacity:0}
     <span class="leg">羽枝长 ∝ log(观测数量) · 透明度 ∝ 记录条数</span>
   </div>
   <div id="chart"></div>
+  <div id="right-panel">
+    <div id="chart-legend"></div>
+    <svg id="line-chart-svg"></svg>
+  </div>
 </div>
 
 <script src="lib/d3.v7.min.js"></script>
@@ -217,8 +304,8 @@ function drawFeather(g, cx, yBase, data, nDays, isSpring, color, spCN, mStart, m
     const lx = isSpring ? pm.x-16 : pm.x+15;
     g.append('text')
       .attr('x',lx).attr('y',pm.y+3)
-      .attr('text-anchor','middle').attr('font-size','7.5px')
-      .attr('fill','rgba(0,0,0,0.32)').attr('letter-spacing','0.2px')
+      .attr('text-anchor','middle').attr('font-size','8px')
+      .attr('fill','#6E5D5D').attr('letter-spacing','0.5px')
       .text(mLabel[mi]);
   });
 
@@ -313,6 +400,9 @@ const svg=d3.select(document.getElementById('chart'))
 /* ── defs ── */
 const defs=svg.append('defs');
 
+/* ── Reflection filter ── */
+const filter=defs.append('filter').attr('id','reflection-blur');
+filter.append('feGaussianBlur').attr('in','SourceGraphic').attr('stdDeviation',1.5);
 
 /* ── Background (flat — actual gradient is CSS on body) ── */
 svg.append('rect').attr('width',VW).attr('height',VH).attr('fill','none');
@@ -330,6 +420,19 @@ SP.forEach((sp,si)=>{
   const scx=gcx+SPR_OFF, acx=gcx+AUT_OFF;
   const d=DAILY[sp.id];
 
+  // ── Reflection group (drawn first, below main feathers) ──
+  const reflG=svg.append('g').attr('class','feather-reflection');
+  
+  // Spring reflection
+  const reflSpring=reflG.append('g');
+  drawFeather(reflSpring,scx,YBASE+25,d.s,SPR_DAYS,true, sp.sc,sp.cn,SPR_M_START,SPR_M_LEN,SPR_LABEL);
+  reflSpring.attr('transform',`translate(0,${(YBASE+25)*2}) scale(1,-1)`).attr('opacity',0.08);
+  
+  // Autumn reflection
+  const reflAut=reflG.append('g');
+  drawFeather(reflAut,acx,YBASE+25,d.a,AUT_DAYS,false,sp.ac,sp.cn,AUT_M_START,AUT_M_LEN,AUT_LABEL);
+  reflAut.attr('transform',`translate(0,${(YBASE+25)*2}) scale(1,-1)`).attr('opacity',0.08);
+
   const sg=svg.append('g');
   drawFeather(sg,scx,YBASE,d.s,SPR_DAYS,true, sp.sc,sp.cn,SPR_M_START,SPR_M_LEN,SPR_LABEL);
 
@@ -337,18 +440,18 @@ SP.forEach((sp,si)=>{
   drawFeather(ag,acx,YBASE,d.a,AUT_DAYS,false,sp.ac,sp.cn,AUT_M_START,AUT_M_LEN,AUT_LABEL);
 
   // Species labels
-  svg.append('text').attr('x',gcx).attr('y',YBASE+33)
-    .attr('text-anchor','middle').attr('font-size','13px').attr('letter-spacing','3px')
-    .attr('fill','#4A4A4A').text(sp.cn);
-  svg.append('text').attr('x',gcx).attr('y',YBASE+48)
-    .attr('text-anchor','middle').attr('font-size','8px').attr('letter-spacing','.5px').attr('font-style','italic')
-    .attr('fill','#B0B0B0').text(sp.la);
-  svg.append('text').attr('x',scx).attr('y',YBASE+16)
-    .attr('text-anchor','middle').attr('font-size','7px').attr('letter-spacing','2px')
-    .attr('fill',sp.sc+'88').text('正羽');
-  svg.append('text').attr('x',acx).attr('y',YBASE+16)
-    .attr('text-anchor','middle').attr('font-size','7px').attr('letter-spacing','2px')
-    .attr('fill',sp.ac+'88').text('廓羽');
+  svg.append('text').attr('x',gcx).attr('y',YBASE+36)
+    .attr('text-anchor','middle').attr('font-size','14px').attr('letter-spacing','2px')
+    .attr('fill','#572C2C').text(sp.cn);
+  svg.append('text').attr('x',gcx).attr('y',YBASE+54)
+    .attr('text-anchor','middle').attr('font-size','10px').attr('letter-spacing','0.5px').attr('font-style','italic')
+    .attr('fill','#B29999').text(sp.la);
+  svg.append('text').attr('x',scx).attr('y',YBASE+18)
+    .attr('text-anchor','middle').attr('font-size','8px').attr('letter-spacing','1px')
+    .attr('fill',sp.sc).text('正羽');
+  svg.append('text').attr('x',acx).attr('y',YBASE+18)
+    .attr('text-anchor','middle').attr('font-size','8px').attr('letter-spacing','1px')
+    .attr('fill',sp.ac).text('廓羽');
 
 });
 
@@ -368,6 +471,12 @@ hRec =htg.append('text').attr('class','h-rec');
     document.body.classList.add('visible');
   }));
   document.getElementById('home-btn').addEventListener('click',function(e){
+    e.preventDefault();
+    document.body.classList.remove('visible');
+    document.body.classList.add('leaving');
+    setTimeout(()=>{history.back();},520);
+  });
+  document.getElementById('next-btn').addEventListener('click',function(e){
     e.preventDefault();
     const href=this.href;
     document.body.classList.remove('visible');

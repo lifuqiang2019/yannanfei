@@ -62,7 +62,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
   letter-spacing: 0;
   color: #6e6262;
   font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .group18821 {
@@ -325,7 +325,9 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
   height: 28px;
   letter-spacing: 0;
   color: #572c2c;
-  font-family: "Padyakke Expanded One", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-family: "EB Garamond", "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 300;
   font-size: 20px;
 }
 
@@ -860,7 +862,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
   letter-spacing: 0;
   color: #6e6262;
   font-size: 0;
-  transform: rotate(2deg);
+  transform: rotate(-13deg);
 }
 
 .text28 {
@@ -869,6 +871,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
   letter-spacing: 0;
   color: #6e6262;
   font-size: 0;
+  transform: rotate(-13deg);
 }
 
 .text29 {
@@ -1553,8 +1556,80 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
   height: 59px;
   letter-spacing: 0;
   color: #572c2c;
-  font-family: "Padyakke Expanded One", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-family: "EB Garamond", "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 300;
   font-size: 18px;
+}
+
+/* Animation Keyframes - following page2.html style */
+@keyframes titleDrop {
+  0% {
+    opacity: 0;
+    transform: translateY(-80px);
+    filter: blur(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes featuresSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-60px);
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes centerFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.98);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes bottomSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(40px);
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+/* Animation triggers when body becomes visible */
+body.visible .anim-title {
+  animation: titleDrop 1.2s cubic-bezier(.19,1,.22,1) 0s both;
+}
+
+body.visible .anim-features {
+  animation: featuresSlideIn 1s cubic-bezier(.19,1,.22,1) 0.6s both;
+}
+
+body.visible .anim-center {
+  animation: centerFadeIn 1.4s cubic-bezier(.19,1,.22,1) 1.2s both;
+}
+
+body.visible .anim-bottom {
+  animation: bottomSlideIn 1s cubic-bezier(.19,1,.22,1) 1.8s both;
 }
 </style>
 </head>
@@ -1606,8 +1681,8 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
           </div>
         </div>
       </div>
-      <p class="wildGeeseFlySouth">Wild geese fly south</p>
-      <div class="autoWrapper10">
+      <p class="wildGeeseFlySouth anim-title">Wild geese fly south</p>
+      <div class="autoWrapper10 anim-title">
         <div class="autoWrapper9">
           <img src=".figma/image/mp3mmtcj-ah47c6f.png" class="group7" />
           <p class="text13">典型雁类年度境内分布情况</p>
@@ -1616,10 +1691,10 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
       </div>
       <img src=".figma/image/mp3mmtcj-x95uzku.png" class="group1" />
       <img src=".figma/image/mp3mmtcj-gbotmfk.png" class="group190" />
-      <div class="rectangle29">
+      <div class="rectangle29 anim-features">
         <p class="text14">| 核心特征总结</p>
       </div>
-      <div class="autoWrapper33">
+      <div class="autoWrapper33 anim-features">
         <div class="group199">
           <div class="autoWrapper17">
             <div class="vector59">
@@ -1695,7 +1770,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
             <p class="text25">灰雁</p>
           </div>
         </div>
-        <div class="group202">
+        <div class="group202 anim-center">
           <img src=".figma/image/mp3mmtcj-mbbgsi4.svg" class="line109" />
           <div class="autoWrapper21">
             <p class="text27">
@@ -1797,7 +1872,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
           <img src=".figma/image/mp3mmtcj-tqfo848.svg" class="group" />
         </div>
         <div class="vector33"></div>
-        <p class="text37">
+        <p class="text37 anim-bottom">
           雁类的迁徙并非单一模式的远程移动，而是多种行为策略的集合。飞行高度、巡航速度、编队结构、耐力阈值以及停歇地依赖——这些参数共同构成了不同物种应对环境变化的先决条件。
           <br /><br />
           它们在系统发育上相近，却在迁徙习性上表现出明显分化。
@@ -1825,7 +1900,10 @@ function fitBoard() {
 }
 window.addEventListener('resize', fitBoard);
 fitBoard();
-requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('visible')));
+
+requestAnimationFrame(() => requestAnimationFrame(() => {
+  document.body.classList.add('visible');
+}));
 </script>
 </body>
 </html>
