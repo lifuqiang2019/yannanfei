@@ -2,152 +2,177 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>雁南飞</title>
 <style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+:root{
+  --page-w:1920;
+  --page-h:1080;
+  --ink:#572c2c;
+  --ink-soft:#b29999;
+  --line:#8f7f7f;
+  --bg-top:#f6f3f3;
+  --bg-mid:#fafbfc;
+  --bg-bottom:#ebeef2;
 }
 
-html,
-body {
-  width: 100%;
-  min-height: 100%;
+*{box-sizing:border-box;margin:0;padding:0}
+
+html,body{
+  width:100%;
+  height:100%;
 }
 
-body {
-  overflow: hidden;
-  background: #ffffff;
-  color: #572c2c;
-  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+body{
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(180deg,var(--bg-top) 0%,var(--bg-mid) 62%,var(--bg-bottom) 100%);
+  font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;
+  color:var(--ink);
 }
 
-.page {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  min-width: 1280px;
-  min-height: 720px;
-  overflow: hidden;
+.stage{
+  position:relative;
+  width:min(100vw, calc(100vh * 1920 / 1080));
+  aspect-ratio:1920 / 1080;
+  overflow:hidden;
+  background:linear-gradient(180deg,var(--bg-top) 0%,var(--bg-mid) 62%,var(--bg-bottom) 100%);
 }
 
-.scene {
-  position: absolute;
-  inset: 0;
+.main-image,
+.reflection-image{
+  position:absolute;
+  left:0;
+  width:100%;
+  user-select:none;
+  -webkit-user-drag:none;
+  pointer-events:none;
 }
 
-.scene img {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  object-fit: cover;
-  user-select: none;
-  -webkit-user-drag: none;
-  pointer-events: none;
+.main-image{
+  top:2.41%;
+  height:95.09%;
+  object-fit:cover;
+  object-position:center top;
+  opacity:.9;
+  filter:saturate(.76) brightness(1.05) contrast(.9);
 }
 
-.hero-image {
-  top: 0;
-  height: 100vh;
+.reflection-image{
+  top:77.59%;
+  height:45.46%;
+  object-fit:cover;
+  object-position:center top;
+  opacity:.14;
+  filter:saturate(.72) brightness(1.04) contrast(.88) blur(.2px);
+  mask-image:linear-gradient(180deg, rgba(0,0,0,.92) 0%, rgba(0,0,0,.42) 55%, rgba(0,0,0,0) 100%);
+  -webkit-mask-image:linear-gradient(180deg, rgba(0,0,0,.92) 0%, rgba(0,0,0,.42) 55%, rgba(0,0,0,0) 100%);
 }
 
-.reflection-image {
-  top: 75vh;
-  height: 45.463vh;
-  opacity: 0.14;
+.atmosphere{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 50% 62%, rgba(255,255,255,.24), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,.1) 0%, rgba(255,255,255,0) 20%, rgba(235,238,242,.12) 100%);
+  pointer-events:none;
 }
 
-.label {
-  position: absolute;
-  z-index: 2;
-  white-space: nowrap;
+.top-tag{
+  position:absolute;
+  top:3.33%;
+  right:2.4%;
+  font-family:"Padyakke Expanded One","Baskerville Old Face","Times New Roman",serif;
+  font-size:20px;
+  line-height:1.441;
+  letter-spacing:.02em;
+  color:var(--ink);
+  white-space:nowrap;
 }
 
-.label-top {
-  top: 3.3333vh;
-  left: 83.8021vw;
-  font-family: "EB Garamond", "Times New Roman", serif;
-  font-style: italic;
-  font-weight: 300;
-  font-size: 1.0417vw;
-  line-height: 1.441;
-  color: #572c2c;
+.side-arrow{
+  position:absolute;
+  right:5.83%;
+  top:51.94%;
+  width:20px;
+  height:48px;
+  color:var(--line);
+  transform:translateY(-50%);
 }
 
-.label-bottom-cn {
-  left: 2.3438vw;
-  top: 92.5926vh;
-  font-weight: 300;
-  font-size: 0.7292vw;
-  line-height: 1.4;
-  color: #b29999;
+.side-arrow::before,
+.side-arrow::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  background:currentColor;
 }
 
-.label-bottom-en {
-  left: 2.3438vw;
-  top: 94.9074vh;
-  font-family: "EB Garamond", "Times New Roman", serif;
-  font-style: italic;
-  font-weight: 300;
-  font-size: 0.9375vw;
-  line-height: 1.441;
-  color: #572c2c;
+.side-arrow::before{
+  top:0;
+  width:1px;
+  height:34px;
 }
 
-.arrow-link {
-  position: absolute;
-  right: 5.8333vw;
-  top: 51.9444vh;
-  width: 1.0938vw;
-  min-width: 14px;
-  aspect-ratio: 20 / 48;
-  z-index: 3;
-  color: #8f7f7f;
-  transition: transform 0.2s ease, color 0.2s ease;
+.side-arrow::after{
+  bottom:2px;
+  width:12px;
+  height:12px;
+  border-right:1px solid currentColor;
+  border-bottom:1px solid currentColor;
+  background:transparent;
+  transform:translateX(-50%) rotate(45deg);
 }
 
-.arrow-link:hover {
-  color: #6f5f5f;
-  transform: translateX(4px);
+.bottom-copy{
+  position:absolute;
+  left:2.34%;
+  bottom:5.56%;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
 }
 
-.arrow-link svg {
-  display: block;
-  width: 100%;
-  height: auto;
+.bottom-copy .cn{
+  font-size:14px;
+  font-weight:300;
+  line-height:1.4;
+  color:var(--ink-soft);
 }
 
-@media (max-aspect-ratio: 16/9) {
-  .page {
-    min-width: 0;
-  }
+.bottom-copy .en{
+  max-width:1011px;
+  font-family:"Padyakke Expanded One","Baskerville Old Face","Times New Roman",serif;
+  font-size:18px;
+  line-height:1.441;
+  color:var(--ink);
+}
 
-  .hero-image,
-  .reflection-image {
-    width: auto;
-    min-width: 100%;
-  }
+@media (max-width: 960px){
+  .top-tag{font-size:14px}
+  .bottom-copy .cn{font-size:11px}
+  .bottom-copy .en{font-size:13px;max-width:72vw}
+  .side-arrow{width:14px;height:34px}
+  .side-arrow::before{height:24px}
+  .side-arrow::after{width:9px;height:9px}
 }
 </style>
 </head>
 <body>
-  <main class="page">
-    <div class="scene" aria-hidden="true">
-      <img class="hero-image" src="assets/wild-geese-main-143330.png" alt="">
-      <img class="reflection-image" src="assets/wild-geese-reflection-713f61.png" alt="">
-    </div>
+  <main class="stage" aria-label="雁南飞主题封面页面">
+    <img class="main-image" src="assets/wild-geese-main-143330.png" alt="羽脉图背景主视觉">
+    <img class="reflection-image" src="assets/wild-geese-reflection-713f61.png" alt="" aria-hidden="true">
+    <div class="atmosphere" aria-hidden="true"></div>
 
-    <div class="label label-top">Wild geese fly south</div>
-    <div class="label label-bottom-cn">2025年雁类迁徙信息可视化</div>
-    <div class="label label-bottom-en">Visualization of Wild Goose Migration Information</div>
+    <p class="top-tag">Wild geese fly south</p>
+    <span class="side-arrow" aria-hidden="true"></span>
 
-    <a class="arrow-link" href="page2.html" aria-label="下一页">
-      <svg viewBox="0 0 21 49" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0.5 0.5L20.5 24.5L0.5 48.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </a>
+    <section class="bottom-copy" aria-label="页面标题信息">
+      <p class="cn">2025年雁类迁徙信息可视化</p>
+      <h1 class="en">Visualization of Wild Goose Migration Information</h1>
+    </section>
   </main>
 </body>
 </html>
