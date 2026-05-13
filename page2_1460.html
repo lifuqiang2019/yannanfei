@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>结语2</title>
+<style>
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #f5f6f7;
+  font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+body { opacity: 0; transition: opacity .45s ease; }
+body.visible { opacity: 1; }
+p { margin: 0; }
+img { display: block; user-select: none; -webkit-user-drag: none; }
+#stage { position: fixed; inset: 0; overflow: hidden; }
+#board { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+#board::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 26% 67%, rgba(226, 157, 170, 0.18), transparent 28%), radial-gradient(circle at 72% 26%, rgba(117, 151, 208, 0.18), transparent 30%); pointer-events: none; }
+* {
+  box-sizing: border-box;
+}
+
+.frame {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #f5f6f7;
+  padding: 1000px 864px 0px 45px;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+
+  .text {
+    width: 230px;
+    height: 25px;
+    letter-spacing: 0;
+    color: #b29999;
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+  }
+
+  .visualizationOfWildG {
+    width: 1011px;
+    height: 59px;
+    letter-spacing: 0;
+    color: #572c2c;
+    font-family: "Padyakke Expanded One", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+    font-size: 18px;
+  }
+
+  .autoWrapper {
+    position: absolute;
+    top: 36px;
+    left: 267px;
+    width: 1881px;
+    height: 1065px;
+
+    .wildGeeseFlySouth {
+      position: absolute;
+      top: 0;
+      left: 1342px;
+      width: 539px;
+      height: 28px;
+      letter-spacing: 0;
+      color: #572c2c;
+      font-family: "Padyakke Expanded One", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+      font-size: 20px;
+    }
+
+    .group207 {
+      position: absolute;
+      top: 5px;
+      left: 0;
+      width: 1386px;
+      height: 1060px;
+
+      .ellipse91 {
+        position: absolute;
+        top: 367px;
+        left: 0;
+        opacity: 0.2;
+        border-radius: 50%;
+        background: #d05d61;
+        width: 693px;
+        height: 693px;
+        filter: blur(200px);
+      }
+
+      .ellipse92 {
+        position: absolute;
+        top: 0;
+        left: 693px;
+        opacity: 0.2;
+        border-radius: 50%;
+        background: #2a588f;
+        width: 693px;
+        height: 693px;
+        filter: blur(200px);
+      }
+
+      .text2 {
+        display: flex;
+        position: absolute;
+        top: 684px;
+        left: 671px;
+        align-items: center;
+        justify-content: center;
+        width: 58px;
+        height: 30px;
+        line-height: 40px;
+        letter-spacing: 0;
+        color: #8f7f7f;
+        font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        font-weight: 300;
+      }
+
+      .text5 {
+        position: absolute;
+        top: 417px;
+        left: 469px;
+        width: 462px;
+        height: 87px;
+        letter-spacing: 0;
+        color: #8f7f7f;
+        font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 0;
+
+        .text3 {
+          line-height: 40px;
+          letter-spacing: 0;
+          color: #8f7f7f;
+          font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 40px;
+        }
+
+        .text4 {
+          line-height: 24px;
+          letter-spacing: 0;
+          color: #8f7f7f;
+          font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 16px;
+        }
+      }
+    }
+
+    .vector {
+      position: absolute;
+      top: 663px;
+      left: 696px;
+      width: 8px;
+      height: 17px;
+      rotate: 90deg;
+    }
+  }
+}
+
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="board">
+<div class="frame">
+      <p class="text">2025年雁类迁徙信息可视化</p>
+      <p class="visualizationOfWildG">
+        Visualization of Wild Goose Migration Information
+      </p>
+      <div class="autoWrapper">
+        <p class="wildGeeseFlySouth">Wild geese fly south</p>
+        <div class="group207">
+          <div class="ellipse91" ></div>
+          <div class="ellipse92" ></div>
+          <p class="text2">返回首页</p>
+          <p class="text5">
+            <span class="text3">这</span>
+            <span class="text4">
+              些案例告诉我们：候鸟保护必须从静态的点位转向动态的廊道管理。只有持续追踪分布变化，识别新兴重要区域，才能在全球变化背景下守护这些空中旅人的生命征途。
+              <br />
+            </span>
+          </p>
+        </div>
+        <img src=".figma/image/mp3n72j8-2hk08xr.png" class="vector" />
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+'use strict';
+const board = document.getElementById('board');
+function fitBoard() {
+  const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+  const offsetX = (window.innerWidth - 1920 * scale) / 2;
+  const offsetY = (window.innerHeight - 1080 * scale) / 2;
+  board.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
+}
+window.addEventListener('resize', fitBoard);
+fitBoard();
+requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('visible')));
+</script>
+</body>
+</html>

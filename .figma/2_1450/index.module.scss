@@ -1,0 +1,128 @@
+* {
+  box-sizing: border-box;
+}
+
+.frame {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #f5f6f7;
+  padding: 1000px 864px 0px 45px;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+
+  .text {
+    width: 230px;
+    height: 25px;
+    letter-spacing: 0;
+    color: #b29999;
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+  }
+
+  .visualizationOfWildG {
+    width: 1011px;
+    height: 59px;
+    letter-spacing: 0;
+    color: #572c2c;
+    font-family: "Padyakke Expanded One", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+    font-size: 18px;
+  }
+
+  .autoWrapper {
+    position: absolute;
+    top: 36px;
+    left: 267px;
+    width: 1881px;
+    height: 1065px;
+
+    .wildGeeseFlySouth {
+      position: absolute;
+      top: 0;
+      left: 1342px;
+      width: 539px;
+      height: 28px;
+      letter-spacing: 0;
+      color: #572c2c;
+      font-family: "Padyakke Expanded One", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+      font-size: 20px;
+    }
+
+    .group207 {
+      display: flex;
+      position: absolute;
+      top: 5px;
+      left: 0;
+      align-items: flex-start;
+      justify-content: space-between;
+      width: 1386px;
+      height: 1060px;
+
+      .ellipse91 {
+        opacity: 0.2;
+        margin-top: 367px;
+        border-radius: 50%;
+        background: #d05d61;
+        width: 693px;
+        height: 693px;
+        filter: blur(200px);
+      }
+
+      .ellipse92 {
+        opacity: 0.2;
+        border-radius: 50%;
+        background: #2a588f;
+        width: 693px;
+        height: 693px;
+        filter: blur(200px);
+      }
+
+      .group244 {
+        position: absolute;
+        top: 454px;
+        left: 472px;
+        width: 442px;
+        height: 90px;
+
+        .text4 {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 442px;
+          height: 90px;
+          letter-spacing: 0;
+          color: #8f7f7f;
+          font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 0;
+
+          .text2 {
+            line-height: 40px;
+            letter-spacing: 0;
+            color: #8f7f7f;
+            font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+            font-size: 40px;
+          }
+
+          .text3 {
+            line-height: 24px;
+            letter-spacing: 0;
+            color: #8f7f7f;
+            font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+            font-size: 16px;
+          }
+        }
+
+        .vector {
+          position: absolute;
+          top: 73px;
+          left: 421px;
+          width: 8px;
+          height: 17px;
+        }
+      }
+    }
+  }
+}
