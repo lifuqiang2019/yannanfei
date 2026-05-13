@@ -1,489 +1,153 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<title>归雁 · 羽脉图</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>雁南飞</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{
-  width:100%;min-height:100vh;overflow-x:hidden;
-  background: #F5F6F7;
-  background-attachment: fixed;
-  background-size: cover;
-  font-family:'PingFang SC','Noto Sans SC','Microsoft YaHei',sans-serif;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-#wrap{
-  width:100%;min-height:100vh;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  padding:0 16px 80px 16px;
-  position:relative;
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
 }
-/* ── Bottom shadow ── */
-#wrap::after{
-  content:'';
-  position:fixed;
-  bottom:0;left:0;right:0;
-  height:120px;
-  background: linear-gradient(to top, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.03) 40%, transparent 100%);
-  pointer-events:none;
-  z-index:10;
+
+body {
+  overflow: hidden;
+  background: #ffffff;
+  color: #572c2c;
+  font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
 }
-#chart{width:100%;max-width:1480px}
-#head{text-align:center;margin-bottom:20px;pointer-events:none}
-#head h1{font-size:30px;font-weight:400;letter-spacing:8px;color:#522324}
-#head p{font-size:14px;letter-spacing:2px;color:#B29999;margin-top:8px}
-#legend{
-  display:flex;gap:26px;margin-bottom:20px;pointer-events:none;align-items:center;
-  flex-wrap:wrap;justify-content:center;
+
+.page {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  min-width: 1280px;
+  min-height: 720px;
+  overflow: hidden;
 }
-.leg{display:flex;align-items:center;gap:7px;font-size:12px;letter-spacing:1px;color:#6E5D5D}
-.leg-dot{width:8px;height:8px;border-radius:50%}
-.leg-sep{color:#B29999;font-size:12px}
-/* ── Right-side curved line chart ── */
-#right-panel{
-  position:absolute;
-  right:0;top:0;
-  width:320px;height:100%;
-  display:flex;flex-direction:column;
-  background:rgba(255,255,255,0.5);
-  backdrop-filter:blur(8px);
-  border-left:1px solid rgba(0,0,0,0.06);
-  padding:80px 20px 20px 20px;
+
+.scene {
+  position: absolute;
+  inset: 0;
 }
-#chart-legend{
-  display:flex;flex-direction:column;gap:12px;
-  margin-bottom:16px;
+
+.scene img {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
 }
-.chart-leg-item{
-  display:flex;align-items:center;gap:10px;
-  cursor:pointer;
-  padding:6px 10px;
-  border-radius:6px;
-  transition:background 0.2s,opacity 0.2s;
-  opacity:1;
+
+.hero-image {
+  top: 0;
+  height: 100vh;
 }
-.chart-leg-item.dimmed{opacity:0.25}
-.chart-leg-item:hover{background:rgba(0,0,0,0.04)}
-.chart-leg-line{
-  width:28px;height:3px;
-  border-radius:2px;
+
+.reflection-image {
+  top: 75vh;
+  height: 45.463vh;
+  opacity: 0.14;
 }
-.chart-leg-info{display:flex;flex-direction:column;gap:1px}
-.chart-leg-cn{font-size:11px;letter-spacing:1px;color:#444}
-.chart-leg-la{font-size:8px;color:#999;font-style:italic}
-#line-chart-svg{flex:1;min-height:0}
-svg{display:block;overflow:visible}
-@keyframes breathe{
-  0%,100%{transform:scale(1);opacity:.4}
-  50%{transform:scale(2.6);opacity:.05}
+
+.label {
+  position: absolute;
+  z-index: 2;
+  white-space: nowrap;
 }
-@keyframes pulse-core{
-  0%,100%{transform:scale(1);opacity:.9}
-  50%{transform:scale(1.4);opacity:.55}
+
+.label-top {
+  top: 3.3333vh;
+  left: 83.8021vw;
+  font-family: "EB Garamond", "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 1.0417vw;
+  line-height: 1.441;
+  color: #572c2c;
 }
-.glow-ring{
-  transform-box:fill-box;transform-origin:center;
-  filter:blur(9px);opacity:.4
+
+.label-bottom-cn {
+  left: 2.3438vw;
+  top: 92.5926vh;
+  font-weight: 300;
+  font-size: 0.7292vw;
+  line-height: 1.4;
+  color: #b29999;
 }
-.glow-core{
-  transform-box:fill-box;transform-origin:center;opacity:.9
+
+.label-bottom-en {
+  left: 2.3438vw;
+  top: 94.9074vh;
+  font-family: "EB Garamond", "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 0.9375vw;
+  line-height: 1.441;
+  color: #572c2c;
 }
-.hov-on .glow-ring{animation:breathe 2.6s ease-in-out infinite}
-.hov-on .glow-core{animation:pulse-core 2.6s ease-in-out infinite}
-.h-date{font-size:12px;letter-spacing:1px;color:#6E5D5D}
-.h-val{font-size:18px;font-weight:400;letter-spacing:0.5px;color:#522324}
-.h-rec{font-size:10px;letter-spacing:0.5px;color:#B29999}
-/* ── Back-to-home button ── */
-#home-btn{
-  position:fixed;top:36px;left:45px;
-  display:flex;align-items:center;gap:8px;
-  padding:8px 16px;
-  border:1px solid rgba(82,35,36,0.15);
-  border-radius:20px;
-  background:rgba(255,255,255,0.8);
-  backdrop-filter:blur(10px);
-  cursor:pointer;
-  z-index:50;
-  text-decoration:none;
-  transition:border-color .3s,background .3s,opacity .3s;
-  outline:none;
+
+.arrow-link {
+  position: absolute;
+  right: 5.8333vw;
+  top: 51.9444vh;
+  width: 1.0938vw;
+  min-width: 14px;
+  aspect-ratio: 20 / 48;
+  z-index: 3;
+  color: #8f7f7f;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
-#home-btn:hover{
-  border-color:rgba(82,35,36,0.4);
-  background:rgba(255,255,255,0.95);
+
+.arrow-link:hover {
+  color: #6f5f5f;
+  transform: translateX(4px);
 }
-#home-btn .arr{font-size:12px;color:#B29999;transition:color .3s,transform .3s}
-#home-btn .lbl{font-size:12px;letter-spacing:2px;color:#6E5D5D;
-  font-family:'PingFang SC','Noto Sans SC','Microsoft YaHei',sans-serif;
-  transition:color .3s;}
-#home-btn:hover .arr{color:#522324;transform:translateX(-2px)}
-#home-btn:hover .lbl{color:#522324}
-/* Page transitions */
-body{opacity:0;transition:opacity .5s ease}
-body.visible{opacity:1}
-body.leaving{opacity:0}
-/* ── Feather reflection ── */
-.feather-reflection{
-  transform-origin:center top;
-  opacity:0.12;
-  filter:blur(1.5px);
+
+.arrow-link svg {
+  display: block;
+  width: 100%;
+  height: auto;
 }
-/* ── Next page arrow ── */
-#next-btn{
-  position:fixed;right:45px;top:50%;
-  transform:translateY(-50%);
-  display:flex;align-items:center;justify-content:center;
-  width:48px;height:48px;
-  border:1px solid rgba(82,35,36,0.15);
-  border-radius:50%;
-  background:rgba(255,255,255,0.8);
-  backdrop-filter:blur(10px);
-  cursor:pointer;
-  z-index:50;
-  text-decoration:none;
-  transition:border-color .3s,background .3s,transform .3s;
+
+@media (max-aspect-ratio: 16/9) {
+  .page {
+    min-width: 0;
+  }
+
+  .hero-image,
+  .reflection-image {
+    width: auto;
+    min-width: 100%;
+  }
 }
-#next-btn:hover{
-  border-color:rgba(82,35,36,0.4);
-  background:rgba(255,255,255,0.95);
-  transform:translateY(-50%) translateX(3px);
-}
-#next-btn .arr{
-  font-size:18px;color:#B29999;
-  transition:color .3s;
-}
-#next-btn:hover .arr{color:#522324}
 </style>
 </head>
 <body>
-<a id="home-btn" href="javascript:history.back()" title="返回上一页">
-  <span class="arr"><</span>
-  <span class="lbl">返回</span>
-</a>
-<a id="next-btn" href="typical.html" title="下一页">
-  <span class="arr">→</span>
-</a>
-<div id="wrap">
-  <div id="head">
-    <h1>归　　雁　　羽　　脉</h1>
-    <p>2025 · Five Migratory Geese · China · 羽轴为时间轴 · 每羽枝对应一天</p>
-  </div>
-  <div id="legend">
-    <div class="leg">
-      <div class="leg-dot" style="background:#D05D61"></div>正羽（一月—六月）
+  <main class="page">
+    <div class="scene" aria-hidden="true">
+      <img class="hero-image" src="assets/wild-geese-main-143330.png" alt="">
+      <img class="reflection-image" src="assets/wild-geese-reflection-713f61.png" alt="">
     </div>
-    <span class="leg-sep">·</span>
-    <div class="leg">
-      <div class="leg-dot" style="background:#2A588F"></div>廓羽（七月—十二月）
-    </div>
-    <span class="leg-sep">·</span>
-    <span class="leg">羽枝长 ∝ log(观测数量) · 透明度 ∝ 记录条数</span>
-  </div>
-  <div id="chart"></div>
-  <div id="right-panel">
-    <div id="chart-legend"></div>
-    <svg id="line-chart-svg"></svg>
-  </div>
-</div>
 
-<script src="lib/d3.v7.min.js"></script>
-<script>
-/* ══════════════════════════════════════════
-   SPECIES
-══════════════════════════════════════════ */
-const SP = [
-  {id:'swagoo1',cn:'鸿　雁',la:'Anser cygnoides', sc:'#D05D61',ac:'#2A588F'},
-  {id:'douyan', cn:'豆　雁',la:'Anser fabalis',   sc:'#C04858',ac:'#1E4878'},
-  {id:'gragoo', cn:'灰　雁',la:'Anser anser',     sc:'#CC8888',ac:'#6080A0'},
-  {id:'bahgoo', cn:'斑头雁',la:'Anser indicus',   sc:'#B84050',ac:'#3470A8'},
-  {id:'gwfgoo', cn:'白额雁',la:'Anser albifrons', sc:'#D87880',ac:'#4880B8'},
-];
+    <div class="label label-top">Wild geese fly south</div>
+    <div class="label label-bottom-cn">2025年雁类迁徙信息可视化</div>
+    <div class="label label-bottom-en">Visualization of Wild Goose Migration Information</div>
 
-/* ══════════════════════════════════════════
-   DAILY DATA  [cnt, totalBirds] per day
-   s = Jan 1–Jun 30 (181 days)
-   a = Jul 1–Dec 31 (184 days)
-══════════════════════════════════════════ */
-const DAILY = {
-  swagoo1:{
-    s:[[3,8],[4,1687],[3,222],[2,31],[3,9],[2,2],[2,4],[2,11],[1,1],[3,2],[3,51],[5,18],[2,16],[4,25],[2,25],[1,2],[2,1],[3,701],[4,507],[3,23],[2,52],[2,12],[2,501],[1,0],[3,253],[3,1],[3,106],[3,1002],[5,241],[5,28],[3,104],[3,55],[2,105],[1,100],[1,100],[2,21],[2,20],[2,3],[1,10],[3,13],[2,5],[1,4],[1,2],[2,6],[3,3],[3,108],[4,25],[2,11],[3,4],[3,33],[4,34],[2,83],[3,325],[2,55],[2,104],[1,4],[2,11],[1,10],[1,1],[7,39],[3,14],[1,2],[0,0],[4,13],[4,406],[3,13],[6,34],[5,34],[3,3],[3,94],[2,8],[3,29],[1,20],[1,1],[4,8],[4,15],[2,5],[5,47],[2,202],[1,35],[5,73],[3,29],[2,5],[1,0],[2,1],[0,0],[2,7],[2,72],[5,713],[3,51],[2,24],[2,542],[3,23],[5,614],[9,56],[3,0],[1,1],[1,0],[1,15],[1,14],[2,2],[0,0],[1,6],[2,0],[1,1],[2,6],[1,0],[2,2],[4,21],[3,22],[0,0],[1,1],[3,43],[3,20],[1,14],[2,7],[3,6],[2,4],[0,0],[2,2],[4,2],[1,30],[1,1],[3,6],[1,7],[2,1],[1,2],[0,0],[1,23],[1,30],[2,35],[3,10],[2,22],[2,12],[1,10],[0,0],[2,38],[3,27],[1,5],[1,0],[2,9],[2,2],[2,22],[0,0],[1,30],[3,79],[3,43],[1,4],[1,10],[2,13],[4,28],[5,15],[4,17],[2,7],[2,4],[2,5],[0,0],[2,0],[2,16],[2,8],[1,5],[1,3],[1,1],[1,3],[0,0],[1,1],[1,0],[0,0],[0,0],[2,17],[1,50],[1,2],[1,20],[0,0],[1,5],[0,0],[2,12],[1,8],[1,5],[0,0],[2,23]],
-    a:[[1,1],[1,15],[0,0],[0,0],[1,0],[1,2],[0,0],[1,1],[0,0],[0,0],[0,0],[0,0],[0,0],[1,17],[3,34],[1,3],[0,0],[1,23],[1,2],[1,12],[1,1],[1,1],[1,1],[0,0],[2,31],[0,0],[1,1],[0,0],[0,0],[1,3],[0,0],[0,0],[3,8],[1,10],[0,0],[0,0],[1,20],[2,4],[0,0],[2,15],[3,19],[2,52],[2,14],[2,5],[1,6],[0,0],[2,36],[2,30],[1,0],[1,0],[1,1],[1,1],[1,20],[2,16],[1,3],[1,7],[1,9],[0,0],[2,8],[1,3],[3,25],[1,1],[1,0],[0,0],[0,0],[0,0],[0,0],[1,35],[0,0],[2,8],[0,0],[1,10],[0,0],[1,1],[1,100],[2,4],[1,2],[2,20],[0,0],[1,5],[0,0],[1,20],[1,12],[2,1],[1,10],[0,0],[1,20],[2,4],[2,11],[1,2],[2,12],[1,30],[1,11],[2,22],[1,200],[3,18],[1,10],[1,20],[2,24],[1,1],[0,0],[1,0],[2,24],[2,87],[1,7],[1,6],[1,3],[1,2],[3,44],[5,243],[4,17],[3,202],[2,22],[2,81],[4,29],[2,10],[3,7],[4,122],[2,41],[1,45],[0,0],[1,3],[1,5],[2,401],[7,173],[0,0],[1,10],[4,10],[3,216],[2,16],[6,223],[5,24],[3,202],[2,103],[1,20],[3,76],[3,150],[6,54],[4,1007],[1,5],[0,0],[3,78],[3,21],[1,0],[5,8],[6,36],[0,0],[1,10],[1,200],[1,5],[3,167],[4,129],[3,23],[5,42],[1,30],[4,17],[5,23],[2,49],[7,29],[6,570],[2,1],[4,46],[2,1],[2,50],[0,0],[5,541],[4,157],[4,72],[7,2249],[2,34],[1,2],[1,1],[4,42],[4,3],[5,454],[1,1],[0,0],[3,470],[1,200],[3,34],[5,511],[4,122],[3,409],[3,56]]
-  },
-  douyan:{
-    s:[[10,322],[5,1193],[3,331],[9,226],[4,826],[1,1],[0,0],[5,162],[6,652],[4,540],[3,1002],[7,2758],[6,332],[6,122],[1,200],[3,109],[5,34],[7,1653],[6,554],[5,855],[7,585],[6,2645],[7,41],[6,753],[5,541],[4,0],[5,700],[6,3001],[6,274],[10,782],[3,141],[7,3307],[6,181],[5,3640],[7,434],[3,507],[4,2018],[0,0],[1,50],[5,1050],[5,2250],[4,252],[0,0],[4,305],[3,10],[4,1220],[7,965],[1,50],[3,62],[1,4],[3,82],[2,8],[4,415],[0,0],[5,1505],[0,0],[2,152],[2,80],[1,80],[11,1155],[6,124],[4,5144],[1,5],[3,60],[2,5],[5,2809],[14,539],[7,756],[0,0],[1,80],[2,7],[2,34],[1,15],[8,632],[6,63],[7,1145],[6,104],[6,2008],[3,408],[1,1],[8,62],[6,67],[0,0],[3,5],[2,55],[5,147],[4,62],[2,6],[6,753],[2,4],[4,22],[3,65],[3,3],[6,254],[10,357],[5,57],[1,3],[1,1],[0,0],[1,1],[0,0],[1,1],[1,8],[1,1],[3,10],[2,2],[0,0],[0,0],[4,7],[3,8],[0,0],[0,0],[0,0],[1,1],[1,1],[3,3],[0,0],[1,1],[0,0],[0,0],[0,0],[2,2],[0,0],[2,2],[0,0],[1,1],[0,0],[2,8],[0,0],[2,2],[2,3],[1,1],[1,2],[1,2],[3,6],[1,1],[1,1],[2,4],[0,0],[0,0],[0,0],[0,0],[0,0],[1,1],[0,0],[1,1],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[1,2],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
-    a:[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[1,5],[0,0],[0,0],[0,0],[0,0],[1,0],[1,2],[0,0],[0,0],[0,0],[0,0],[1,2],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[1,6],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[1,1],[2,17],[3,85],[1,1],[3,207],[4,12],[4,22],[2,4],[1,9],[1,5],[4,123],[2,8],[0,0],[0,0],[2,6],[3,15],[4,1523],[13,1303],[5,96],[4,93],[2,22],[3,3],[3,45],[3,4],[7,46],[3,38],[5,214],[2,2],[3,11],[3,53],[2,11],[9,9],[12,191],[4,17],[1,3],[2,14],[10,552],[3,272],[18,2965],[11,297],[5,1200],[8,482],[1,5],[6,78],[7,2216],[10,306],[10,409],[6,207],[3,29],[2,8],[2,4],[5,815],[13,444],[11,1812],[3,75],[4,507],[7,46],[1,3],[5,277],[17,5007],[11,1988],[9,1042],[3,14],[5,97],[6,1103],[5,280],[16,757],[17,123],[2,5],[5,154],[2,715],[3,922],[1,3],[9,567],[9,762],[2,24],[7,6219],[4,1149],[5,165],[3,4],[12,1112],[7,20],[10,528],[0,0],[1,1],[4,420],[3,402],[7,1270],[8,2720],[5,622],[6,1236],[3,201]]
-  },
-  gragoo:{
-    s:[[4,215],[3,210],[2,55],[2,50],[5,57],[1,1],[0,0],[0,0],[3,18],[2,1],[4,79],[3,4],[2,302],[4,501],[1,2],[2,103],[3,6],[3,35],[3,155],[3,106],[2,51],[3,421],[3,15],[2,0],[0,0],[2,0],[3,150],[4,1002],[2,102],[4,524],[2,30],[2,148],[2,150],[1,100],[3,41],[1,100],[1,100],[0,0],[1,0],[4,603],[1,200],[1,1],[0,0],[2,10],[1,2],[1,2],[3,801],[0,0],[2,51],[1,1],[2,14],[1,5],[2,351],[3,103],[2,35],[0,0],[2,11],[0,0],[1,5],[4,534],[6,141],[2,14],[0,0],[3,306],[2,200],[4,11],[7,12],[4,304],[1,8],[2,8],[0,0],[0,0],[1,5],[2,4],[6,12],[4,69],[4,37],[4,21],[3,14],[1,6],[5,45],[4,41],[1,60],[1,1],[2,33],[2,2],[2,1],[3,13],[3,18],[3,11],[3,4],[4,121],[3,21],[4,12],[7,16],[3,13],[0,0],[1,2],[1,2],[2,3],[2,264],[1,2],[2,2],[2,2],[2,22],[2,4],[2,3],[1,1],[4,15],[3,11],[1,4],[1,0],[1,2],[0,0],[2,38],[3,12],[2,2],[1,1],[4,10],[1,10],[3,6],[3,11],[2,14],[0,0],[1,2],[0,0],[2,3],[1,20],[3,14],[2,7],[3,11],[3,17],[2,12],[1,2],[2,4],[0,0],[2,1],[2,36],[1,4],[1,0],[2,3],[3,48],[0,0],[0,0],[3,15],[3,53],[3,59],[3,9],[2,11],[4,24],[6,66],[6,49],[3,23],[3,38],[2,3],[2,4],[2,55],[3,16],[6,65],[2,62],[3,12],[2,5],[1,10],[3,17],[2,10],[1,1],[1,6],[1,9],[0,0],[1,20],[1,1],[2,9],[1,10],[1,1],[2,50],[2,15],[3,39],[2,30],[2,33],[1,12],[2,17]],
-    a:[[1,1],[4,322],[2,20],[3,24],[2,0],[2,51],[1,3],[1,1],[3,10],[1,12],[2,14],[3,33],[4,51],[2,26],[1,8],[0,0],[2,14],[3,37],[1,0],[1,0],[2,31],[1,1],[4,181],[2,5],[2,21],[0,0],[3,16],[1,50],[1,5],[1,4],[0,0],[2,13],[1,0],[2,8],[2,12],[1,100],[2,22],[3,24],[0,0],[3,128],[2,11],[1,0],[1,20],[1,2],[1,4],[0,0],[3,44],[2,7],[1,400],[1,7],[1,1],[0,0],[1,15],[1,10],[2,5],[1,6],[1,5],[0,0],[1,0],[0,0],[3,78],[3,22],[1,1],[0,0],[0,0],[0,0],[0,0],[3,86],[1,2],[1,8],[0,0],[1,4],[0,0],[1,14],[2,180],[2,6],[0,0],[0,0],[0,0],[2,51],[0,0],[2,26],[1,5],[2,310],[1,3],[1,21],[2,30],[0,0],[2,2],[2,1],[1,12],[1,5],[3,31],[1,5],[4,602],[4,8],[2,12],[4,205],[3,3],[0,0],[0,0],[1,0],[3,18],[3,26],[2,8],[0,0],[0,0],[1,0],[2,10],[4,112],[2,21],[5,22],[6,64],[2,30],[3,201],[4,3],[7,283],[2,4],[2,104],[1,1],[0,0],[1,2],[2,17],[5,5],[5,76],[1,3],[0,0],[2,2],[4,18],[1,15],[6,262],[6,129],[2,1000],[1,4],[3,50],[3,28],[3,26],[7,653],[5,68],[2,14],[1,22],[3,10],[2,8],[0,0],[4,391],[7,88],[2,56],[1,100],[2,1],[2,20],[3,53],[7,1781],[5,292],[3,101],[1,6],[2,150],[4,96],[2,108],[7,142],[5,541],[1,1],[3,25],[3,51],[3,51],[1,35],[4,24],[3,126],[3,14],[4,1023],[2,52],[1,10],[2,1],[8,41],[6,55],[7,527],[1,20],[0,0],[4,34],[3,91],[4,27],[5,31],[3,623],[2,200],[2,51]]
-  },
-  bahgoo:{
-    s:[[1,1],[0,0],[0,0],[0,0],[1,1],[1,1],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[1,2],[2,1],[0,0],[0,0],[1,1],[0,0],[2,2],[1,1],[1,1],[1,2],[0,0],[0,0],[1,1],[0,0],[1,1],[0,0],[0,0],[2,301],[0,0],[2,2],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[1,2],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[1,2],[0,0],[0,0],[1,1],[0,0],[1,6],[1,1],[1,2],[3,5],[1,1],[1,1],[0,0],[1,50],[1,2],[1,1],[1,7],[0,0],[0,0],[2,125],[1,40],[0,0],[0,0],[1,2],[2,1],[2,54],[0,0],[0,0],[1,2],[0,0],[1,5],[0,0],[1,2],[2,34],[1,0],[1,0],[1,1],[2,2],[1,32],[2,3],[2,25],[2,8],[1,1],[0,0],[0,0],[1,1],[0,0],[0,0],[1,4],[1,2],[1,2],[1,10],[2,1],[1,0],[1,7],[0,0],[0,0],[1,0],[1,5],[1,2],[1,1],[1,0],[0,0],[2,554],[1,12],[1,3],[0,0],[0,0],[1,1],[1,2],[2,3],[1,2],[3,9],[0,0],[3,6],[0,0],[1,1],[0,0],[0,0],[0,0],[2,2],[1,1],[1,200],[1,1],[0,0],[0,0],[0,0],[0,0],[0,0],[1,12],[0,0],[1,1],[1,1],[0,0],[1,3],[1,0],[2,9],[1,2],[0,0],[2,51],[2,6],[2,9],[1,7],[2,3],[1,0],[0,0],[2,25],[1,120],[4,35],[3,65],[2,3],[2,18],[1,20],[3,221],[3,22],[1,20],[1,65],[1,0],[2,17],[1,2],[1,3],[2,20],[2,6],[2,30],[1,0],[0,0],[1,4],[2,35],[1,50],[0,0],[2,5]],
-    a:[[1,30],[1,25],[1,50],[2,50],[0,0],[1,1],[0,0],[2,3],[2,3],[1,0],[1,6],[1,0],[2,10],[1,50],[0,0],[1,3],[1,1],[3,78],[2,38],[2,2],[0,0],[2,21],[0,0],[1,60],[1,2],[1,3],[3,20],[1,6],[1,50],[1,250],[0,0],[0,0],[1,1],[2,22],[1,16],[2,3],[0,0],[2,0],[0,0],[2,32],[1,4],[2,3],[2,7],[1,20],[1,4],[1,300],[1,120],[2,4],[0,0],[1,40],[1,1],[1,4],[1,2],[0,0],[1,200],[3,406],[0,0],[0,0],[0,0],[0,0],[1,4],[1,1],[0,0],[0,0],[0,0],[0,0],[0,0],[1,1],[0,0],[2,3],[0,0],[0,0],[0,0],[0,0],[1,10],[1,0],[1,182],[1,2],[0,0],[0,0],[0,0],[2,12],[1,58],[1,5],[0,0],[1,15],[1,5],[0,0],[0,0],[0,0],[0,0],[1,8],[1,6],[0,0],[0,0],[1,4],[2,11],[2,0],[1,1],[0,0],[0,0],[0,0],[1,2],[0,0],[0,0],[0,0],[0,0],[1,1],[1,0],[2,6],[1,1],[0,0],[1,8],[1,0],[1,1],[1,3],[1,14],[1,1],[1,3],[1,9],[0,0],[1,4],[1,1],[1,2],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[4,42],[1,0],[0,0],[1,4],[0,0],[0,0],[0,0],[3,6],[1,0],[1,1],[0,0],[1,7],[0,0],[1,3],[2,3],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[1,2],[1,0],[1,2],[1,0],[2,2],[1,23],[1,400],[3,450],[4,52],[2,201],[0,0],[0,0],[1,30],[1,0],[1,2],[2,60],[0,0],[1,20],[2,7],[1,0],[1,1],[2,6],[1,1],[2,108],[2,7],[1,0],[3,150],[2,33],[2,25],[1,8],[0,0],[2,100],[1,1]]
-  },
-  gwfgoo:{
-    s:[[4,15],[2,470],[1,24],[2,114],[3,9],[1,1],[0,0],[1,1],[3,42],[2,301],[2,201],[5,116],[2,50],[2,2],[2,203],[1,30],[2,16],[3,602],[4,507],[2,50],[5,202],[4,84],[2,2],[1,0],[1,1],[1,0],[0,0],[2,520],[2,39],[3,120],[1,60],[3,202],[2,51],[3,2041],[2,21],[1,200],[1,500],[0,0],[1,3],[0,0],[3,12],[2,2],[1,2],[1,3],[1,1000],[2,3],[4,60],[2,5],[2,11],[1,6],[1,80],[1,8],[1,20],[0,0],[3,102],[0,0],[0,0],[2,6],[1,221],[3,11],[2,51],[1,200],[1,100],[1,4],[1,1000],[2,25],[4,602],[4,223],[0,0],[0,0],[1,1],[1,1],[0,0],[1,1000],[1,20],[4,3],[3,6],[1,10],[1,1],[0,0],[2,5],[1,2],[0,0],[0,0],[0,0],[0,0],[1,1],[1,2],[3,14],[0,0],[0,0],[1,1],[1,100],[1,0],[4,35],[1,1],[1,1],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[3,2],[1,6],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[1,1],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0]],
-    a:[[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[1,6],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[0,0],[1,80],[0,0],[0,0],[1,2],[1,0],[1,15],[2,5],[0,0],[1,20],[1,2],[0,0],[3,8],[2,5],[0,0],[0,0],[0,0],[2,25],[2,9],[3,16],[2,36],[2,13],[2,33],[2,21],[3,4],[2,33],[2,13],[1,3],[3,87],[0,0],[1,14],[1,6],[2,3],[4,9],[6,42],[1,3],[0,0],[2,26],[3,19],[2,12],[7,440],[5,86],[3,31],[3,96],[0,0],[3,24],[3,24],[6,77],[5,52],[1,4],[3,11],[1,12],[2,2],[2,16],[3,16],[5,246],[3,46],[1,5],[0,0],[0,0],[1,10],[6,30],[3,3],[2,4],[1,1],[0,0],[2,351],[3,41],[6,111],[2,28],[1,0],[1,0],[1,0],[1,22],[1,3],[3,49],[3,23],[1,10],[1,13],[2,4],[1,30],[2,2],[4,32],[3,30],[4,120],[0,0],[0,0],[1,4],[1,25],[2,25],[3,100],[2,51],[0,0],[1,10]]
-  }
-};
-const SPR_DAYS=181, AUT_DAYS=184;
-const SMAX=5144, AMAX=6219;
-
-/* month start day-indices */
-const SPR_M_START=[0,31,59,90,120,151];  // Jan–Jun
-const AUT_M_START=[0,31,62,92,123,153];  // Jul–Dec
-const SPR_M_LEN  =[31,28,31,30,31,30];
-const AUT_M_LEN  =[31,31,30,31,30,31];
-const SPR_LABEL=['一月','二月','三月','四月','五月','六月'];
-const AUT_LABEL=['七月','八月','九月','十月','十一月','十二月'];
-
-/* ══════════════════════════════════════════
-   DATE STRINGS for tooltip
-══════════════════════════════════════════ */
-const SPR_DATES=(()=>{
-  const a=[];
-  const months=[1,2,3,4,5,6];
-  const days=[31,28,31,30,31,30];
-  months.forEach((m,mi)=>{for(let d=1;d<=days[mi];d++) a.push(m+'月'+d+'日');});
-  return a;
-})();
-const AUT_DATES=(()=>{
-  const a=[];
-  const months=[7,8,9,10,11,12];
-  const days=[31,31,30,31,30,31];
-  months.forEach((m,mi)=>{for(let d=1;d<=days[mi];d++) a.push(m+'月'+d+'日');});
-  return a;
-})();
-
-/* ══════════════════════════════════════════
-   BEZIER
-══════════════════════════════════════════ */
-function qbez(t,x0,y0,x1,y1,x2,y2){
-  const u=1-t;
-  return {x:u*u*x0+2*t*u*x1+t*t*x2, y:u*u*y0+2*t*u*y1+t*t*y2};
-}
-
-/* Feather vane envelope — bell-shaped, peaks at t≈0.38
-   Makes base short (down near calamus), bulges in middle, tapers at tip */
-function envelope(t){ return Math.exp(-Math.pow((t-0.42)/0.42,2)*1.5); }
-
-/* ══════════════════════════════════════════
-   DRAW FEATHER (daily barbs)
-══════════════════════════════════════════ */
-function drawFeather(g, cx, yBase, data, nDays, isSpring, color, spCN, mStart, mLen, mLabel){
-  const H  = isSpring ? 390 : 242;
-  const ML = isSpring ?  76 :  47;   // max barb half-length at envelope peak
-  const RO = isSpring ?  12 :   7;   // rachis bow offset
-  const RW = isSpring ? 1.6 : 1.0;
-  const BW = isSpring ? 0.50: 0.38;  // base barb stroke
-  const GMAX = isSpring ? SMAX : AMAX;
-
-  const ytip = yBase - H;
-  const rcx  = cx + RO, rcy = yBase - H*0.5;
-
-  // ── Rachis ──
-  g.append('path')
-    .attr('d',`M ${cx},${yBase} Q ${rcx},${rcy} ${cx},${ytip}`)
-    .attr('stroke','rgba(100,100,100,0.45)')
-    .attr('stroke-width',RW).attr('fill','none').attr('stroke-linecap','round');
-
-  // ── Month boundary ticks & labels ──
-  mStart.forEach((startIdx,mi)=>{
-    const t0 = startIdx / (nDays-1) * 0.98 + 0.01;
-    const p  = qbez(t0, cx,yBase, rcx,rcy, cx,ytip);
-    if(mi>0){
-      g.append('line')
-        .attr('x1',p.x-6).attr('y1',p.y).attr('x2',p.x+6).attr('y2',p.y)
-        .attr('stroke','rgba(0,0,0,0.14)').attr('stroke-width',0.8);
-    }
-    // label at month midpoint
-    const midIdx = startIdx + Math.floor(mLen[mi]/2);
-    const tm = midIdx / (nDays-1) * 0.98 + 0.01;
-    const pm = qbez(tm, cx,yBase, rcx,rcy, cx,ytip);
-    const lx = isSpring ? pm.x-16 : pm.x+15;
-    g.append('text')
-      .attr('x',lx).attr('y',pm.y+3)
-      .attr('text-anchor','middle').attr('font-size','8px')
-      .attr('fill','#6E5D5D').attr('letter-spacing','0.5px')
-      .text(mLabel[mi]);
-  });
-
-  // ── Barbs ──
-  // maxCnt for opacity normalisation (per-feather)
-  const maxCnt = Math.max(...data.map(d=>d[0]));
-
-  data.forEach((d,i)=>{
-    const cnt=d[0], tot=d[1];
-    const t = i / (nDays-1) * 0.98 + 0.01;
-    const p = qbez(t, cx,yBase, rcx,rcy, cx,ytip);
-    const rx=p.x, ry=p.y;
-
-    // Barb angle: steep at base (t=0), shallower at tip (t=1)
-    const betaDeg = 68 - 44*t;
-    const beta    = betaDeg * Math.PI / 180;
-
-    // Length: envelope × log-norm × ML; ghost stub if no data
-    const env = envelope(t);
-    const logN = GMAX>0 ? Math.log(tot+1)/Math.log(GMAX+1) : 0;
-    const len  = tot>0 ? Math.max(env*logN*ML, env*ML*0.06) : env*ML*0.03;
-    const op   = tot>0 ? 0.32+0.58*((cnt||0)/(maxCnt||1)) : 0.10;
-
-    if(len<0.18||env<0.015) return;
-
-    const dx=len*Math.sin(beta), dy=len*Math.cos(beta);
-    const bow=len*0.10;
-    const cpLx=rx-dx*0.55, cpLy=ry-dy*0.55-bow;
-    const cpRx=rx+dx*0.55, cpRy=ry-dy*0.55-bow;
-    const lx=rx-dx, ly=ry-dy;
-    const rx2=rx+dx, ry2=ry-dy;
-    const sw=BW+op*0.28;
-
-    g.append('path')
-      .attr('d',`M ${rx},${ry} Q ${cpLx},${cpLy} ${lx},${ly}`)
-      .attr('stroke',color).attr('stroke-width',sw)
-      .attr('fill','none').attr('stroke-linecap','round').attr('opacity',op);
-    g.append('path')
-      .attr('d',`M ${rx},${ry} Q ${cpRx},${cpRy} ${rx2},${ry2}`)
-      .attr('stroke',color).attr('stroke-width',sw)
-      .attr('fill','none').attr('stroke-linecap','round').attr('opacity',op);
-
-    // Hit area (transparent wide stroke)
-    if(i%2===0){  // only register every other barb to keep DOM lean
-      const dateStr = isSpring ? SPR_DATES[i] : AUT_DATES[i];
-      const hd={sp:spCN,date:dateStr,tot,cnt,color,px:rx,py:ry,isSpr:isSpring};
-      g.append('path')
-        .attr('d',`M ${rx},${ry} Q ${cpRx},${cpRy} ${rx2},${ry2}`)
-        .attr('stroke','transparent').attr('stroke-width',11)
-        .attr('fill','none').style('cursor','crosshair')
-        .datum(hd)
-        .on('mouseover',handleOver).on('mousemove',handleMove).on('mouseout',handleOut);
-    }
-  });
-}
-
-/* ══════════════════════════════════════════
-   HOVER OVERLAY  (glow + inline text)
-══════════════════════════════════════════ */
-let hovG,glowRing,glowCore,hDate,hVal,hRec;
-
-function handleOver(ev,d){
-  const col=d.color;
-  glowRing.attr('fill',col);
-  glowCore.attr('fill',col);
-  hovG.attr('transform',`translate(${d.px},${d.py})`);
-  const isL=d.isSpr;
-  const tx=isL?-76:76, anchor=isL?'end':'start';
-  hDate.attr('text-anchor',anchor).attr('x',tx).attr('y',-22).attr('fill',col).text(d.date);
-  hVal .attr('text-anchor',anchor).attr('x',tx).attr('y', -2).attr('fill',col)
-       .text(d.tot>0?d.tot.toLocaleString()+' 只':'—');
-  hRec .attr('text-anchor',anchor).attr('x',tx).attr('y', 13)
-       .attr('fill','rgba(0,0,0,0.38)').text(d.cnt+' 条记录');
-  hovG.classed('hov-on',true).style('opacity','1');
-}
-function handleMove(){}
-function handleOut(){hovG.classed('hov-on',false).style('opacity','0');}
-
-/* ══════════════════════════════════════════
-   LAYOUT & SVG
-══════════════════════════════════════════ */
-const VW=1440, VH=570, YBASE=486;
-const G_CX=[128,404,680,956,1232];
-const SPR_OFF=-46, AUT_OFF=46;
-
-const svg=d3.select(document.getElementById('chart'))
-  .append('svg')
-  .attr('viewBox',`0 0 ${VW} ${VH}`)
-  .style('width','100%').style('max-width','1480px')
-  .style('height','auto').style('display','block');
-
-/* ── defs ── */
-const defs=svg.append('defs');
-
-/* ── Reflection filter ── */
-const filter=defs.append('filter').attr('id','reflection-blur');
-filter.append('feGaussianBlur').attr('in','SourceGraphic').attr('stdDeviation',1.5);
-
-/* ── Background (flat — actual gradient is CSS on body) ── */
-svg.append('rect').attr('width',VW).attr('height',VH).attr('fill','none');
-
-
-/* ── Thin baseline ── */
-svg.append('line')
-  .attr('x1',30).attr('y1',YBASE+10).attr('x2',VW-30).attr('y2',YBASE+10)
-  .attr('stroke','rgba(0,0,0,0.07)').attr('stroke-width',0.5);
-
-/* ── Draw all feathers ── */
-
-SP.forEach((sp,si)=>{
-  const gcx=G_CX[si];
-  const scx=gcx+SPR_OFF, acx=gcx+AUT_OFF;
-  const d=DAILY[sp.id];
-
-  // ── Reflection group (drawn first, below main feathers) ──
-  const reflG=svg.append('g').attr('class','feather-reflection');
-  
-  // Spring reflection
-  const reflSpring=reflG.append('g');
-  drawFeather(reflSpring,scx,YBASE+25,d.s,SPR_DAYS,true, sp.sc,sp.cn,SPR_M_START,SPR_M_LEN,SPR_LABEL);
-  reflSpring.attr('transform',`translate(0,${(YBASE+25)*2}) scale(1,-1)`).attr('opacity',0.08);
-  
-  // Autumn reflection
-  const reflAut=reflG.append('g');
-  drawFeather(reflAut,acx,YBASE+25,d.a,AUT_DAYS,false,sp.ac,sp.cn,AUT_M_START,AUT_M_LEN,AUT_LABEL);
-  reflAut.attr('transform',`translate(0,${(YBASE+25)*2}) scale(1,-1)`).attr('opacity',0.08);
-
-  const sg=svg.append('g');
-  drawFeather(sg,scx,YBASE,d.s,SPR_DAYS,true, sp.sc,sp.cn,SPR_M_START,SPR_M_LEN,SPR_LABEL);
-
-  const ag=svg.append('g');
-  drawFeather(ag,acx,YBASE,d.a,AUT_DAYS,false,sp.ac,sp.cn,AUT_M_START,AUT_M_LEN,AUT_LABEL);
-
-  // Species labels
-  svg.append('text').attr('x',gcx).attr('y',YBASE+36)
-    .attr('text-anchor','middle').attr('font-size','14px').attr('letter-spacing','2px')
-    .attr('fill','#572C2C').text(sp.cn);
-  svg.append('text').attr('x',gcx).attr('y',YBASE+54)
-    .attr('text-anchor','middle').attr('font-size','10px').attr('letter-spacing','0.5px').attr('font-style','italic')
-    .attr('fill','#B29999').text(sp.la);
-  svg.append('text').attr('x',scx).attr('y',YBASE+18)
-    .attr('text-anchor','middle').attr('font-size','8px').attr('letter-spacing','1px')
-    .attr('fill',sp.sc).text('正羽');
-  svg.append('text').attr('x',acx).attr('y',YBASE+18)
-    .attr('text-anchor','middle').attr('font-size','8px').attr('letter-spacing','1px')
-    .attr('fill',sp.ac).text('廓羽');
-
-});
-
-/* ── Hover overlay appended last so it renders above all barbs ── */
-hovG=svg.append('g').style('pointer-events','none').style('opacity','0').style('transition','opacity .15s');
-glowRing=hovG.append('circle').attr('class','glow-ring').attr('r',22);
-glowCore=hovG.append('circle').attr('class','glow-core').attr('r',3.4);
-const htg=hovG.append('g');
-hDate=htg.append('text').attr('class','h-date');
-hVal =htg.append('text').attr('class','h-val');
-hRec =htg.append('text').attr('class','h-rec');
-</script>
-<script>
-/* ── Page enter / leave transitions ── */
-(function(){
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    document.body.classList.add('visible');
-  }));
-  document.getElementById('home-btn').addEventListener('click',function(e){
-    e.preventDefault();
-    document.body.classList.remove('visible');
-    document.body.classList.add('leaving');
-    setTimeout(()=>{history.back();},520);
-  });
-  document.getElementById('next-btn').addEventListener('click',function(e){
-    e.preventDefault();
-    const href=this.href;
-    document.body.classList.remove('visible');
-    document.body.classList.add('leaving');
-    setTimeout(()=>{window.location.href=href;},520);
-  });
-})();
-</script>
+    <a class="arrow-link" href="page2.html" aria-label="下一页">
+      <svg viewBox="0 0 21 49" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0.5 0.5L20.5 24.5L0.5 48.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </main>
 </body>
 </html>

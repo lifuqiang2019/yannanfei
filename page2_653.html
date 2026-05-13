@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>雁类迁徙因果链</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
 <style>
 * { box-sizing: border-box; }
 html, body {
@@ -67,8 +68,9 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
     height: 28px;
     letter-spacing: 0;
     color: #572c2c;
-    font-family: "Padyakke Expanded One", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+    font-family: "EB Garamond", "Times New Roman", serif;
     font-size: 20px;
+    font-style: italic;
   }
 
   .autoWrapper9 {
@@ -860,10 +862,25 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
         padding: 50px 8px 77px 292px;
         width: 315px;
         height: 385px;
-        background-image: url(.figma/image/mp3n08o6-wwgs3tx.svg);
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
+        z-index: 0;
+
+        &::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background-image: url(.figma/image/mp3n08o6-wwgs3tx.svg);
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+          transform-origin: center bottom;
+          animation: reedSway 6.2s ease-in-out infinite;
+          pointer-events: none;
+        }
+
+        > * {
+          position: relative;
+          z-index: 1;
+        }
 
         .text36 {
           width: 15px;
@@ -1021,6 +1038,44 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
         left: -619px;
         width: 349px;
         height: 203px;
+        pointer-events: none;
+      }
+
+      .group119-sun {
+        position: absolute;
+        top: 44px;
+        left: 0;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 50% 72%, #ffffff 0%, #ffe8eb 28%, #f6a4ab 62%, #ee707d 100%);
+        opacity: 0.95;
+      }
+
+      .group119-bird {
+        position: absolute;
+        background-image: url(.figma/image/mp3n08o6-ode5h5g.png);
+        background-repeat: no-repeat;
+        background-size: 349px 203px;
+        will-change: transform;
+      }
+
+      .group119-bird-a {
+        top: 95px;
+        left: 92px;
+        width: 100px;
+        height: 62px;
+        background-position: -92px -95px;
+        animation: gooseFloat 5.2s ease-in-out infinite;
+      }
+
+      .group119-bird-b {
+        top: 26px;
+        left: 220px;
+        width: 122px;
+        height: 72px;
+        background-position: -220px -26px;
+        animation: gooseFloatAlt 5.8s ease-in-out infinite;
       }
 
       .rectangle33 {
@@ -1343,8 +1398,9 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
     height: 59px;
     letter-spacing: 0;
     color: #572c2c;
-    font-family: "Padyakke Expanded One", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+    font-family: "EB Garamond", "Times New Roman", serif;
     font-size: 18px;
+    font-style: italic;
   }
 
   .autoWrapper16 {
@@ -1377,6 +1433,72 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
   }
 }
 
+
+.animated-element {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.animated-element.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.goose-float {
+  animation: gooseFloat 5.2s ease-in-out infinite;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.reed-sway {
+  transform-origin: center bottom;
+}
+
+@keyframes gooseFloat {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  20% {
+    transform: translate(10px, -6px) rotate(1deg);
+  }
+  50% {
+    transform: translate(22px, -14px) rotate(2deg);
+  }
+  75% {
+    transform: translate(8px, -8px) rotate(1deg);
+  }
+}
+
+@keyframes gooseFloatAlt {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(-8px, -5px) rotate(-1deg);
+  }
+  50% {
+    transform: translate(-16px, -12px) rotate(-2deg);
+  }
+  75% {
+    transform: translate(-6px, -7px) rotate(-1deg);
+  }
+}
+
+@keyframes reedSway {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(0.6deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-0.6deg);
+  }
+}
 </style>
 </head>
 <body>
@@ -1387,12 +1509,12 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
       <div class="autoWrapper9">
         <div class="autoWrapper5">
           <div class="autoWrapper">
-            <div class="rectangle29">
+            <div class="rectangle29 animated-element" data-animation-group="driver">
               <p class="text">| 迁徙驱动因素</p>
             </div>
-            <p class="text2">不同因素在迁徙决策中的相对权重</p>
+            <p class="text2 animated-element" data-animation-group="driver">不同因素在迁徙决策中的相对权重</p>
           </div>
-          <div class="group81">
+          <div class="group81 animated-element" data-animation-group="driver">
             <div class="autoWrapper3">
               <div class="group3">
                 <img src=".figma/image/mp3n08o6-7a3txlv.png" class="group" />
@@ -1470,11 +1592,11 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
               <img src=".figma/image/mp3n08o6-dsvusvr.svg" class="line55" />
             </div>
           </div>
-          <div class="rectangle32">
+          <div class="rectangle32 animated-element" data-animation-group="causal">
             <p class="text13">| 迁徙影响因果链</p>
           </div>
         </div>
-        <div class="autoWrapper8">
+        <div class="autoWrapper8 animated-element" data-animation-group="causal">
           <div class="group136">
             <p class="text17">
               <span class="text14">在</span>
@@ -1488,12 +1610,12 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
             <img src=".figma/image/mp3n08o6-b6pro84.svg" class="vector6" />
           </div>
           <div class="autoWrapper6">
-            <div class="rectangle35">
+            <div class="rectangle35 animated-element" data-animation-group="timeline">
               <p class="text18">| 迁徙时间轴</p>
             </div>
-            <p class="text19">一年周期，春去秋来</p>
+            <p class="text19 animated-element" data-animation-group="timeline">一年周期，春去秋来</p>
           </div>
-          <div class="group126">
+          <div class="group126 animated-element" data-animation-group="timeline">
             <div class="group113">
               <img src=".figma/image/mp3n08of-h02zh81.png" class="frame3" />
               <img src=".figma/image/mp3n08of-evbj1sz.png" class="frame3" />
@@ -1637,7 +1759,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
         </div>
         <div class="autoWrapper13">
           <img src=".figma/image/mp3n08of-df6m1le.png" class="group10511" />
-          <div class="group63">
+          <div class="group63 reed-sway">
             <p class="text36">本能驱动</p>
             <p class="text37">环境驱动</p>
           </div>
@@ -1710,7 +1832,11 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
           </p>
           <div class="line56" ></div>
           <div class="line57" ></div>
-          <img src=".figma/image/mp3n08o6-ode5h5g.png" class="group119" />
+          <div class="group119">
+            <div class="group119-sun"></div>
+            <div class="group119-bird group119-bird-a"></div>
+            <div class="group119-bird group119-bird-b"></div>
+          </div>
           <div class="rectangle33" ></div>
           <div class="rectangle34" ></div>
           <div class="group123">
@@ -1825,6 +1951,32 @@ function fitBoard() {
 window.addEventListener('resize', fitBoard);
 fitBoard();
 requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('visible')));
+
+function initAnimations() {
+  const animationSequence = [
+    { group: 'driver', delay: 300, stagger: 150 },
+    { group: 'causal', delay: 800, stagger: 200 },
+    { group: 'timeline', delay: 800, stagger: 150 }
+  ];
+  
+  let currentDelay = 500;
+  
+  animationSequence.forEach(sequence => {
+    const elements = d3.selectAll(`[data-animation-group="${sequence.group}"]`);
+    
+    elements.each(function(d, i) {
+      const element = d3.select(this);
+      
+      setTimeout(() => {
+        element.classed('visible', true);
+      }, currentDelay + (i * sequence.stagger));
+    });
+    
+    currentDelay += sequence.delay + (elements.size() * sequence.stagger);
+  });
+}
+
+setTimeout(initAnimations, 800);
 </script>
 </body>
 </html>
