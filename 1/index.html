@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sci-Fi MECHA HUD</title>
+    <style>
+        :root {
+            --bg-color: #050505;
+            --fg-color: #e0e0e0;
+            --accent-color: #ffffff;
+        }
+
+        body.light-theme {
+            --bg-color: #e5e6e8;
+            --fg-color: #1a1a1a;
+            --accent-color: #000000;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--bg-color);
+            transition: background-color 0.1s ease-in-out;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: crosshair;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hud-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: var(--fg-color);
+            font-size: 12px;
+            line-height: 1.5;
+            pointer-events: none;
+            user-select: none;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.1s ease-in-out;
+        }
+
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 10;
+            opacity: 0.3;
+        }
+
+        body.light-theme .scanline {
+            background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0) 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2));
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hud-overlay" id="hud-text">
+        // 02008A- MECHA_UI11<br>
+        // 020701- DATA_PARAM/SYSTEM<br>
+        // STATUS- ONLINE_TRACKING<br>
+        > MOUSE_X: <span id="pos-x">0000</span><br>
+        > MOUSE_Y: <span id="pos-y">0000</span><br>
+        > CLICK TO INVERT THEME
+    </div>
+
+    <div class="scanline"></div>
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        let width, height;
+        let theme = 'dark'; // dark or light
+        
+        // 鼠标与视差相关变量
+        let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+        let center = { x: window.innerWidth / 2, y: window.innerHeight / 2 }; // 主中心点（最快）
+        let ringCenter = { x: window.innerWidth / 2, y: window.innerHeight / 2 }; // 环中心点（较慢）
+        
+        let time = 0;
+        
+        // 粒子系统
+        const particles = [];
+        const numParticles = 150;
+        
+        // 节点系统 (环上的几何图形)
+        const nodes = [];
+        const numNodes = 12;
+        const baseRadius = 220;
+        const shapes = ['squareX', 'triangle', 'circleDot', 'rhombus'];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            center = { x: width / 2, y: height / 2 };
+            ringCenter = { x: width / 2, y: height / 2 };
+            
+            // 窗口大小改变时，默认重新居中
+            mouse = { x: width / 2, y: height / 2 };
+            if (document.getElementById('pos-x')) {
+                document.getElementById('pos-x').innerText = Math.round(mouse.x).toString().padStart(4, '0');
+                document.getElementById('pos-y').innerText = Math.round(mouse.y).toString().padStart(4, '0');
+            }
+        }
+
+        window.addEventListener('resize', resize);
+        
+        // 交互：鼠标移动更新目标位置
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            document.getElementById('pos-x').innerText = mouse.x.toString().padStart(4, '0');
+            document.getElementById('pos-y').innerText = mouse.y.toString().padStart(4, '0');
+        });
+
+        // 交互：当鼠标离开屏幕（浏览器视口）时，HUD 自动回正居中
+        document.addEventListener('mouseleave', () => {
+            mouse.x = width / 2;
+            mouse.y = height / 2;
+            document.getElementById('pos-x').innerText = Math.round(mouse.x).toString().padStart(4, '0');
+            document.getElementById('pos-y').innerText = Math.round(mouse.y).toString().padStart(4, '0');
+        });
+
+        // 交互：点击切换主题
+        window.addEventListener('mousedown', () => {
+            document.body.classList.toggle('light-theme');
+            theme = document.body.classList.contains('light-theme') ? 'light' : 'dark';
+            // 添加一个轻微的随机故障震动效果
+            center.x += (Math.random() - 0.5) * 50;
+            center.y += (Math.random() - 0.5) * 50;
+        });
+
+        function init() {
+            resize();
+            
+            // 初始化粒子
+            for (let i = 0; i < numParticles; i++) {
+                particles.push(createParticle());
+            }
+            
+            // 初始化节点
+            for (let i = 0; i < numNodes; i++) {
+                nodes.push({
+                    angle: (i / numNodes) * Math.PI * 2,
+                    shape: shapes[i % shapes.length],
+                    offsetR: 0
+                });
+            }
+            
+            loop();
+        }
+
+        function createParticle() {
+            const angle = Math.random() * Math.PI * 2;
+            const dist = Math.random() * 50 + 50;
+            return {
+                angle: angle,
+                dist: dist,
+                speed: Math.random() * 0.15 + 0.05, // 降低向外扩散的飞行速度
+                size: Math.random() * 2 + 0.5,
+                life: Math.random() * 200,          // 增加生命周期，让慢速粒子能飞得更远
+                maxLife: 200,
+                flapSpeed: Math.random() * 0.08 + 0.03, // 同步放缓翅膀扇动的频率
+                flapPhase: Math.random() * Math.PI * 2  // 扇动初始相位
+            };
+        }
+
+        // --- 绘制几何图形函数 ---
+        function drawSquareX(ctx, size) {
+            ctx.strokeRect(-size/2, -size/2, size, size);
+            ctx.beginPath();
+            ctx.moveTo(-size/2, -size/2);
+            ctx.lineTo(size/2, size/2);
+            ctx.moveTo(size/2, -size/2);
+            ctx.lineTo(-size/2, size/2);
+            ctx.stroke();
+        }
+
+        function drawTriangle(ctx, size) {
+            const h = size * Math.sqrt(3) / 2;
+            ctx.beginPath();
+            ctx.moveTo(0, -h * 2/3);
+            ctx.lineTo(size/2, h * 1/3);
+            ctx.lineTo(-size/2, h * 1/3);
+            ctx.closePath();
+            ctx.stroke();
+        }
+
+        function drawCircleDot(ctx, size) {
+            ctx.beginPath();
+            ctx.arc(0, 0, size/2, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(0, 0, 2, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function drawRhombus(ctx, size) {
+            ctx.beginPath();
+            ctx.moveTo(0, -size/2);
+            ctx.lineTo(size/2, 0);
+            ctx.lineTo(0, size/2);
+            ctx.lineTo(-size/2, 0);
+            ctx.closePath();
+            ctx.stroke();
+            // 中心加号
+            ctx.beginPath();
+            ctx.moveTo(-size/4, 0);
+            ctx.lineTo(size/4, 0);
+            ctx.moveTo(0, -size/4);
+            ctx.lineTo(0, size/4);
+            ctx.stroke();
+        }
+
+        function update() {
+            time += 0.01;
+            
+            // 缓动跟随 (视差计算)
+            // 中心点最快跟随鼠标
+            center.x += (mouse.x - center.x) * 0.1;
+            center.y += (mouse.y - center.y) * 0.1;
+            
+            // 外环较慢跟随鼠标，产生3D错觉
+            ringCenter.x += (mouse.x - ringCenter.x) * 0.04;
+            ringCenter.y += (mouse.y - ringCenter.y) * 0.04;
+
+            // 更新粒子
+            particles.forEach(p => {
+                p.dist += p.speed;
+                p.life -= 0.5; // 减缓生命值消耗速度，配合更慢的飞行
+                if (p.life <= 0) {
+                    Object.assign(p, createParticle());
+                }
+            });
+        }
+
+        function draw() {
+            // 获取当前主题颜色
+            const style = getComputedStyle(document.body);
+            const fgColor = style.getPropertyValue('--fg-color').trim();
+            const accentColor = style.getPropertyValue('--accent-color').trim();
+            
+            ctx.clearRect(0, 0, width, height);
+            
+            ctx.strokeStyle = fgColor;
+            ctx.fillStyle = fgColor;
+            ctx.lineWidth = 1;
+            
+            // 1. 绘制发散粒子背景
+            ctx.save();
+            ctx.translate(ringCenter.x, ringCenter.y);
+            particles.forEach(p => {
+                const alpha = Math.max(0, p.life / p.maxLife);
+                ctx.globalAlpha = alpha * 0.5;
+                const currentAngle = p.angle + time*0.04; // 稍微降低整体旋转跟随的速度，让画面更沉稳
+                const px = Math.cos(currentAngle) * p.dist;
+                const py = Math.sin(currentAngle) * p.dist;
+                
+                // 画飞行的小鸟或点作为粒子
+                if(p.size > 1.5) {
+                    ctx.save();
+                    ctx.translate(px, py);
+                    // 旋转使得飞鸟头部朝向发散方向
+                    ctx.rotate(currentAngle + Math.PI / 2);
+                    
+                    // 利用正弦函数计算翅膀上下扇动的偏移量
+                    const flap = Math.sin(time * 30 * p.flapSpeed + p.flapPhase) * p.size * 1.2;
+                    const span = p.size * 2.8; // 翼展
+                    
+                    // 绘制流线型曲线飞鸟 (类似图片中的海鸥轮廓)
+                    const tipY = flap; 
+                    const headY = -p.size * 0.2; // 顶部背部凹陷处
+                    const tailY = p.size * 1.5;  // 底部尾部尖端
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(-span, tipY); // 左翼尖
+                    // 上边缘左侧
+                    ctx.quadraticCurveTo(-span * 0.5, tipY - p.size * 2.5, 0, headY);
+                    // 上边缘右侧
+                    ctx.quadraticCurveTo(span * 0.5, tipY - p.size * 2.5, span, tipY);
+                    // 下边缘右侧
+                    ctx.quadraticCurveTo(span * 0.4, tipY + p.size * 0.2, 0, tailY);
+                    // 下边缘左侧
+                    ctx.quadraticCurveTo(-span * 0.4, tipY + p.size * 0.2, -span, tipY);
+                    ctx.closePath();
+                    ctx.fill();
+                    
+                    ctx.restore();
+                } else {
+                    ctx.fillRect(px, py, p.size, p.size);
+                }
+            });
+            ctx.restore();
+            
+            ctx.globalAlpha = 1;
+
+            // 2. 绘制外环和节点
+            ctx.save();
+            ctx.translate(ringCenter.x, ringCenter.y);
+            
+            // 缓慢旋转外环
+            const ringRotation = time * 0.2;
+            
+            // 细微的虚线圆环
+            ctx.beginPath();
+            ctx.setLineDash([2, 8]);
+            ctx.arc(0, 0, baseRadius - 20, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // 节点列表，用于后续连线
+            const activeNodePositions = [];
+            
+            nodes.forEach((node, i) => {
+                const angle = node.angle + ringRotation;
+                const r = baseRadius;
+                const nx = Math.cos(angle) * r;
+                const ny = Math.sin(angle) * r;
+                
+                // 计算节点与鼠标中心的距离，产生悬停放大效果
+                const globalNx = ringCenter.x + nx;
+                const globalNy = ringCenter.y + ny;
+                const distToMouse = Math.hypot(globalNx - center.x, globalNy - center.y);
+                
+                let size = 16;
+                let alpha = 0.5;
+                
+                if (distToMouse < 150) {
+                    size = 22; // 靠近高亮放大
+                    alpha = 1;
+                    ctx.strokeStyle = accentColor;
+                } else {
+                    ctx.strokeStyle = fgColor;
+                }
+
+                activeNodePositions.push({ x: globalNx, y: globalNy, alpha: alpha, dist: distToMouse });
+
+                ctx.save();
+                ctx.globalAlpha = alpha;
+                ctx.translate(nx, ny);
+                // 节点自转
+                ctx.rotate(angle + Math.PI/2); 
+                
+                // 绘制图形
+                if (node.shape === 'squareX') drawSquareX(ctx, size);
+                else if (node.shape === 'triangle') drawTriangle(ctx, size);
+                else if (node.shape === 'circleDot') drawCircleDot(ctx, size);
+                else if (node.shape === 'rhombus') drawRhombus(ctx, size);
+                
+                // 绘制节点旁边的小散点/装饰
+                ctx.fillRect(size, size, 2, 2);
+                ctx.restore();
+            });
+            ctx.restore();
+
+            // 3. 绘制中心追踪器与连线
+            ctx.save();
+            ctx.strokeStyle = fgColor;
+            ctx.fillStyle = fgColor;
+            
+            // 中心点标记
+            ctx.beginPath();
+            ctx.arc(center.x, center.y, 4, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // 中心准星
+            ctx.beginPath();
+            ctx.moveTo(center.x - 15, center.y);
+            ctx.lineTo(center.x + 15, center.y);
+            ctx.moveTo(center.x, center.y - 15);
+            ctx.lineTo(center.x, center.y + 15);
+            ctx.stroke();
+
+            // 找到距离中心最近的3个节点进行动态连线
+            activeNodePositions.sort((a, b) => a.dist - b.dist);
+            const targets = activeNodePositions.slice(0, 3);
+            
+            targets.forEach(target => {
+                ctx.globalAlpha = 0.7;
+                ctx.beginPath();
+                ctx.moveTo(center.x, center.y);
+                ctx.lineTo(target.x, target.y);
+                ctx.stroke();
+                
+                // 在连线中间添加动态参数文本
+                const midX = (center.x + target.x) / 2;
+                const midY = (center.y + target.y) / 2;
+                
+                ctx.globalAlpha = 0.9;
+                ctx.font = '10px Courier New';
+                const distStr = target.dist.toFixed(2);
+                // 文本背景色块增强科幻感
+                ctx.fillStyle = theme === 'dark' ? '#000' : '#fff';
+                const textWidth = ctx.measureText(`DIST_${distStr}`).width;
+                ctx.fillRect(midX + 5, midY - 10, textWidth + 4, 12);
+                
+                ctx.fillStyle = accentColor;
+                ctx.fillText(`DIST_${distStr}`, midX + 7, midY - 1);
+                
+                // 目标节点处的小准星圈
+                ctx.beginPath();
+                ctx.setLineDash([2, 4]);
+                ctx.arc(target.x, target.y, 25, 0, Math.PI*2);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            });
+
+            // 中心动态数据文本
+            ctx.globalAlpha = 1;
+            ctx.font = '12px Courier New';
+            ctx.fillStyle = fgColor;
+            ctx.fillText(`RAD = ${(time % 360).toFixed(4)}`, center.x - 40, center.y + 35);
+            ctx.fillText(`[${center.x.toFixed(0)}, ${center.y.toFixed(0)}]`, center.x + 20, center.y - 20);
+
+            // 随机出现的修饰性代码块 (Glitch effect)
+            if(Math.random() > 0.95) {
+                const rx = ringCenter.x + (Math.random()-0.5)*400;
+                const ry = ringCenter.y + (Math.random()-0.5)*400;
+                ctx.globalAlpha = 0.3;
+                ctx.fillText(`SYS.0x${Math.floor(Math.random()*10000)}`, rx, ry);
+                
+                ctx.beginPath();
+                ctx.moveTo(rx, ry + 5);
+                ctx.lineTo(rx + 20, ry + 5);
+                ctx.stroke();
+            }
+
+            ctx.restore();
+        }
+
+        function loop() {
+            update();
+            draw();
+            requestAnimationFrame(loop);
+        }
+
+        init();
+    </script>
+</body>
+</html>
