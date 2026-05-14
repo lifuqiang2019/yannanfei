@@ -188,13 +188,53 @@ html,body{
   position:absolute;
   right:70px;
   top:50%;
+  width:108px;
+  height:108px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   transform:translateY(-50%);
   font-size:72px;
   line-height:1;
   color:rgba(82,35,36,.3);
   font-weight:100;
   font-family:'Times New Roman',serif;
+  border-radius:50%;
+  cursor:pointer;
+  user-select:none;
+  transition:color .3s ease, background-color .3s ease, box-shadow .3s ease;
   z-index:10;
+}
+#next-arrow::before,
+#next-arrow::after{
+  content:'';
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  border:1px solid rgba(82,35,36,.22);
+  transform:translate(-50%,-50%) scale(.35);
+  opacity:0;
+  pointer-events:none;
+}
+#next-arrow:hover{
+  color:rgba(82,35,36,.72);
+  background:rgba(245,246,247,.58);
+  box-shadow:0 0 0 1px rgba(82,35,36,.08);
+}
+#next-arrow:hover::before{
+  animation:rippleWave 1.6s ease-out infinite;
+}
+#next-arrow:hover::after{
+  animation:rippleWave 1.6s ease-out .45s infinite;
+}
+#next-arrow:focus-visible{
+  outline:none;
+  color:rgba(82,35,36,.72);
+  background:rgba(245,246,247,.58);
+  box-shadow:0 0 0 2px rgba(82,35,36,.18);
 }
 body{opacity:0;transition:opacity .6s ease}
 body.visible{opacity:1}
@@ -223,6 +263,16 @@ body.visible #next-arrow{animation:softRight 1s cubic-bezier(.19,1,.22,1) 1.35s 
 @keyframes centerIn{
   0%{opacity:0;transform:translate(-50%,-46%) scale(.97);filter:blur(12px)}
   100%{opacity:1;transform:translate(-50%,-48%) scale(1);filter:blur(0)}
+}
+@keyframes rippleWave{
+  0%{
+    opacity:.55;
+    transform:translate(-50%,-50%) scale(.35);
+  }
+  100%{
+    opacity:0;
+    transform:translate(-50%,-50%) scale(3.4);
+  }
 }
 </style>
 </head>
@@ -270,7 +320,7 @@ body.visible #next-arrow{animation:softRight 1s cubic-bezier(.19,1,.22,1) 1.35s 
     <p>观鸟和摄影时保持距离，不追逐、不惊飞、不使用强光和无人机干扰，让鸟类安全完成觅食、休息和越冬。</p>
   </div>
 
-  <div id="next-arrow">›</div>
+  <div id="next-arrow" role="link" tabindex="0" aria-label="前往下一页">›</div>
   <div id="tagline">
     <div class="zh">2025年雁类迁徙信息可视化</div>
     <div class="en">Visualisation of Wild Goose Migration Information</div>
@@ -287,6 +337,7 @@ const canvas = document.getElementById('orbit-canvas');
 const ctx = canvas.getContext('2d');
 const nodes = [...document.querySelectorAll('.node')];
 const copies = [...document.querySelectorAll('.copy')];
+const nextArrow = document.getElementById('next-arrow');
 
 const W = 690;
 const H = 690;
@@ -356,6 +407,10 @@ function resetPointer(){
   mouse.y = cy;
 }
 
+function goNextPage(){
+  window.location.href = 'page2_6.html';
+}
+
 window.addEventListener('mousemove', e => {
   isPointerInside = true;
   const rect = protection.getBoundingClientRect();
@@ -372,6 +427,13 @@ document.addEventListener('mouseout', e => {
 window.addEventListener('blur', resetPointer);
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) resetPointer();
+});
+nextArrow.addEventListener('click', goNextPage);
+nextArrow.addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    goNextPage();
+  }
 });
 
 function draw(){

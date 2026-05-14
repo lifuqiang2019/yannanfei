@@ -21,6 +21,7 @@ body {
   transition: opacity .45s ease;
 }
 body.visible { opacity: 1; }
+body.leaving { opacity: 0; }
 p { margin: 0; }
 img { display: block; user-select: none; -webkit-user-drag: none; }
 #stage {
@@ -45,6 +46,30 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
     radial-gradient(circle at 66% 61%, rgba(113, 163, 255, 0.07), transparent 16%),
     radial-gradient(circle at 46% 89%, rgba(120, 134, 231, 0.06), transparent 14%);
   pointer-events: none;
+}
+#ripple {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 6;
+}
+#next-arrow {
+  cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
+  transform-origin: center center;
+  -webkit-tap-highlight-color: transparent;
+}
+#next-arrow:hover,
+#next-arrow:focus-visible {
+  transform: translateX(6px);
+  filter: brightness(1.12);
+  opacity: 0.86;
+  outline: none;
+}
+#next-arrow:active {
+  transform: translateX(3px);
 }
 * {
   box-sizing: border-box;
@@ -1504,6 +1529,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
 <body>
 <div id="stage">
   <div id="board">
+<canvas id="ripple" aria-hidden="true"></canvas>
 <div class="frame8">
       <p class="wildGeeseFlySouth">Wild geese fly south</p>
       <div class="autoWrapper9">
@@ -1607,7 +1633,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
                 着生态系统，也与人类社会紧密相连。
               </span>
             </p>
-            <img src=".figma/image/mp3n08o6-b6pro84.svg" class="vector6" />
+            <img src=".figma/image/mp3n08o6-b6pro84.svg" class="vector6" id="next-arrow" role="button" tabindex="0" aria-label="下一页" />
           </div>
           <div class="autoWrapper6">
             <div class="rectangle35 animated-element" data-animation-group="timeline">
@@ -1942,11 +1968,89 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
 <script>
 'use strict';
 const board = document.getElementById('board');
+const canvas = document.getElementById('ripple');
+const nextArrow = document.getElementById('next-arrow');
+const ctx = canvas.getContext('2d');
+const rippleSets = [];
+
+class RippleSet {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.born = performance.now();
+    const base = Math.min(board.clientWidth, board.clientHeight);
+    this.rings = [
+      { delay: 0, maxR: base * 0.11, dur: 1500, lw: 1.5 },
+      { delay: 110, maxR: base * 0.08, dur: 1280, lw: 1.1 },
+      { delay: 220, maxR: base * 0.05, dur: 1040, lw: 0.8 }
+    ];
+    this.alive = true;
+  }
+
+  draw(now) {
+    const age = now - this.born;
+    let anyAlive = false;
+
+    for (const ring of this.rings) {
+      const ringAge = age - ring.delay;
+      if (ringAge < 0) {
+        anyAlive = true;
+        continue;
+      }
+
+      const progress = ringAge / ring.dur;
+      if (progress >= 1) continue;
+
+      anyAlive = true;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, ring.maxR * Math.sqrt(progress), 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(186, 218, 255, ${(Math.pow(1 - progress, 1.75) * 0.5).toFixed(3)})`;
+      ctx.lineWidth = ring.lw * (1 - progress * 0.55);
+      ctx.stroke();
+    }
+
+    this.alive = anyAlive;
+  }
+}
+
+function resizeRippleCanvas() {
+  const rect = board.getBoundingClientRect();
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.round(rect.width * dpr);
+  canvas.height = Math.round(rect.height * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+function spawnRipple(x, y) {
+  rippleSets.push(new RippleSet(x, y));
+}
+
+function spawnArrowRipple() {
+  const boardRect = board.getBoundingClientRect();
+  const arrowRect = nextArrow.getBoundingClientRect();
+  spawnRipple(
+    arrowRect.left - boardRect.left + arrowRect.width / 2,
+    arrowRect.top - boardRect.top + arrowRect.height / 2
+  );
+}
+
+function loop(now) {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  for (let i = rippleSets.length - 1; i >= 0; i -= 1) {
+    rippleSets[i].draw(now);
+    if (!rippleSets[i].alive) rippleSets.splice(i, 1);
+  }
+
+  requestAnimationFrame(loop);
+}
+
 function fitBoard() {
   const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
   const offsetX = (window.innerWidth - 1920 * scale) / 2;
   const offsetY = (window.innerHeight - 1080 * scale) / 2;
   board.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
+  resizeRippleCanvas();
 }
 window.addEventListener('resize', fitBoard);
 fitBoard();
@@ -1977,6 +2081,31 @@ function initAnimations() {
 }
 
 setTimeout(initAnimations, 800);
+
+let hoverCooldown = 0;
+function handleArrowHover() {
+  const now = performance.now();
+  if (now - hoverCooldown < 240) return;
+  hoverCooldown = now;
+  spawnArrowRipple();
+}
+
+nextArrow.addEventListener('mouseenter', handleArrowHover);
+nextArrow.addEventListener('focus', handleArrowHover);
+nextArrow.addEventListener('keydown', (event) => {
+  if (event.key !== 'Enter' && event.key !== ' ') return;
+  event.preventDefault();
+  nextArrow.click();
+});
+nextArrow.addEventListener('click', () => {
+  spawnArrowRipple();
+  document.body.classList.add('leaving');
+  window.setTimeout(() => {
+    window.location.href = 'page2_4.html';
+  }, 320);
+});
+
+requestAnimationFrame(loop);
 </script>
 </body>
 </html>

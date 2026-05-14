@@ -22,6 +22,12 @@ body {
 body.visible { opacity: 1; }
 p { margin: 0; }
 img { display: block; user-select: none; -webkit-user-drag: none; }
+#ripple {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+}
 #stage {
   position: fixed;
   inset: 0;
@@ -1545,8 +1551,24 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
 }
 
 .vector34 {
-  width: 8px;
-  height: 17px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: rgba(82, 35, 36, .32);
+  font-size: 48px;
+  line-height: 1;
+  font-weight: 100;
+  font-family: "Times New Roman", serif;
+  cursor: pointer;
+  user-select: none;
+  transition: color .3s ease, transform .3s ease;
+}
+
+.vector34:hover {
+  color: rgba(82, 35, 36, .7);
+  transform: translateX(6px);
 }
 
 .visualizationOfWildG {
@@ -1634,6 +1656,7 @@ body.visible .anim-bottom {
 </style>
 </head>
 <body>
+<canvas id="ripple"></canvas>
 <div id="stage">
   <div id="board">
     <div class="slide16912">
@@ -1883,7 +1906,7 @@ body.visible .anim-bottom {
       </div>
       <div class="autoWrapper34">
         <p class="text38">2025年雁类迁徙信息可视化</p>
-        <img src=".figma/image/mp3mmtcj-c2bjwov.svg" class="vector34" />
+        <span class="vector34" id="next-page" role="button" aria-label="下一页">›</span>
       </div>
       <p class="visualizationOfWildG">Visualization of Wild Goose Migration Information</p>
     </div>
@@ -1892,18 +1915,95 @@ body.visible .anim-bottom {
 <script>
 'use strict';
 const board = document.getElementById('board');
+const nextPage = document.getElementById('next-page');
+const canvas = document.getElementById('ripple');
+const rctx = canvas.getContext('2d');
 function fitBoard() {
   const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
   const offsetX = (window.innerWidth - 1920 * scale) / 2;
   const offsetY = (window.innerHeight - 1080 * scale) / 2;
   board.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
 }
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+class RippleSet {
+  constructor(x, y) {
+    this.x = x; this.y = y;
+    this.born = performance.now();
+    const base = Math.min(canvas.width, canvas.height);
+    this.rings = [
+      { delay: 0, maxR: base * 0.18, dur: 1800, lw: 1.4 },
+      { delay: 120, maxR: base * 0.12, dur: 1500, lw: 1.0 },
+      { delay: 240, maxR: base * 0.07, dur: 1200, lw: 0.7 },
+    ];
+    this.alive = true;
+  }
+  draw(now) {
+    const age = now - this.born;
+    let anyAlive = false;
+    for (const ring of this.rings) {
+      const rAge = age - ring.delay;
+      if (rAge < 0) { anyAlive = true; continue; }
+      const p = rAge / ring.dur;
+      if (p >= 1) continue;
+      anyAlive = true;
+      rctx.beginPath();
+      rctx.arc(this.x, this.y, ring.maxR * Math.sqrt(p), 0, Math.PI * 2);
+      rctx.strokeStyle = `rgba(186,218,255,${(Math.pow(1 - p, 1.75) * 0.46).toFixed(3)})`;
+      rctx.lineWidth = ring.lw * (1 - p * 0.6);
+      rctx.stroke();
+    }
+    this.alive = anyAlive;
+  }
+}
+
+const rippleSets = [];
+function spawnRipple(x, y) {
+  rippleSets.push(new RippleSet(x, y));
+}
+
+(function loop(now) {
+  requestAnimationFrame(loop);
+  rctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (let i = rippleSets.length - 1; i >= 0; i--) {
+    rippleSets[i].draw(now);
+    if (!rippleSets[i].alive) rippleSets.splice(i, 1);
+  }
+})();
+
+function spawnRippleAtCenter(el) {
+  const r = el.getBoundingClientRect();
+  spawnRipple(r.left + r.width / 2, r.top + r.height / 2);
+}
+
+let lastHoverMove = 0;
+function onHoverMove(e) {
+  const t = Date.now();
+  if (t - lastHoverMove < 180) return;
+  lastHoverMove = t;
+  spawnRipple(e.clientX, e.clientY);
+}
 window.addEventListener('resize', fitBoard);
 fitBoard();
 
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
 requestAnimationFrame(() => requestAnimationFrame(() => {
   document.body.classList.add('visible');
 }));
+
+nextPage.addEventListener('mouseenter', () => spawnRippleAtCenter(nextPage));
+nextPage.addEventListener('mousemove', onHoverMove);
+nextPage.addEventListener('click', () => {
+  const mask = document.createElement('div');
+  mask.style.cssText = 'position:fixed;inset:0;background:#F5F6F7;z-index:9999;';
+  document.body.appendChild(mask);
+  requestAnimationFrame(() => { window.location.href = 'page2_2.html'; });
+});
 </script>
 </body>
+</html>
 </html>

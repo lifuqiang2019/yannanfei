@@ -28,6 +28,16 @@
       display: grid;
       place-items: center;
       background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 62%, var(--bg-bottom) 100%);
+      opacity: 0;
+      transition: opacity 0.45s ease;
+    }
+
+    body.visible {
+      opacity: 1;
+    }
+
+    body.leaving {
+      opacity: 0;
     }
 
     main {
@@ -43,9 +53,13 @@
       left: 0;
       width: 100%;
       display: block;
-      pointer-events: none;
       user-select: none;
       -webkit-user-drag: none;
+    }
+
+    .main-image,
+    .reflection-image {
+      pointer-events: none;
     }
 
     .main-image {
@@ -63,9 +77,57 @@
       opacity: 0.14;
     }
 
+    #ripple {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .next-arrow {
+      position: absolute;
+      top: 50%;
+      right: 2.9%;
+      transform: translateY(-50%);
+      width: 52px;
+      height: 96px;
+      border: 0;
+      padding: 0;
+      background: transparent;
+      color: rgba(82, 35, 36, 0.34);
+      font-family: "Times New Roman", serif;
+      font-size: 88px;
+      font-weight: 100;
+      line-height: 0.78;
+      cursor: pointer;
+      z-index: 3;
+      transition: color 0.3s ease, transform 0.3s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .next-arrow:hover,
+    .next-arrow:focus-visible {
+      color: rgba(82, 35, 36, 0.72);
+      transform: translateY(-50%) translateX(6px);
+      outline: none;
+    }
+
+    .next-arrow:active {
+      transform: translateY(-50%) translateX(3px);
+    }
+
     @media (max-width: 767px) {
       main {
         width: min(100vw, calc(100svh * 1920 / 1080));
+      }
+
+      .next-arrow {
+        right: 2%;
+        width: 36px;
+        height: 72px;
+        font-size: 64px;
       }
     }
   </style>
@@ -74,6 +136,115 @@
   <main aria-label="日度单位观测数据页面">
     <img class="main-image" src="assets/wild-geese-main-143330.png" alt="2025年五类雁种迁徙信息图">
     <img class="reflection-image" src="assets/wild-geese-reflection-713f61.png" alt="" aria-hidden="true">
+    <canvas id="ripple" aria-hidden="true"></canvas>
+    <button class="next-arrow" id="next-arrow" type="button" aria-label="下一页">›</button>
   </main>
+  <script>
+    'use strict';
+
+    const mainEl = document.querySelector('main');
+    const canvas = document.getElementById('ripple');
+    const nextArrow = document.getElementById('next-arrow');
+    const ctx = canvas.getContext('2d');
+    const rippleSets = [];
+
+    class RippleSet {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.born = performance.now();
+        const base = Math.min(mainEl.clientWidth, mainEl.clientHeight);
+        this.rings = [
+          { delay: 0, maxR: base * 0.11, dur: 1500, lw: 1.5 },
+          { delay: 110, maxR: base * 0.08, dur: 1280, lw: 1.1 },
+          { delay: 220, maxR: base * 0.05, dur: 1040, lw: 0.8 }
+        ];
+        this.alive = true;
+      }
+
+      draw(now) {
+        const age = now - this.born;
+        let anyAlive = false;
+
+        for (const ring of this.rings) {
+          const ringAge = age - ring.delay;
+          if (ringAge < 0) {
+            anyAlive = true;
+            continue;
+          }
+
+          const progress = ringAge / ring.dur;
+          if (progress >= 1) continue;
+
+          anyAlive = true;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, ring.maxR * Math.sqrt(progress), 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(186, 218, 255, ${(Math.pow(1 - progress, 1.75) * 0.5).toFixed(3)})`;
+          ctx.lineWidth = ring.lw * (1 - progress * 0.55);
+          ctx.stroke();
+        }
+
+        this.alive = anyAlive;
+      }
+    }
+
+    function resizeCanvas() {
+      const rect = mainEl.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function spawnRipple(x, y) {
+      rippleSets.push(new RippleSet(x, y));
+    }
+
+    function spawnArrowRipple() {
+      const mainRect = mainEl.getBoundingClientRect();
+      const arrowRect = nextArrow.getBoundingClientRect();
+      spawnRipple(
+        arrowRect.left - mainRect.left + arrowRect.width / 2,
+        arrowRect.top - mainRect.top + arrowRect.height / 2
+      );
+    }
+
+    function loop(now) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = rippleSets.length - 1; i >= 0; i -= 1) {
+        rippleSets[i].draw(now);
+        if (!rippleSets[i].alive) rippleSets.splice(i, 1);
+      }
+
+      requestAnimationFrame(loop);
+    }
+
+    let hoverCooldown = 0;
+    function handleArrowHover() {
+      const now = performance.now();
+      if (now - hoverCooldown < 240) return;
+      hoverCooldown = now;
+      spawnArrowRipple();
+    }
+
+    nextArrow.addEventListener('mouseenter', handleArrowHover);
+    nextArrow.addEventListener('focus', handleArrowHover);
+
+    nextArrow.addEventListener('click', () => {
+      spawnArrowRipple();
+      document.body.classList.add('leaving');
+      window.setTimeout(() => {
+        window.location.href = 'page2_3.html';
+      }, 320);
+    });
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    requestAnimationFrame(loop);
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      document.body.classList.add('visible');
+    }));
+  </script>
 </body>
 </html>
