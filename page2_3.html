@@ -513,17 +513,15 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
       .autoWrapper6 {
         display: flex;
         align-items: center;
-        align-self: stretch;
-        justify-content: space-between;
-        margin-top: 52px;
-        padding-right: 374px;
-        padding-left: 0;
+        margin-left: 20px;
+        margin-top: 48px;
+        padding: 12px 0;
 
         .rectangle35 {
           display: flex;
           align-items: center;
           border: 1px solid #889cc5;
-          padding: 7px 7px 7px 14px;
+          padding: 7px 12px 7px 14px;
 
           .text18 {
             width: 96px;
@@ -544,123 +542,52 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
           font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
           font-size: 14px;
           font-weight: 300;
+          margin-left: 16px;
         }
       }
 
       .group126 {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
-        align-self: stretch;
-        margin-top: 10px;
-        margin-left: 17px;
-        padding-bottom: 1px;
-        padding-left: 38px;
+        align-items: center;
+        margin-top: 24px;
+        margin-left: 20px;
+        padding: 20px 30px;
 
         .group113 {
           display: flex;
           align-items: center;
-          align-self: stretch;
-          justify-content: space-between;
-          margin-right: 88px;
-          padding: 18px 211px;
-          min-width: 496px;
-          height: 94px;
-          rotate: -180deg;
+          justify-content: center;
+          gap: 60px;
+          height: 80px;
 
           .frame3 {
-            width: 74px;
-            height: 58px;
+            width: 70px;
+            height: 55px;
+            object-fit: contain;
           }
         }
 
         .autoWrapper7 {
-          position: relative;
-          margin-top: 18px;
-          margin-left: 339px;
-          width: 245px;
-          height: 40px;
+          display: flex;
+          align-items: flex-start;
+          justify-content: center;
+          gap: 40px;
+          margin-top: 16px;
+          width: 100%;
 
-          .text20 {
-            position: absolute;
-            top: 0;
-            left: -376px;
-            width: 147px;
-            height: 40px;
+          .text20, .text21, .text22, .text23 {
             text-align: center;
             letter-spacing: 0;
             color: #6e5d5d;
             font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
             font-size: 12px;
+            line-height: 1.6;
+            width: 100px;
           }
 
-          .text21 {
-            position: absolute;
-            top: 0;
-            left: -257px;
-            width: 204px;
-            height: 40px;
-            text-align: center;
-            letter-spacing: 0;
-            color: #6e5d5d;
-            font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
-            font-size: 12px;
-          }
-
-          .text22 {
-            position: absolute;
-            top: 0;
-            left: -136px;
-            width: 238px;
-            height: 40px;
-            text-align: center;
-            letter-spacing: 0;
-            color: #6e5d5d;
-            font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
-            font-size: 12px;
-          }
-
-          .text23 {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 245px;
-            height: 40px;
-            text-align: center;
-            letter-spacing: 0;
-            color: #6e5d5d;
-            font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
-            font-size: 12px;
-          }
-
-          .line87 {
-            position: absolute;
-            top: 18px;
-            left: -244px;
-            background: #d9d3d3;
-            width: 30px;
-            height: 1px;
-            rotate: 90deg;
-          }
-
-          .line88 {
-            position: absolute;
-            top: 18px;
-            left: -98px;
-            background: #d9d3d3;
-            width: 30px;
-            height: 1px;
-            rotate: 90deg;
-          }
-
-          .line89 {
-            position: absolute;
-            top: 18px;
-            left: 43px;
-            background: #d9d3d3;
-            width: 30px;
-            height: 1px;
-            rotate: 90deg;
+          .line87, .line88, .line89 {
+            display: none;
           }
         }
       }
@@ -698,7 +625,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
     }
 
     .text26 {
-      margin: 0px 0px 0px 276px;
+      margin: 0px 0px 0px 284px;
       width: 78px;
       height: 21px;
       text-align: center;
@@ -741,45 +668,72 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
       overflow: hidden;
     }
 
+    .ring-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #d8d1d1;
+      border-radius: 50%;
+      background: #f7f9fa;
+      box-shadow: 0 1px 2px rgba(123, 86, 86, 0.08);
+    }
+
+    .ring-icon-warm {
+      border-color: rgba(226, 131, 134, 0.56);
+    }
+
+    .ring-icon-cool {
+      border-color: rgba(66, 138, 224, 0.56);
+    }
+
     .autoWrapper11 {
       display: flex;
       flex-direction: column;
       align-items: center;
       align-self: stretch;
-      margin-top: 11px;
+      margin-left: 2px;
+      margin-top: 0px;
 
       .group127 {
-        width: 36px;
-        height: 36px;
+        width: 22px;
+        height: 22px;
       }
 
       .group128 {
         display: flex;
         align-items: center;
+        justify-content: center;
         align-self: stretch;
-        margin-top: 14px;
+        margin-top: 13px;
+        width: 36px;
+        height: 36px;
 
         .ellipse158 {
           display: flex;
-          flex-grow: 1;
           align-items: center;
+          justify-content: center;
           border-radius: 50%;
-          padding: 6px;
+          width: 36px;
+          height: 36px;
         }
       }
 
       .group129 {
         display: flex;
         align-items: center;
+        justify-content: center;
         align-self: stretch;
         margin-top: 14px;
+        width: 36px;
+        height: 36px;
 
         .ellipse159 {
           display: flex;
-          flex-grow: 1;
           align-items: center;
+          justify-content: center;
           border-radius: 50%;
-          padding: 8px;
+          width: 36px;
+          height: 36px;
 
           .frame5 {
             width: 20px;
@@ -1067,40 +1021,13 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
       }
 
       .group119-sun {
-        position: absolute;
-        top: 44px;
-        left: 0;
-        width: 42px;
-        height: 42px;
-        border-radius: 50%;
-        background: radial-gradient(circle at 50% 72%, #ffffff 0%, #ffe8eb 28%, #f6a4ab 62%, #ee707d 100%);
-        opacity: 0.95;
+        -webkit-clip-path: inset(0 255px 0 0);
+        clip-path: inset(0 255px 0 0);
       }
 
-      .group119-bird {
-        position: absolute;
-        background-image: url(.figma/image/mp3n08o6-ode5h5g.png);
-        background-repeat: no-repeat;
-        background-size: 349px 203px;
-        will-change: transform;
-      }
-
-      .group119-bird-a {
-        top: 95px;
-        left: 92px;
-        width: 100px;
-        height: 62px;
-        background-position: -92px -95px;
-        animation: gooseFloat 5.2s ease-in-out infinite;
-      }
-
-      .group119-bird-b {
-        top: 26px;
-        left: 220px;
-        width: 122px;
-        height: 72px;
-        background-position: -220px -26px;
-        animation: gooseFloatAlt 5.8s ease-in-out infinite;
+      .group119-geese {
+        -webkit-clip-path: inset(0 0 0 92px);
+        clip-path: inset(0 0 0 92px);
       }
 
       .rectangle33 {
@@ -1124,8 +1051,8 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
       .group123 {
         position: absolute;
         bottom: -22px;
-        left: -90px;
-        box-shadow: 0px 4px 8px 0px #7b565640;
+        left: -88px;
+        /* box-shadow: 0px 4px 8px 0px #7b565640; */
         width: 50px;
         height: 422px;
 
@@ -1135,6 +1062,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
           left: 0;
           border-radius: 50%;
           background: #f7f9fa;
+          box-shadow: 0 4px 10px rgba(123, 86, 86, 0.16);
           width: 50px;
           height: 50px;
         }
@@ -1145,6 +1073,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
           left: 0;
           border-radius: 50%;
           background: #f7f9fa;
+          box-shadow: 0 4px 10px rgba(123, 86, 86, 0.16);
           width: 50px;
           height: 50px;
         }
@@ -1155,6 +1084,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
           left: 0;
           border-radius: 50%;
           background: #f7f9fa;
+          box-shadow: 0 4px 10px rgba(123, 86, 86, 0.16);
           width: 50px;
           height: 50px;
         }
@@ -1165,6 +1095,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
           left: 0;
           border-radius: 50%;
           background: #f7f9fa;
+          box-shadow: 0 4px 10px rgba(123, 86, 86, 0.16);
           width: 50px;
           height: 50px;
         }
@@ -1175,6 +1106,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
           left: 0;
           border-radius: 50%;
           background: #f7f9fa;
+          box-shadow: 0 4px 10px rgba(123, 86, 86, 0.16);
           width: 50px;
           height: 50px;
         }
@@ -1240,14 +1172,18 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
       .ellipse151 {
         display: flex;
         position: absolute;
-        top: -24px;
-        right: -84px;
+        top: -20px;
+        right: -78px;
         align-items: flex-start;
+        border: 1px solid #e8b4b6;
         border-radius: 50%;
         background: #f5f6f7;
-        padding: 11px 13px 17px 14px;
-        width: 104px;
-        height: 105px;
+        box-shadow:
+          0 0 0 13px #ffffff,
+          0 4px 10px rgba(123, 86, 86, 0.08);
+        padding: 9px 11px 14px 12px;
+        width: 96px;
+        height: 96px;
 
         .ellipse154 {
           display: flex;
@@ -1257,8 +1193,8 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
           padding: 18px 20px 21px 19px;
 
           .frame6 {
-            width: 38px;
-            height: 38px;
+            width: 35px;
+            height: 35px;
             overflow: hidden;
           }
         }
@@ -1267,14 +1203,18 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
       .ellipse152 {
         display: flex;
         position: absolute;
-        top: 126px;
-        right: -85px;
+        top: 130px;
+        right: -79px;
         align-items: center;
+        border: 1px solid #98a4ed;
         border-radius: 50%;
         background: #f5f6f7;
-        padding: 13px 13px 14px 14px;
-        width: 105px;
-        height: 105px;
+        box-shadow:
+          0 0 0 13px #ffffff,
+          0 4px 10px rgba(123, 86, 86, 0.08);
+        padding: 10px 10px 11px 11px;
+        width: 96px;
+        height: 96px;
 
         .ellipse155 {
           border-radius: 50%;
@@ -1286,14 +1226,18 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
       .ellipse153 {
         display: flex;
         position: absolute;
-        right: -84px;
-        bottom: -7px;
+        right: -78px;
+        bottom: -4px;
         align-items: flex-start;
+        border: 1px solid #79adef;
         border-radius: 50%;
         background: #f5f6f7;
-        padding: 11px 13px 14px;
-        width: 104px;
-        height: 103px;
+        box-shadow:
+          0 0 0 13px #ffffff,
+          0 4px 10px rgba(123, 86, 86, 0.08);
+        padding: 9px 11px 12px;
+        width: 96px;
+        height: 96px;
 
         .ellipse156 {
           display: flex;
@@ -1303,8 +1247,8 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
           padding: 13px 20px 26px 19px;
 
           .frame7 {
-            width: 39px;
-            height: 39px;
+            width: 35px;
+            height: 35px;
             overflow: hidden;
           }
         }
@@ -1312,7 +1256,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
 
       .text44 {
         position: absolute;
-        right: -70px;
+        right: -68px;
         bottom: -55px;
         width: 74px;
         height: 77px;
@@ -1328,7 +1272,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
       .text45 {
         position: absolute;
         top: 56px;
-        right: -76px;
+        right: -74px;
         width: 86px;
         height: 53px;
         text-align: center;
@@ -1343,7 +1287,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
       .text46 {
         position: absolute;
         top: 205px;
-        right: -69px;
+        right: -67px;
         width: 72px;
         height: 59px;
         text-align: center;
@@ -1399,10 +1343,10 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
 
     .group125 {
       position: absolute;
-      top: 180px;
-      left: 1466px;
-      width: 52px;
-      height: 48px;
+      top: 174px;
+      left: 1521px;
+      width: 50px;
+      height: 50px;
       rotate: 27deg;
     }
   }
@@ -1468,6 +1412,10 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
 .animated-element.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+.animated-element.fade-only {
+  transform: none;
 }
 
 .goose-float {
@@ -1622,8 +1570,8 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
             <p class="text13">| 迁徙影响因果链</p>
           </div>
         </div>
-        <div class="autoWrapper8 animated-element" data-animation-group="causal">
-          <div class="group136">
+        <div class="autoWrapper8">
+          <div class="group136 animated-element" data-animation-group="causal">
             <p class="text17">
               <span class="text14">在</span>
               <span class="text15">
@@ -1635,7 +1583,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
             </p>
             <img src=".figma/image/mp3n08o6-b6pro84.svg" class="vector6" id="next-arrow" role="button" tabindex="0" aria-label="下一页" />
           </div>
-          <div class="autoWrapper6">
+          <div class="autoWrapper6 animated-element" data-animation-group="timeline">
             <div class="rectangle35 animated-element" data-animation-group="timeline">
               <p class="text18">| 迁徙时间轴</p>
             </div>
@@ -1650,22 +1598,22 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
             </div>
             <div class="autoWrapper7">
               <p class="text20">
-                &nbsp;&nbsp;春季（3-5月）
+                春季（3-5月）
                 <br />
                 北上繁殖
               </p>
               <p class="text21">
-                &nbsp;&nbsp;夏季（6-8月）
+                夏季（6-8月）
                 <br />
                 繁殖育雏
               </p>
               <p class="text22">
-                &nbsp;&nbsp;秋季（9-11月）
+                秋季（9-11月）
                 <br />
                 南迁启程
               </p>
               <p class="text23">
-                &nbsp;&nbsp;冬季（12-2月）
+                冬季（12-2月）
                 <br />
                 越冬停留
               </p>
@@ -1677,55 +1625,59 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
         </div>
       </div>
       <div class="autoWrapper10">
-        <p class="text24">因素细分</p>
-        <p class="text25">迁徙过程</p>
-        <p class="text26">影响维度</p>
+        <p class="text24 animated-element" data-animation-group="driver-detail">因素细分</p>
+        <p class="text25 animated-element" data-animation-group="causal">迁徙过程</p>
+        <p class="text26 animated-element" data-animation-group="causal">影响维度</p>
       </div>
       <div class="autoWrapper15">
-        <div class="autoWrapper11">
-          <img src=".figma/image/mp3n08o6-3tf798v.svg" class="group127" />
+        <div class="autoWrapper11 animated-element" data-animation-group="driver-detail">
           <div class="group128">
-            <div class="ellipse158">
+            <div class="ellipse158 ring-icon ring-icon-warm">
+              <img src=".figma/image/mp3n08o6-3tf798v.svg" class="group127" />
+            </div>
+          </div>
+          <div class="group128">
+            <div class="ellipse158 ring-icon ring-icon-warm">
               <img src=".figma/image/mp3n08o6-boos3zq.svg" class="frame4" />
             </div>
           </div>
           <div class="group129">
-            <div class="ellipse159">
+            <div class="ellipse159 ring-icon ring-icon-warm">
               <img src=".figma/image/mp3n08o6-vjm5crn.svg" class="frame5" />
             </div>
           </div>
           <div class="group129">
-            <div class="ellipse159">
+            <div class="ellipse159 ring-icon ring-icon-cool">
               <img src=".figma/image/mp3n08o6-b3ph741.svg" class="frame5" />
             </div>
           </div>
           <div class="group129">
-            <div class="ellipse159">
+            <div class="ellipse159 ring-icon ring-icon-cool">
               <img src=".figma/image/mp3n08o6-6aa1sra.svg" class="frame5" />
             </div>
           </div>
           <div class="group129">
-            <div class="ellipse159">
+            <div class="ellipse159 ring-icon ring-icon-cool">
               <img src=".figma/image/mp3n08o6-bnw7djw.svg" class="frame5" />
             </div>
           </div>
           <div class="group129">
-            <div class="ellipse159">
+            <div class="ellipse159 ring-icon ring-icon-cool">
               <img src=".figma/image/mp3n08o6-b9co5ly.svg" class="frame5" />
             </div>
           </div>
           <div class="group129">
-            <div class="ellipse159">
+            <div class="ellipse159 ring-icon ring-icon-cool">
               <img src=".figma/image/mp3n08o6-6oqzwlc.svg" class="frame5" />
             </div>
           </div>
           <div class="group128">
-            <div class="ellipse158">
+            <div class="ellipse158 ring-icon ring-icon-cool">
               <img src=".figma/image/mp3n08o6-85f9px8.svg" class="frame4" />
             </div>
           </div>
         </div>
-        <div class="autoWrapper12">
+        <div class="autoWrapper12 animated-element" data-animation-group="driver-detail">
           <p class="text29">
             <span class="text27">
               迁徙基因遗传
@@ -1783,7 +1735,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
             <span class="text28">全球变暖、温度升高</span>
           </p>
         </div>
-        <div class="autoWrapper13">
+        <div class="autoWrapper13 animated-element" data-animation-group="causal">
           <img src=".figma/image/mp3n08of-df6m1le.png" class="group10511" />
           <div class="group63 reed-sway">
             <p class="text36">本能驱动</p>
@@ -1858,11 +1810,8 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
           </p>
           <div class="line56" ></div>
           <div class="line57" ></div>
-          <div class="group119">
-            <div class="group119-sun"></div>
-            <div class="group119-bird group119-bird-a"></div>
-            <div class="group119-bird group119-bird-b"></div>
-          </div>
+          <img src=".figma/image/mp3n08o6-ode5h5g.png" class="group119 group119-sun" />
+          <img src=".figma/image/mp3n08o6-ode5h5g.png" class="group119 group119-geese goose-float" />
           <div class="rectangle33" ></div>
           <div class="rectangle34" ></div>
           <div class="group123">
@@ -1917,7 +1866,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
           <p class="text45">生态系统影响</p>
           <p class="text46">物种生存影响</p>
         </div>
-        <div class="autoWrapper14">
+        <div class="autoWrapper14 animated-element" data-animation-group="causal">
           <p class="text47">
             促进种子传播与植被扩散
             <br />
@@ -1934,9 +1883,9 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
             <br />
             影响种群数量与分布
             <br />
-            提升适应能力与葛因多样性
+            提升适应能力与基因多样性
             <br />
-            降低局部灭绝风脸
+            降低局部灭绝风险
             <br />
             增强物种间生态联系&nbsp;
           </p>
@@ -1947,18 +1896,18 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
             <br />
             文化象征与精神价值
             <br />
-            候乌保护与政策制定
+            候鸟保护与政策制定
             <br />
             人与自然关系的纽带
           </p>
         </div>
-        <img src=".figma/image/mp3n08o6-u8zqbga.png" class="group125" />
+        <img src=".figma/image/mp3n08o6-u8zqbga.png" class="group125 animated-element fade-only" data-animation-group="causal" />
       </div>
-      <p class="text50">2025年雁类迁徙信息可视化</p>
-      <p class="visualizationOfWildG">
+      <p class="text50 animated-element fade-only" data-animation-group="support">2025年雁类迁徙信息可视化</p>
+      <p class="visualizationOfWildG animated-element fade-only" data-animation-group="support">
         Visualization of Wild Goose Migration Information
       </p>
-      <div class="autoWrapper16">
+      <div class="autoWrapper16 animated-element fade-only" data-animation-group="support">
         <p class="text51">从驱动因素到生态与社会影响的完整链条</p>
         <img src=".figma/image/mp3n08o6-p9eec41.png" class="group120" />
       </div>
@@ -2057,26 +2006,25 @@ fitBoard();
 requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('visible')));
 
 function initAnimations() {
-  const animationSequence = [
-    { group: 'driver', delay: 300, stagger: 150 },
-    { group: 'causal', delay: 800, stagger: 200 },
-    { group: 'timeline', delay: 800, stagger: 150 }
+  const animationPhases = [
+    { groups: ['driver'], start: 500, stagger: 150 },
+    { groups: ['driver-detail'], start: 1250, stagger: 160 },
+    { groups: ['causal', 'timeline'], start: 2100, stagger: 180 },
+    { groups: ['support'], start: 3000, stagger: 140 }
   ];
-  
-  let currentDelay = 500;
-  
-  animationSequence.forEach(sequence => {
-    const elements = d3.selectAll(`[data-animation-group="${sequence.group}"]`);
-    
-    elements.each(function(d, i) {
-      const element = d3.select(this);
-      
-      setTimeout(() => {
-        element.classed('visible', true);
-      }, currentDelay + (i * sequence.stagger));
+
+  animationPhases.forEach((phase) => {
+    phase.groups.forEach((group) => {
+      const elements = d3.selectAll(`[data-animation-group="${group}"]`);
+
+      elements.each(function(d, i) {
+        const element = d3.select(this);
+
+        setTimeout(() => {
+          element.classed('visible', true);
+        }, phase.start + (i * phase.stagger));
+      });
     });
-    
-    currentDelay += sequence.delay + (elements.size() * sequence.stagger);
   });
 }
 
