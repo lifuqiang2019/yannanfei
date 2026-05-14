@@ -555,28 +555,33 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
         padding: 20px 30px;
 
         .group113 {
-          display: flex;
+          display: grid;
+          grid-template-columns: repeat(4, 100px);
+          column-gap: 40px;
           align-items: center;
           justify-content: center;
-          gap: 60px;
           height: 80px;
 
           .frame3 {
+            display: block;
             width: 70px;
             height: 55px;
             object-fit: contain;
+            margin: 0 auto;
           }
         }
 
         .autoWrapper7 {
-          display: flex;
+          display: grid;
+          grid-template-columns: repeat(4, 100px);
+          column-gap: 40px;
           align-items: flex-start;
           justify-content: center;
-          gap: 40px;
           margin-top: 16px;
-          width: 100%;
+          width: auto;
 
           .text20, .text21, .text22, .text23 {
+            margin: 0;
             text-align: center;
             letter-spacing: 0;
             color: #6e5d5d;
