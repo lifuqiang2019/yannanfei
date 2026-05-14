@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>结语2</title>
+<style>
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #f5f6f7;
+  font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+body { opacity: 0; transition: opacity .45s ease; }
+body.visible { opacity: 1; }
+p { margin: 0; }
+img { display: block; user-select: none; -webkit-user-drag: none; }
+#ripple {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+}
+#stage { position: fixed; inset: 0; overflow: hidden; }
+#board { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+#board::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 26% 67%, rgba(226, 157, 170, 0.18), transparent 28%), radial-gradient(circle at 72% 26%, rgba(117, 151, 208, 0.18), transparent 30%); pointer-events: none; }
+* {
+  box-sizing: border-box;
+}
+
+.frame {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #f5f6f7;
+  padding: 1000px 864px 0px 45px;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+
+  .text {
+    width: 230px;
+    height: 25px;
+    letter-spacing: 0;
+    color: #b29999;
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+  }
+
+  .visualizationOfWildG {
+    width: 1011px;
+    height: 59px;
+    letter-spacing: 0;
+    color: #572c2c;
+    font-family: "EB Garamond", "Times New Roman", serif;
+    font-size: 18px;
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .autoWrapper {
+    position: absolute;
+    top: 36px;
+    left: 267px;
+    width: 1881px;
+    height: 1065px;
+
+    .wildGeeseFlySouth {
+      position: absolute;
+      top: 0;
+      left: 1342px;
+      width: 539px;
+      height: 28px;
+      letter-spacing: 0;
+      color: #572c2c;
+      font-family: "EB Garamond", "Times New Roman", serif;
+      font-size: 20px;
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    .group207 {
+      position: absolute;
+      top: 5px;
+      left: 0;
+      width: 1386px;
+      height: 1060px;
+
+      .ellipse91 {
+        position: absolute;
+        top: 367px;
+        left: 0;
+        opacity: 0.2;
+        border-radius: 50%;
+        background: #d05d61;
+        width: 693px;
+        height: 693px;
+        filter: blur(200px);
+      }
+
+      .ellipse92 {
+        position: absolute;
+        top: 0;
+        left: 693px;
+        opacity: 0.2;
+        border-radius: 50%;
+        background: #2a588f;
+        width: 693px;
+        height: 693px;
+        filter: blur(200px);
+      }
+
+      .text2 {
+        display: flex;
+        position: absolute;
+        top: 684px;
+        left: 671px;
+        align-items: center;
+        justify-content: center;
+        width: 58px;
+        height: 30px;
+        line-height: 40px;
+        letter-spacing: 0;
+        color: #8f7f7f;
+        font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        font-weight: 300;
+        cursor: pointer;
+        user-select: none;
+        transition: color .3s ease;
+      }
+
+      .text2:hover {
+        color: rgba(82, 35, 36, .7);
+      }
+
+      .text5 {
+        position: absolute;
+        top: 417px;
+        left: 469px;
+        width: 462px;
+        height: 87px;
+        letter-spacing: 0;
+        color: #8f7f7f;
+        font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 0;
+
+        .ch {
+          display: inline-block;
+          opacity: 0;
+          filter: blur(10px);
+          transform: scale(0.4);
+          transition: opacity .9s ease, filter .9s ease, transform .9s cubic-bezier(.19, 1, .22, 1);
+          will-change: opacity, filter, transform;
+        }
+
+        .ch.in {
+          opacity: 1;
+          filter: blur(0);
+          transform: scale(1);
+        }
+
+        .text3 {
+          line-height: 40px;
+          letter-spacing: 0;
+          color: #8f7f7f;
+          font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 40px;
+        }
+
+        .text4 {
+          line-height: 24px;
+          letter-spacing: 0;
+          color: #8f7f7f;
+          font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 16px;
+        }
+      }
+    }
+
+    .vector {
+      position: absolute;
+      top: 650px;
+      left: 681px;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(82, 35, 36, .32);
+      font-size: 48px;
+      line-height: 1;
+      font-weight: 100;
+      font-family: "Times New Roman", serif;
+      cursor: pointer;
+      user-select: none;
+      transform: rotate(90deg);
+      transition: color .3s ease, transform .3s ease;
+    }
+
+    .vector:hover {
+      color: rgba(82, 35, 36, .7);
+      transform: rotate(90deg) translateX(6px);
+    }
+  }
+}
+
+</style>
+</head>
+<body>
+<canvas id="ripple"></canvas>
+<div id="stage">
+  <div id="board">
+<div class="frame">
+      <p class="text">2025年雁类迁徙信息可视化</p>
+      <p class="visualizationOfWildG">
+        Visualization of Wild Goose Migration Information
+      </p>
+      <div class="autoWrapper">
+        <p class="wildGeeseFlySouth">Wild geese fly south</p>
+        <div class="group207">
+          <div class="ellipse91" ></div>
+          <div class="ellipse92" ></div>
+          <p class="text2" id="home-label">返回首页</p>
+          <p class="text5">
+            <span class="text3">这</span>
+            <span class="text4">
+              些案例告诉我们：候鸟保护必须从静态的点位转向动态的廊道管理。只有持续追踪分布变化，识别新兴重要区域，才能在全球变化背景下守护这些空中旅人的生命征途。
+              <br />
+            </span>
+          </p>
+        </div>
+        <span class="vector" id="home-trigger" role="button" aria-label="返回首页">›</span>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+'use strict';
+const board = document.getElementById('board');
+const textBlock = document.querySelector('.text5');
+const homeTrigger = document.getElementById('home-trigger');
+const homeLabel = document.getElementById('home-label');
+const canvas = document.getElementById('ripple');
+const rctx = canvas.getContext('2d');
+function fitBoard() {
+  const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+  const offsetX = (window.innerWidth - 1920 * scale) / 2;
+  const offsetY = (window.innerHeight - 1080 * scale) / 2;
+  board.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
+}
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+function splitTextChars() {
+  if (!textBlock || textBlock.dataset.split === '1') return;
+  textBlock.dataset.split = '1';
+  const walker = document.createTreeWalker(textBlock, NodeFilter.SHOW_TEXT, null);
+  const textNodes = [];
+  let node;
+  while ((node = walker.nextNode())) textNodes.push(node);
+  textNodes.forEach(textNode => {
+    const frag = document.createDocumentFragment();
+    for (const ch of textNode.nodeValue) {
+      if (ch === ' ' || ch === '\n' || ch === '\t') {
+        frag.appendChild(document.createTextNode(ch));
+        continue;
+      }
+      const span = document.createElement('span');
+      span.className = 'ch';
+      span.textContent = ch;
+      frag.appendChild(span);
+    }
+    textNode.parentNode.replaceChild(frag, textNode);
+  });
+}
+function animateTextChars() {
+  if (!textBlock) return;
+  const chars = textBlock.querySelectorAll('.ch');
+  chars.forEach((el, index) => {
+    setTimeout(() => el.classList.add('in'), 120 + index * 55);
+  });
+}
+function goHome() {
+  const mask = document.createElement('div');
+  mask.style.cssText = 'position:fixed;inset:0;background:#F5F6F7;z-index:9999;';
+  document.body.appendChild(mask);
+  requestAnimationFrame(() => { window.location.href = 'index.html'; });
+}
+
+class RippleSet {
+  constructor(x, y) {
+    this.x = x; this.y = y;
+    this.born = performance.now();
+    const base = Math.min(canvas.width, canvas.height);
+    this.rings = [
+      { delay: 0, maxR: base * 0.18, dur: 1800, lw: 1.4 },
+      { delay: 120, maxR: base * 0.12, dur: 1500, lw: 1.0 },
+      { delay: 240, maxR: base * 0.07, dur: 1200, lw: 0.7 },
+    ];
+    this.alive = true;
+  }
+  draw(now) {
+    const age = now - this.born;
+    let anyAlive = false;
+    for (const ring of this.rings) {
+      const rAge = age - ring.delay;
+      if (rAge < 0) { anyAlive = true; continue; }
+      const p = rAge / ring.dur;
+      if (p >= 1) continue;
+      anyAlive = true;
+      rctx.beginPath();
+      rctx.arc(this.x, this.y, ring.maxR * Math.sqrt(p), 0, Math.PI * 2);
+      rctx.strokeStyle = `rgba(186,218,255,${(Math.pow(1 - p, 1.75) * 0.46).toFixed(3)})`;
+      rctx.lineWidth = ring.lw * (1 - p * 0.6);
+      rctx.stroke();
+    }
+    this.alive = anyAlive;
+  }
+}
+
+const rippleSets = [];
+function spawnRipple(x, y) {
+  rippleSets.push(new RippleSet(x, y));
+}
+
+(function loop(now) {
+  requestAnimationFrame(loop);
+  rctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (let i = rippleSets.length - 1; i >= 0; i--) {
+    rippleSets[i].draw(now);
+    if (!rippleSets[i].alive) rippleSets.splice(i, 1);
+  }
+})();
+
+function spawnRippleAtCenter(el) {
+  if (!el) return;
+  const r = el.getBoundingClientRect();
+  spawnRipple(r.left + r.width / 2, r.top + r.height / 2);
+}
+
+let lastHoverMove = 0;
+function onHoverMove(e) {
+  const t = Date.now();
+  if (t - lastHoverMove < 180) return;
+  lastHoverMove = t;
+  spawnRipple(e.clientX, e.clientY);
+}
+
+window.addEventListener('resize', fitBoard);
+fitBoard();
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+splitTextChars();
+homeTrigger.addEventListener('click', goHome);
+homeLabel.addEventListener('click', goHome);
+homeTrigger.addEventListener('mouseenter', () => spawnRippleAtCenter(homeTrigger));
+homeLabel.addEventListener('mouseenter', () => spawnRippleAtCenter(homeLabel));
+homeTrigger.addEventListener('mousemove', onHoverMove);
+homeLabel.addEventListener('mousemove', onHoverMove);
+requestAnimationFrame(() => requestAnimationFrame(() => {
+  document.body.classList.add('visible');
+  animateTextChars();
+}));
+</script>
+</body>
+</html>
