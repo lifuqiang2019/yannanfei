@@ -77,6 +77,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
   left: 415px;
   width: 1269px;
   height: 364px;
+  transform-origin: 50% 100%;
 }
 
 .group208 {
@@ -90,6 +91,8 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
   padding-top: 14px;
   width: 206px;
   height: 266px;
+  z-index: 3;
+  transition: opacity .35s ease;
 }
 
 .ellipse181 {
@@ -325,16 +328,19 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
 
 .wildGeeseFlySouth {
   position: absolute;
-  top: 36px;
-  left: 1609px;
-  width: 539px;
+  top: 30px;
+  right: 74px;
+  width: auto;
   height: 28px;
   letter-spacing: 0;
-  color: #572c2c;
+  color: rgba(87, 44, 44, 0.78);
   font-family: "EB Garamond", "Times New Roman", serif;
   font-style: italic;
   font-weight: 300;
-  font-size: 20px;
+  font-size: 18px;
+  text-align: right;
+  white-space: nowrap;
+  z-index: 11;
 }
 
 .autoWrapper10 {
@@ -376,13 +382,14 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
 }
 
 .vector3 {
-  margin-top: 187px;
-  margin-left: 528px;
+  margin-top: 15px;
+  margin-left: 20px;
   border-radius: 50%;
   width: 30px;
   height: 23px;
   transform: rotate(-49deg);
   background-image: linear-gradient(228.55deg, #ff696d 14.86%, #f7f9fa 85.23%);
+  flex-shrink: 0;
 }
 
 .group1 {
@@ -437,6 +444,15 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
   align-items: flex-start;
   opacity: 0.9;
   padding: 26px 0px 62px 103px;
+}
+
+.monthlyCountAccent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 346px;
+  height: 372px;
+  pointer-events: none;
 }
 
 .text16 {
@@ -898,6 +914,23 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
   height: 797px;
 }
 
+.titleLockup {
+  display: flex;
+  align-items: flex-start;
+  align-self: stretch;
+  padding-right: 1140px;
+  padding-left: 5px;
+  position: relative;
+  z-index: 10;
+}
+
+.curveChartGroup {
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  transition: opacity .35s ease;
+}
+
 .ellipse180 {
   position: absolute;
   top: 492px;
@@ -912,7 +945,6 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
   position: absolute;
   top: 0;
   left: 0;
-  opacity: 0.5;
   width: 983px;
   height: 797px;
 }
@@ -1544,7 +1576,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
   width: 230px;
   height: 25px;
   letter-spacing: 0;
-  color: #b29999;
+  color: rgba(178, 153, 153, 0.88);
   font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
   font-size: 14px;
   font-weight: 300;
@@ -1577,7 +1609,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
   width: 1011px;
   height: 59px;
   letter-spacing: 0;
-  color: #572c2c;
+  color: rgba(87, 44, 44, 0.72);
   font-family: "EB Garamond", "Times New Roman", serif;
   font-style: italic;
   font-weight: 300;
@@ -1588,13 +1620,11 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
 @keyframes titleDrop {
   0% {
     opacity: 0;
-    transform: translateY(-80px);
-    filter: blur(12px);
+    transform: translateY(-40px);
   }
   100% {
     opacity: 1;
     transform: translateY(0);
-    filter: blur(0);
   }
 }
 
@@ -1624,6 +1654,15 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
   }
 }
 
+@keyframes chartInfoFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 @keyframes bottomSlideIn {
   0% {
     opacity: 0;
@@ -1634,6 +1673,17 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
     opacity: 1;
     transform: translateX(0);
     filter: blur(0);
+  }
+}
+
+@keyframes chartGrowIn {
+  0% {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
   }
 }
 
@@ -1650,9 +1700,32 @@ body.visible .anim-center {
   animation: centerFadeIn 1.4s cubic-bezier(.19,1,.22,1) 1.2s both;
 }
 
+body.visible .anim-chart-grow {
+  animation: chartGrowIn 1.1s cubic-bezier(.19,1,.22,1) 2.05s both;
+}
+
+body.visible .anim-chart-sync {
+  animation: chartInfoFadeIn .7s ease 2.05s both;
+}
+
+body.visible .anim-monthly-count {
+  animation: chartInfoFadeIn 1.4s cubic-bezier(.19,1,.22,1) 1.2s both;
+}
+
 body.visible .anim-bottom {
   animation: bottomSlideIn 1s cubic-bezier(.19,1,.22,1) 1.8s both;
 }
+
+.curveChartGroup.is-hovered,
+.curveChartGroup:hover {
+  opacity: 1;
+}
+
+.group208.is-hovered,
+.group208:hover {
+  opacity: 1;
+}
+
 </style>
 </head>
 <body>
@@ -1660,8 +1733,8 @@ body.visible .anim-bottom {
 <div id="stage">
   <div id="board">
     <div class="slide16912">
-      <img src=".figma/image/mp3mmtco-zfudhxt.png" class="group18821" />
-      <div class="group208">
+      <img src=".figma/image/mp3mmtco-zfudhxt.png" class="group18821 anim-chart-grow" />
+      <div class="group208 anim-chart-sync" id="curve-chart-info">
         <div class="ellipse181"></div>
         <div class="autoWrapper8">
           <p class="text3">
@@ -1705,15 +1778,15 @@ body.visible .anim-bottom {
         </div>
       </div>
       <p class="wildGeeseFlySouth anim-title">Wild geese fly south</p>
-      <div class="autoWrapper10 anim-title">
+      <div class="titleLockup anim-center">
         <div class="autoWrapper9">
           <img src=".figma/image/mp3mmtcj-ah47c6f.png" class="group7" />
           <p class="text13">典型雁类年度境内分布情况</p>
         </div>
         <div class="vector3"></div>
       </div>
-      <img src=".figma/image/mp3mmtcj-x95uzku.png" class="group1" />
-      <img src=".figma/image/mp3mmtcj-gbotmfk.png" class="group190" />
+      <img src=".figma/image/mp3mmtcj-x95uzku.png" class="group1 anim-center" />
+      <img src=".figma/image/mp3mmtcj-gbotmfk.png" class="group190 anim-center" />
       <div class="rectangle29 anim-features">
         <p class="text14">| 核心特征总结</p>
       </div>
@@ -1765,8 +1838,6 @@ body.visible .anim-bottom {
             </div>
             <div class="ellipse1812"></div>
             <div class="ellipse186"></div>
-            <div class="ellipse184"></div>
-            <div class="ellipse189"></div>
             <div class="ellipse190"></div>
             <img src=".figma/image/mp3mmtco-b5u0vs4.png" class="group951" />
             <img src=".figma/image/mp3mmtco-p142zy2.png" class="group961" />
@@ -1793,6 +1864,10 @@ body.visible .anim-bottom {
             <p class="text25">灰雁</p>
           </div>
         </div>
+        <div class="monthlyCountAccent anim-monthly-count">
+          <div class="ellipse189"></div>
+          <div class="ellipse184"></div>
+        </div>
         <div class="group202 anim-center">
           <img src=".figma/image/mp3mmtcj-mbbgsi4.svg" class="line109" />
           <div class="autoWrapper21">
@@ -1807,63 +1882,65 @@ body.visible .anim-bottom {
             <p class="text29">
               数据来源：<br />
               中国观鸟记录中心（2021-2025）<br />
-              eBrid数据库（2025）<br />
+              eBird数据库（2025）<br />
               GPS遥测研究 · IUCN · Wetlands International 2022<br />
             </p>
           </div>
           <div class="autoWrapper32">
-            <div class="ellipse180"></div>
-            <div class="group206">
-              <div class="ellipse169"></div>
-              <div class="ellipse170"></div>
-              <div class="ellipse171"></div>
-              <img src=".figma/image/mp3mmtco-66dclk7.png" class="group1851" />
-            </div>
-            <div class="line92"></div>
-            <div class="group203">
-              <div class="vector4"></div>
-              <div class="autoWrapper22">
-                <div class="vector5"></div>
-                <div class="vector6"></div>
+            <div class="curveChartGroup" id="curve-chart-group">
+              <div class="ellipse180"></div>
+              <div class="group206">
+                <div class="ellipse169"></div>
+                <div class="ellipse170"></div>
+                <div class="ellipse171"></div>
+                <img src=".figma/image/mp3mmtco-66dclk7.png" class="group1851" />
               </div>
-              <div class="autoWrapper26">
-                <div class="autoWrapper23">
-                  <div class="vector7"></div>
-                  <div class="vector8"></div>
-                  <div class="vector9"></div>
-                  <div class="vector10"></div>
-                  <p class="cOlor">COLOR</p>
-                  <div class="line90"></div>
+              <div class="line92"></div>
+              <div class="group203">
+                <div class="vector4"></div>
+                <div class="autoWrapper22">
+                  <div class="vector5"></div>
+                  <div class="vector6"></div>
                 </div>
-                <div class="autoWrapper24">
-                  <div class="vector11"></div>
-                  <div class="vector12"></div>
+                <div class="autoWrapper26">
+                  <div class="autoWrapper23">
+                    <div class="vector7"></div>
+                    <div class="vector8"></div>
+                    <div class="vector9"></div>
+                    <div class="vector10"></div>
+                    <p class="cOlor">COLOR</p>
+                    <div class="line90"></div>
+                  </div>
+                  <div class="autoWrapper24">
+                    <div class="vector11"></div>
+                    <div class="vector12"></div>
+                  </div>
+                  <div class="autoWrapper25">
+                    <div class="vector13"></div>
+                    <div class="vector14"></div>
+                    <div class="vector15"></div>
+                    <div class="vector16"></div>
+                    <div class="vector17"></div>
+                    <div class="vector18"></div>
+                    <div class="vector19"></div>
+                    <div class="vector20"></div>
+                    <div class="vector21"></div>
+                    <div class="vector22"></div>
+                    <div class="vector23"></div>
+                    <div class="vector24"></div>
+                    <div class="vector25"></div>
+                    <div class="vector26"></div>
+                    <div class="vector27"></div>
+                    <div class="vector28"></div>
+                    <p class="sIze">SIZE</p>
+                    <div class="line91"></div>
+                    <div class="line93"></div>
+                  </div>
                 </div>
-                <div class="autoWrapper25">
-                  <div class="vector13"></div>
-                  <div class="vector14"></div>
-                  <div class="vector15"></div>
-                  <div class="vector16"></div>
-                  <div class="vector17"></div>
-                  <div class="vector18"></div>
-                  <div class="vector19"></div>
-                  <div class="vector20"></div>
-                  <div class="vector21"></div>
-                  <div class="vector22"></div>
-                  <div class="vector23"></div>
-                  <div class="vector24"></div>
-                  <div class="vector25"></div>
-                  <div class="vector26"></div>
-                  <div class="vector27"></div>
-                  <div class="vector28"></div>
-                  <p class="sIze">SIZE</p>
-                  <div class="line91"></div>
-                  <div class="line93"></div>
+                <div class="autoWrapper27">
+                  <p class="text30">不同雁种</p>
+                  <p class="text30">观测数量</p>
                 </div>
-              </div>
-              <div class="autoWrapper27">
-                <p class="text30">不同雁种</p>
-                <p class="text30">观测数量</p>
               </div>
             </div>
             <div class="group204">
@@ -1894,7 +1971,7 @@ body.visible .anim-bottom {
           </div>
           <img src=".figma/image/mp3mmtcj-tqfo848.svg" class="group" />
         </div>
-        <div class="vector33"></div>
+        <div class="vector33 anim-monthly-count"></div>
         <p class="text37 anim-bottom">
           雁类的迁徙并非单一模式的远程移动，而是多种行为策略的集合。飞行高度、巡航速度、编队结构、耐力阈值以及停歇地依赖——这些参数共同构成了不同物种应对环境变化的先决条件。
           <br /><br />
@@ -1917,6 +1994,8 @@ body.visible .anim-bottom {
 const board = document.getElementById('board');
 const nextPage = document.getElementById('next-page');
 const canvas = document.getElementById('ripple');
+const curveChartGroup = document.getElementById('curve-chart-group');
+const curveChartInfo = document.getElementById('curve-chart-info');
 const rctx = canvas.getContext('2d');
 function fitBoard() {
   const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
@@ -2003,7 +2082,17 @@ nextPage.addEventListener('click', () => {
   document.body.appendChild(mask);
   requestAnimationFrame(() => { window.location.href = 'page2_2.html'; });
 });
+
+if (curveChartGroup) {
+  curveChartGroup.addEventListener('mouseenter', () => {
+    curveChartGroup.classList.add('is-hovered');
+    if (curveChartInfo) curveChartInfo.classList.add('is-hovered');
+  });
+  curveChartGroup.addEventListener('mouseleave', () => {
+    curveChartGroup.classList.remove('is-hovered');
+    if (curveChartInfo) curveChartInfo.classList.remove('is-hovered');
+  });
+}
 </script>
 </body>
-</html>
 </html>
