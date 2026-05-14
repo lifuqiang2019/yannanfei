@@ -693,6 +693,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
       align-self: stretch;
       margin-left: 2px;
       margin-top: 0px;
+      gap: 10px;
 
       .group127 {
         width: 22px;
@@ -703,8 +704,6 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
         display: flex;
         align-items: center;
         justify-content: center;
-        align-self: stretch;
-        margin-top: 13px;
         width: 36px;
         height: 36px;
 
@@ -722,8 +721,6 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
         display: flex;
         align-items: center;
         justify-content: center;
-        align-self: stretch;
-        margin-top: 14px;
         width: 36px;
         height: 36px;
 
@@ -749,69 +746,38 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
       flex-direction: column;
       align-items: flex-start;
       align-self: stretch;
-      margin-top: 15px;
+      justify-content: flex-start;
+      gap: 10px;
+      margin-top: 0px;
       margin-left: 17px;
 
-      .text29 {
-        width: 108px;
-        height: 39px;
-        letter-spacing: 0;
-        color: #6e5d5d;
-        font-size: 0;
-      }
-
-      .text30 {
-        margin: 10px 0px 0px;
-        width: 128px;
-        height: 34px;
-        letter-spacing: 0;
-        color: #6e5d5d;
-        font-size: 0;
-      }
-
-      .text31 {
-        margin: 59px 0px 0px;
-        width: 108px;
-        height: 41px;
-        letter-spacing: 0;
-        color: #6e5d5d;
-        font-size: 0;
-      }
-
-      .text32 {
-        margin: 10px 0px 0px;
-        width: 108px;
-        height: 42px;
-        letter-spacing: 0;
-        color: #6e5d5d;
-        font-size: 0;
-      }
-
-      .text33 {
-        margin: 10px 0px 0px;
-        width: 111px;
-        height: 43px;
-        letter-spacing: 0;
-        color: #6e5d5d;
-        font-size: 0;
-      }
-
-      .text34 {
-        margin: 10px 0px 0px;
-        width: 108px;
-        height: 37px;
-        letter-spacing: 0;
-        color: #6e5d5d;
-        font-size: 0;
-      }
-
+      .text29,
+      .text30,
+      .text31,
+      .text32,
+      .text33,
+      .text34,
       .text35 {
-        margin: 10px 0px 0px 1px;
-        width: 108px;
-        height: 35px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 0;
+        min-height: 36px;
         letter-spacing: 0;
         color: #6e5d5d;
         font-size: 0;
+      }
+
+      .text29 { width: 108px; }
+      .text30 { width: 128px; }
+      .text31 { width: 124px; }
+      .text32 { width: 118px; }
+      .text33 { width: 111px; }
+      .text34 { width: 108px; }
+      .text35 {
+        width: 120px;
+        letter-spacing: 0;
+        color: #6e5d5d;
       }
     }
 
@@ -1694,6 +1660,13 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
           </p>
           <p class="text31">
             <span class="text27">
+              光照与日照时长
+              <br />
+            </span>
+            <span class="text28">影响内在生理信号</span>
+          </p>
+          <p class="text31">
+            <span class="text27">
               风向与气流变化
               <br />
             </span>
@@ -1801,13 +1774,13 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
               生存与繁衍
             </span>
           </p>
-          <p class="text43">
+          <!-- <p class="text43">
             <span class="text27">
               光照与日照时长
               <br />
             </span>
             <span class="text28">影响内在生理信号</span>
-          </p>
+          </p> -->
           <div class="line56" ></div>
           <div class="line57" ></div>
           <img src=".figma/image/mp3n08o6-ode5h5g.png" class="group119 group119-sun" />
