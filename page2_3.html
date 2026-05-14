@@ -966,7 +966,11 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
         position: absolute;
         top: 189px;
         left: -143px;
-        background: #88a0b7;
+        background-image: repeating-linear-gradient(
+          to right,
+          #88a0b7 0 6px,
+          transparent 6px 12px
+        );
         width: 431px;
         height: 1px;
         rotate: 90deg;
@@ -976,7 +980,11 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
         position: absolute;
         top: 199px;
         left: -1096px;
-        background: #88a0b7;
+        background-image: repeating-linear-gradient(
+          to right,
+          #88a0b7 0 6px,
+          transparent 6px 12px
+        );
         width: 445px;
         height: 1px;
         rotate: 90deg;
@@ -1598,7 +1606,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
       <div class="autoWrapper10">
         <p class="text24 animated-element" data-animation-group="driver-detail">因素细分</p>
         <p class="text25 animated-element" data-animation-group="causal">迁徙过程</p>
-        <p class="text26 animated-element" data-animation-group="causal">影响维度</p>
+        <p class="text26 animated-element" data-animation-group="impact">影响维度</p>
       </div>
       <div class="autoWrapper15">
         <div class="autoWrapper11 animated-element" data-animation-group="driver-detail">
@@ -1713,7 +1721,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
             <span class="text28">全球变暖、温度升高</span>
           </p>
         </div>
-        <div class="autoWrapper13 animated-element" data-animation-group="causal">
+        <div class="autoWrapper13 animated-element" data-animation-group="driver-detail">
           <img src=".figma/image/mp3n08of-df6m1le.png" class="group10511" />
           <div class="group63 reed-sway">
             <p class="text36">本能驱动</p>
@@ -1844,7 +1852,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
           <p class="text45">生态系统影响</p>
           <p class="text46">物种生存影响</p>
         </div>
-        <div class="autoWrapper14 animated-element" data-animation-group="causal">
+        <div class="autoWrapper14 animated-element" data-animation-group="impact">
           <p class="text47">
             促进种子传播与植被扩散
             <br />
@@ -1879,7 +1887,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
             人与自然关系的纽带
           </p>
         </div>
-        <img src=".figma/image/mp3n08o6-u8zqbga.png" class="group125 animated-element fade-only" data-animation-group="causal" />
+        <img src=".figma/image/mp3n08o6-u8zqbga.png" class="group125 animated-element fade-only" data-animation-group="impact" />
       </div>
       <p class="text50 animated-element fade-only" data-animation-group="support">2025年雁类迁徙信息可视化</p>
       <p class="visualizationOfWildG animated-element fade-only" data-animation-group="support">
@@ -1985,10 +1993,11 @@ requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.
 
 function initAnimations() {
   const animationPhases = [
-    { groups: ['driver'], start: 500, stagger: 150 },
-    { groups: ['driver-detail'], start: 1250, stagger: 160 },
-    { groups: ['causal', 'timeline'], start: 2100, stagger: 180 },
-    { groups: ['support'], start: 3000, stagger: 140 }
+    { groups: ['driver-detail'], start: 500, stagger: 0 },
+    { groups: ['driver'], start: 1050, stagger: 0 },
+    { groups: ['support'], start: 1500, stagger: 0 },
+    { groups: ['causal', 'timeline'], start: 1950, stagger: 0 },
+    { groups: ['impact'], start: 1950, stagger: 0 }
   ];
 
   animationPhases.forEach((phase) => {
