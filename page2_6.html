@@ -62,6 +62,7 @@ p {
   opacity: 0;
   pointer-events: none;
   transition: opacity .4s ease;
+  z-index: 0;
 }
 .scene.active {
   opacity: 1;
@@ -308,6 +309,8 @@ const homeTrigger = document.getElementById('home-trigger');
 const homeLabel = document.getElementById('home-label');
 const canvas = document.getElementById('ripple');
 const rctx = canvas.getContext('2d');
+const SCENE_FADE_MS = 400;
+let isSceneSwitching = false;
 
 function fitBoard() {
   const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
@@ -441,16 +444,39 @@ function onHoverMove(e) {
 
 function showScene(targetScene) {
   const isSecond = targetScene === 2;
-  sceneOne.classList.toggle('active', !isSecond);
-  sceneTwo.classList.toggle('active', isSecond);
 
   if (isSecond) {
+    isSceneSwitching = true;
+    sceneOne.classList.add('active');
+    sceneOne.style.zIndex = '1';
+
     resetTextChars(textBlockTwo);
-    animateTextChars(textBlockTwo, 120);
-  } else {
-    resetTextChars(textBlockOne);
-    animateTextChars(textBlockOne, 120);
+    sceneTwo.style.transition = 'none';
+    sceneTwo.style.opacity = '0';
+    sceneTwo.style.zIndex = '2';
+    sceneTwo.classList.add('active');
+
+    requestAnimationFrame(() => {
+      sceneTwo.style.transition = `opacity ${SCENE_FADE_MS}ms ease`;
+      sceneTwo.style.opacity = '1';
+      animateTextChars(textBlockTwo, 120);
+    });
+
+    window.setTimeout(() => {
+      sceneOne.classList.remove('active');
+      sceneOne.style.zIndex = '';
+      sceneTwo.style.transition = '';
+      sceneTwo.style.opacity = '';
+      sceneTwo.style.zIndex = '';
+      isSceneSwitching = false;
+    }, SCENE_FADE_MS);
+    return;
   }
+
+  sceneTwo.classList.remove('active');
+  sceneOne.classList.add('active');
+  resetTextChars(textBlockOne);
+  animateTextChars(textBlockOne, 120);
 }
 
 window.addEventListener('resize', fitBoard);
@@ -462,13 +488,8 @@ splitTextChars(textBlockOne);
 splitTextChars(textBlockTwo);
 
 nextTrigger.addEventListener('click', () => {
-  const mask = document.createElement('div');
-  mask.style.cssText = 'position:fixed;inset:0;background:#F5F6F7;z-index:15;';
-  document.body.appendChild(mask);
-  requestAnimationFrame(() => {
-    showScene(2);
-    requestAnimationFrame(() => mask.remove());
-  });
+  if (isSceneSwitching) return;
+  showScene(2);
 });
 homeTrigger.addEventListener('click', goHome);
 homeLabel.addEventListener('click', goHome);
