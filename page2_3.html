@@ -1550,7 +1550,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
           </div>
         </div>
         <div class="autoWrapper8">
-          <div class="group136 animated-element" data-animation-group="causal">
+          <div class="group136 animated-element" data-animation-group="text">
             <p class="text17">
               <span class="text14">在</span>
               <span class="text15">
@@ -1604,12 +1604,12 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
         </div>
       </div>
       <div class="autoWrapper10">
-        <p class="text24 animated-element" data-animation-group="driver-detail">因素细分</p>
+        <p class="text24 animated-element" data-animation-group="causal">因素细分</p>
         <p class="text25 animated-element" data-animation-group="causal">迁徙过程</p>
-        <p class="text26 animated-element" data-animation-group="impact">影响维度</p>
+        <p class="text26 animated-element" data-animation-group="causal">影响维度</p>
       </div>
       <div class="autoWrapper15">
-        <div class="autoWrapper11 animated-element" data-animation-group="driver-detail">
+        <div class="autoWrapper11 animated-element" data-animation-group="causal">
           <div class="group128">
             <div class="ellipse158 ring-icon ring-icon-warm">
               <img src=".figma/image/mp3n08o6-3tf798v.svg" class="group127" />
@@ -1656,7 +1656,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
             </div>
           </div>
         </div>
-        <div class="autoWrapper12 animated-element" data-animation-group="driver-detail">
+        <div class="autoWrapper12 animated-element" data-animation-group="causal">
           <p class="text29">
             <span class="text27">
               迁徙基因遗传
@@ -1721,7 +1721,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
             <span class="text28">全球变暖、温度升高</span>
           </p>
         </div>
-        <div class="autoWrapper13 animated-element" data-animation-group="driver-detail">
+        <div class="autoWrapper13 animated-element" data-animation-group="causal">
           <img src=".figma/image/mp3n08of-df6m1le.png" class="group10511" />
           <div class="group63 reed-sway">
             <p class="text36">本能驱动</p>
@@ -1852,7 +1852,7 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
           <p class="text45">生态系统影响</p>
           <p class="text46">物种生存影响</p>
         </div>
-        <div class="autoWrapper14 animated-element" data-animation-group="impact">
+        <div class="autoWrapper14 animated-element" data-animation-group="causal">
           <p class="text47">
             促进种子传播与植被扩散
             <br />
@@ -1887,13 +1887,13 @@ img { display: block; user-select: none; -webkit-user-drag: none; }
             人与自然关系的纽带
           </p>
         </div>
-        <img src=".figma/image/mp3n08o6-u8zqbga.png" class="group125 animated-element fade-only" data-animation-group="impact" />
+        <img src=".figma/image/mp3n08o6-u8zqbga.png" class="group125 animated-element fade-only" data-animation-group="causal" />
       </div>
-      <p class="text50 animated-element fade-only" data-animation-group="support">2025年雁类迁徙信息可视化</p>
-      <p class="visualizationOfWildG animated-element fade-only" data-animation-group="support">
+      <p class="text50 animated-element fade-only" data-animation-group="text">2025年雁类迁徙信息可视化</p>
+      <p class="visualizationOfWildG animated-element fade-only" data-animation-group="text">
         Visualization of Wild Goose Migration Information
       </p>
-      <div class="autoWrapper16 animated-element fade-only" data-animation-group="support">
+      <div class="autoWrapper16 animated-element fade-only" data-animation-group="causal">
         <p class="text51">从驱动因素到生态与社会影响的完整链条</p>
         <img src=".figma/image/mp3n08o6-p9eec41.png" class="group120" />
       </div>
@@ -1993,11 +1993,10 @@ requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.
 
 function initAnimations() {
   const animationPhases = [
-    { groups: ['driver-detail'], start: 500, stagger: 0 },
-    { groups: ['driver'], start: 1050, stagger: 0 },
-    { groups: ['support'], start: 1500, stagger: 0 },
-    { groups: ['causal', 'timeline'], start: 1950, stagger: 0 },
-    { groups: ['impact'], start: 1950, stagger: 0 }
+    { groups: ['driver'], start: 500, stagger: 0 },
+    { groups: ['causal'], start: 1200, stagger: 0 },
+    { groups: ['timeline'], start: 1900, stagger: 0 },
+    { groups: ['text'], start: 2550, stagger: 0 }
   ];
 
   animationPhases.forEach((phase) => {
