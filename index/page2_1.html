@@ -1,0 +1,2102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2025年雁类迁徙信息可视化</title>
+<style>
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: linear-gradient(125deg, #f4f2f2 8.37%, #fcfcfc 49.3%, #e6ebf1 103.28%);
+  font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+body {
+  opacity: 0;
+  transition: opacity .45s ease;
+}
+body.visible { opacity: 1; }
+p { margin: 0; }
+img { display: block; user-select: none; -webkit-user-drag: none; }
+#ripple {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+}
+#stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+#board {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1920px;
+  height: 1080px;
+  transform-origin: 0 0;
+}
+#board::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 19% 28%, rgba(255, 116, 134, 0.09), transparent 14%),
+    radial-gradient(circle at 70% 17%, rgba(123, 154, 255, 0.08), transparent 18%),
+    radial-gradient(circle at 68% 67%, rgba(79, 135, 235, 0.06), transparent 20%);
+  pointer-events: none;
+}
+
+.slide16912 {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 55px 70px 0px 38px;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background-image: linear-gradient(125.39deg, #f4f2f2 8.37%, #fcfcfc 49.3%, #e6ebf1 103.28%);
+}
+
+.text {
+  letter-spacing: 0;
+  color: #6e6262;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 12px;
+}
+
+.group18821 {
+  position: absolute;
+  top: 664px;
+  left: 415px;
+  width: 1269px;
+  height: 364px;
+  transform-origin: 50% 100%;
+}
+
+.group208 {
+  display: flex;
+  position: absolute;
+  top: 102px;
+  left: 1673px;
+  flex-direction: column;
+  align-items: flex-start;
+  opacity: 0.5;
+  padding-top: 14px;
+  width: 206px;
+  height: 266px;
+  z-index: 3;
+  transition: opacity .35s ease;
+}
+
+.ellipse181 {
+  position: absolute;
+  top: 0;
+  left: 170px;
+  border-radius: 50%;
+  width: 29px;
+  height: 29px;
+  background-image: linear-gradient(180deg, #ff696d 0%, #f7f9fa 100%);
+}
+
+.autoWrapper8 {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+}
+
+.text3 {
+  line-height: 21px;
+  letter-spacing: 0;
+  color: #6e6262;
+  font-size: 0;
+}
+
+.text2 {
+  line-height: 20px;
+  letter-spacing: 0;
+  color: #6e6262;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  font-weight: 300;
+}
+
+.group201 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  margin-top: 24px;
+}
+
+.text4 {
+  width: 51px;
+  height: 18px;
+  letter-spacing: 0;
+  color: #6e6262;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 8px;
+  font-weight: 500;
+}
+
+.autoWrapper {
+  display: flex;
+  align-items: flex-start;
+  align-self: stretch;
+  justify-content: space-between;
+  margin-top: 5px;
+  padding-right: 7px;
+}
+
+.vector {
+  width: 16px;
+  height: 17px;
+}
+
+.text5 {
+  margin: 2px 0px 0px;
+  width: 175px;
+  height: 20px;
+  letter-spacing: 0;
+  color: #5a4a3a;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 8px;
+  font-weight: 300;
+}
+
+.autoWrapper2 {
+  display: flex;
+  align-items: flex-start;
+  align-self: stretch;
+  justify-content: space-between;
+  padding-left: 6px;
+}
+
+.vector2 {
+  width: 10px;
+  height: 10px;
+}
+
+.text6 {
+  width: 182px;
+  height: 16px;
+  letter-spacing: 0;
+  color: #5a4a3a;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 8px;
+  font-weight: 300;
+}
+
+.group200 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  margin-top: 20px;
+  margin-right: 139px;
+}
+
+.group191 {
+  margin-top: 1px;
+  width: 26px;
+  height: 8px;
+}
+
+.text7 {
+  width: 38px;
+  height: 14px;
+  letter-spacing: 0;
+  color: #6e6262;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 8px;
+  font-weight: 500;
+}
+
+.autoWrapper3 {
+  display: flex;
+  align-items: flex-start;
+  align-self: stretch;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding-left: 1px;
+}
+
+.text8 {
+  width: 33px;
+  height: 15px;
+  letter-spacing: 0;
+  color: #0d2d6e;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 8px;
+}
+
+.autoWrapper4 {
+  display: flex;
+  align-items: flex-start;
+  align-self: stretch;
+  justify-content: space-between;
+  margin-top: 2px;
+  padding-left: 1px;
+}
+
+.group192 {
+  margin-top: 2px;
+  width: 26px;
+  height: 8px;
+}
+
+.text9 {
+  width: 33px;
+  height: 16px;
+  letter-spacing: 0;
+  color: #2e6ab8;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 8px;
+}
+
+.autoWrapper6 {
+  display: flex;
+  align-items: flex-start;
+  align-self: stretch;
+  justify-content: space-between;
+  margin-top: 3px;
+  padding-left: 1px;
+}
+
+.autoWrapper5 {
+  position: relative;
+  width: 33px;
+  height: 18px;
+}
+
+.text10 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 33px;
+  height: 18px;
+  letter-spacing: 0;
+  color: #a81828;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 8px;
+}
+
+.text11 {
+  position: absolute;
+  bottom: -11px;
+  left: 0;
+  width: 33px;
+  height: 12px;
+  letter-spacing: 0;
+  color: #e06070;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 8px;
+}
+
+.group194 {
+  margin-top: 1px;
+  margin-left: 1px;
+  width: 26px;
+  height: 8px;
+}
+
+.autoWrapper7 {
+  display: flex;
+  align-items: flex-start;
+  align-self: stretch;
+  justify-content: space-between;
+  margin-top: 9px;
+  padding-left: 1px;
+}
+
+.text12 {
+  width: 33px;
+  height: 12px;
+  letter-spacing: 0;
+  color: #82aed8;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 8px;
+}
+
+.wildGeeseFlySouth {
+  position: absolute;
+  top: 30px;
+  right: 74px;
+  width: auto;
+  height: 28px;
+  letter-spacing: 0;
+  color: rgba(87, 44, 44, 0.78);
+  font-family: "EB Garamond", "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 18px;
+  text-align: right;
+  white-space: nowrap;
+  z-index: 11;
+}
+
+.autoWrapper10 {
+  display: flex;
+  align-items: flex-start;
+  align-self: stretch;
+  padding-right: 1140px;
+  padding-left: 5px;
+}
+
+.autoWrapper9 {
+  position: relative;
+  width: 109px;
+  height: 258px;
+}
+
+.group7 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 109px;
+  height: 258px;
+}
+
+.text13 {
+  position: absolute;
+  top: 0;
+  right: -9px;
+  width: 19px;
+  height: 241px;
+  line-height: 20px;
+  letter-spacing: 0;
+  color: #5f626b;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+.vector3 {
+  margin-top: 15px;
+  margin-left: 20px;
+  border-radius: 50%;
+  width: 30px;
+  height: 23px;
+  transform: rotate(-49deg);
+  background-image: linear-gradient(228.55deg, #ff696d 14.86%, #f7f9fa 85.23%);
+  flex-shrink: 0;
+}
+
+.group1 {
+  position: absolute;
+  top: 154px;
+  left: 236px;
+  width: 124px;
+  height: 115px;
+  transform: rotate(30deg);
+}
+
+.group190 {
+  position: absolute;
+  top: 209px;
+  left: 369px;
+  width: 99px;
+  height: 92px;
+  transform: rotate(25deg);
+}
+
+.rectangle29 {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  margin: 80px 1668px 0px 10px;
+  border: 1px solid #889cc5;
+  padding: 7px 5px 7px 14px;
+}
+
+.text14 {
+  width: 113px;
+  height: 22px;
+  letter-spacing: 0;
+  color: #6e5d5d;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.autoWrapper33 {
+  display: flex;
+  position: relative;
+  align-items: flex-start;
+  align-self: stretch;
+  margin-top: 50px;
+}
+
+.group199 {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: flex-start;
+  opacity: 0.9;
+  padding: 26px 0px 62px 103px;
+}
+
+.monthlyCountAccent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 346px;
+  height: 372px;
+  pointer-events: none;
+}
+
+.text16 {
+  letter-spacing: 0;
+  color: #8f7f7f;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+}
+
+.text15 {
+  letter-spacing: 0;
+  color: #8f7f7f;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 8px;
+  font-weight: 300;
+}
+
+.autoWrapper17 {
+  position: absolute;
+  top: 0;
+  left: 1px;
+  width: 346px;
+  height: 476px;
+}
+
+.vector59 {
+  display: flex;
+  position: absolute;
+  top: 71px;
+  left: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 43px 25px 4px 26px;
+  width: 331px;
+  height: 393px;
+  background-image: url(../image/page2_x/mp3mmtcj-mptm3id.svg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.ellipse187 {
+  position: absolute;
+  top: 38px;
+  left: 262px;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+}
+
+.autoWrapper16 {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+}
+
+.autoWrapper12 {
+  display: flex;
+  align-items: flex-start;
+  align-self: stretch;
+  justify-content: space-between;
+  padding-right: 25px;
+  padding-left: 39px;
+}
+
+.text17 {
+  margin: 5px 0px 0px;
+  width: 128px;
+  height: 20px;
+  letter-spacing: 0;
+  color: #8f7f7f;
+  font-size: 8px;
+}
+
+.autoWrapper11 {
+  position: relative;
+  width: 72px;
+  height: 72px;
+}
+
+.ellipse182 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  width: 72px;
+  height: 72px;
+  background-image: linear-gradient(180deg, #f97c8c 0%, #f5f6f700 100%);
+}
+
+.group981 {
+  position: absolute;
+  top: -12px;
+  right: -5px;
+  width: 92px;
+  height: 65px;
+}
+
+.rectangle52 {
+  position: absolute;
+  top: 33px;
+  left: -44px;
+  width: 53px;
+  height: 13px;
+  background-image: linear-gradient(90deg, #f97c8c 0%, #f5f6f7 100%);
+}
+
+.text18 {
+  position: absolute;
+  top: 35px;
+  right: -26px;
+  width: 139px;
+  height: 18px;
+  letter-spacing: 0;
+  color: #ffffff;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 8px;
+}
+
+.autoWrapper14 {
+  display: flex;
+  align-items: flex-start;
+  align-self: stretch;
+  justify-content: space-between;
+  margin-top: 23px;
+}
+
+.autoWrapper13 {
+  position: relative;
+  margin-top: 9px;
+  width: 72px;
+  height: 72px;
+}
+
+.ellipse183 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  width: 72px;
+  height: 72px;
+  background-image: linear-gradient(180deg, #82aed8 0%, #f5f6f700 100%);
+}
+
+.ellipse188 {
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  opacity: 0.2;
+  border-radius: 50%;
+  width: 41px;
+  height: 41px;
+}
+
+.group1001 {
+  position: absolute;
+  top: -9px;
+  right: -20px;
+  width: 80px;
+  height: 65px;
+}
+
+.rectangle53 {
+  position: absolute;
+  top: 31px;
+  right: -45px;
+  width: 53px;
+  height: 13px;
+  background-image: linear-gradient(90deg, #82aed8 0%, #f5f6f7 100%);
+}
+
+.text19 {
+  position: absolute;
+  top: 33px;
+  right: -134px;
+  width: 139px;
+  height: 18px;
+  letter-spacing: 0;
+  color: #ffffff;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 8px;
+}
+
+.text20 {
+  width: 176px;
+  height: 19px;
+  letter-spacing: 0;
+  color: #8f7f7f;
+  font-size: 8px;
+}
+
+.text21 {
+  margin: 20px 0px 0px 47px;
+  width: 131px;
+  height: 18px;
+  letter-spacing: 0;
+  color: #8f7f7f;
+  font-size: 8px;
+}
+
+.autoWrapper15 {
+  position: relative;
+  margin-top: 61px;
+  margin-left: 101px;
+  width: 72px;
+  height: 72px;
+}
+
+.ellipse185 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  width: 72px;
+  height: 72px;
+  background-image: linear-gradient(180deg, #4584d7 0%, #f5f6f700 100%);
+}
+
+.rectangle55 {
+  position: absolute;
+  top: 7px;
+  left: -27px;
+  width: 53px;
+  height: 13px;
+  background-image: linear-gradient(90deg, #4584d7 0%, #f5f6f7 100%);
+}
+
+.ellipse1812 {
+  position: absolute;
+  top: 20px;
+  left: 86px;
+  border-radius: 50%;
+  width: 69px;
+  height: 69px;
+  background-image: linear-gradient(180deg, #1a469f 0%, #f5f6f700 100%);
+}
+
+.ellipse186 {
+  position: absolute;
+  top: 0;
+  left: 79px;
+  opacity: 0.2;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+}
+
+.ellipse184 {
+  position: absolute;
+  top: 300px;
+  left: 262px;
+  border-radius: 50%;
+  width: 72px;
+  height: 72px;
+  background-image: linear-gradient(180deg, #cf4353 0%, #f5f6f700 100%);
+}
+
+.ellipse189 {
+  position: absolute;
+  top: 277px;
+  left: 221px;
+  opacity: 0.2;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+}
+
+.ellipse190 {
+  position: absolute;
+  top: 434px;
+  left: 178px;
+  opacity: 0.2;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+}
+
+.group951 {
+  position: absolute;
+  top: 414px;
+  left: 111px;
+  width: 72px;
+  height: 51px;
+}
+
+.group961 {
+  position: absolute;
+  top: 291px;
+  left: 244px;
+  width: 54px;
+  height: 74px;
+}
+
+.group1021 {
+  position: absolute;
+  top: 9px;
+  left: 68px;
+  width: 66px;
+  height: 63px;
+}
+
+.text22 {
+  position: absolute;
+  top: 412px;
+  left: 226px;
+  width: 120px;
+  height: 19px;
+  letter-spacing: 0;
+  color: #8f7f7f;
+  font-size: 8px;
+}
+
+.autoWrapper20 {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+}
+
+.text24 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 139px;
+  height: 18px;
+  letter-spacing: 0;
+  color: #ffffff;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 8px;
+}
+
+.text23 {
+  margin: 0px 0px 0px 64px;
+  width: 125px;
+  height: 18px;
+  letter-spacing: 0;
+  color: #8f7f7f;
+  font-size: 8px;
+}
+
+.autoWrapper18 {
+  position: relative;
+  margin-top: 35px;
+  margin-left: 28px;
+  width: 139px;
+  height: 18px;
+}
+
+.rectangle51 {
+  position: absolute;
+  top: -2px;
+  left: -3px;
+  width: 53px;
+  height: 13px;
+  background-image: linear-gradient(90deg, #1a469f 0%, #f5f6f7 100%);
+}
+
+.autoWrapper19 {
+  position: relative;
+  margin-top: 247px;
+  margin-left: 112px;
+  width: 139px;
+  height: 18px;
+}
+
+.rectangle54 {
+  position: absolute;
+  top: -2px;
+  left: -3px;
+  width: 53px;
+  height: 13px;
+  background-image: linear-gradient(90deg, #cf4353 0%, #f5f6f7 100%);
+}
+
+.text25 {
+  margin: 34px 0px 0px;
+  width: 139px;
+  height: 18px;
+  letter-spacing: 0;
+  color: #ffffff;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 8px;
+}
+
+.group202 {
+  display: flex;
+  position: absolute;
+  top: -599px;
+  left: 434px;
+  align-items: flex-start;
+  padding-right: 1px;
+  padding-bottom: 21px;
+  width: 1321px;
+  height: 1115px;
+}
+
+.line109 {
+  margin-top: 889px;
+  margin-left: -80px;
+  width: 161px;
+  height: 1px;
+  transform: rotate(90deg);
+}
+
+.autoWrapper21 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  margin-top: 400px;
+  margin-left: -80px;
+}
+
+.text26 {
+  line-height: 20px;
+  letter-spacing: 0;
+  color: #6e6262;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 8px;
+  font-weight: 300;
+}
+
+.text27 {
+  line-height: 22px;
+  letter-spacing: 0;
+  color: #6e6262;
+  font-size: 0;
+  transform: rotate(-13deg);
+}
+
+.text28 {
+  margin: 301px 0px 0px 11px;
+  line-height: 22px;
+  letter-spacing: 0;
+  color: #6e6262;
+  font-size: 0;
+  transform: rotate(-13deg);
+}
+
+.text29 {
+  margin: 253px 0px 0px 6px;
+  line-height: 11px;
+  letter-spacing: 0;
+  color: #6e6262;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 8px;
+  font-weight: 300;
+  transform: rotate(1deg);
+}
+
+.autoWrapper32 {
+  position: relative;
+  margin-left: 102px;
+  width: 983px;
+  height: 797px;
+}
+
+.titleLockup {
+  display: flex;
+  align-items: flex-start;
+  align-self: stretch;
+  padding-right: 1140px;
+  padding-left: 5px;
+  position: relative;
+  z-index: 10;
+}
+
+.curveChartGroup {
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  transition: opacity .35s ease;
+}
+
+.ellipse180 {
+  position: absolute;
+  top: 492px;
+  left: 191px;
+  border-radius: 50%;
+  width: 29px;
+  height: 29px;
+  background-image: linear-gradient(180deg, #ff696d 0%, #f7f9fa 100%);
+}
+
+.group206 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 983px;
+  height: 797px;
+}
+
+.ellipse169 {
+  position: absolute;
+  top: 272px;
+  left: 195px;
+  border-radius: 50%;
+  width: 179px;
+  height: 179px;
+  transform: rotate(-21deg);
+  background-image: linear-gradient(179.85deg, #ffc0c8 0.13%, #f5f6f700 98.97%);
+  filter: blur(2px);
+}
+
+.ellipse170 {
+  position: absolute;
+  top: 382px;
+  left: 434px;
+  border-radius: 50%;
+  width: 139px;
+  height: 139px;
+  transform: rotate(21deg);
+  background-image: linear-gradient(189.1deg, #c7c7ff 6.9%, #f5f6f700 90.12%);
+  filter: blur(2px);
+}
+
+.ellipse171 {
+  position: absolute;
+  top: 532px;
+  left: 563px;
+  border-radius: 50%;
+  width: 199px;
+  height: 199px;
+  transform: rotate(81deg);
+  background-image: linear-gradient(173.65deg, #bfdeff 5.01%, #f5f6f700 96.35%);
+  filter: blur(2px);
+}
+
+.group1851 {
+  position: absolute;
+  top: 191px;
+  left: 44px;
+  width: 894px;
+  height: 415px;
+  transform: rotate(29deg);
+}
+
+.line92 {
+  position: absolute;
+  top: 793px;
+  left: 440px;
+  border-radius: 50%;
+  background: #d7c8c8;
+  width: 14px;
+  height: 1px;
+  transform: rotate(137deg);
+}
+
+.group203 {
+  display: flex;
+  position: absolute;
+  bottom: -14px;
+  left: 414px;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 25px;
+  padding-bottom: 1px;
+  width: 152px;
+  height: 90px;
+}
+
+.vector4 {
+  margin-left: 51px;
+  background: #1a469f;
+  width: 5px;
+  height: 5px;
+  transform: rotate(-3deg);
+}
+
+.autoWrapper22 {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  margin-top: 2px;
+  padding-right: 89px;
+  padding-left: 46px;
+}
+
+.vector5 {
+  background: #1a469f;
+  width: 3px;
+  height: 3px;
+  transform: rotate(-3deg);
+}
+
+.vector6 {
+  margin-left: 9px;
+  background: #4584d7;
+  width: 5px;
+  height: 5px;
+  transform: rotate(-3deg);
+}
+
+.autoWrapper26 {
+  display: flex;
+  align-items: flex-start;
+  align-self: stretch;
+  margin-top: 10px;
+  padding-right: 34px;
+  padding-left: 27px;
+}
+
+.autoWrapper23 {
+  position: relative;
+  margin-top: 7px;
+  width: 35px;
+  height: 14px;
+}
+
+.vector7 {
+  position: absolute;
+  top: -14px;
+  right: -9px;
+  background: #cf4353;
+  width: 5px;
+  height: 5px;
+  transform: rotate(-3deg);
+}
+
+.vector8 {
+  position: absolute;
+  top: -15px;
+  left: 26px;
+  background: #4584d7;
+  width: 3px;
+  height: 3px;
+  transform: rotate(-3deg);
+}
+
+.vector9 {
+  position: absolute;
+  top: -7px;
+  right: -2px;
+  background: #cf4353;
+  width: 3px;
+  height: 3px;
+  transform: rotate(-3deg);
+}
+
+.vector10 {
+  position: absolute;
+  top: -1px;
+  right: -9px;
+  background: #f97c8c;
+  width: 3px;
+  height: 3px;
+  transform: rotate(-3deg);
+}
+
+.cOlor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 35px;
+  height: 14px;
+  line-height: 14px;
+  letter-spacing: 0;
+  color: #6e6262;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  font-weight: 300;
+  transform: rotate(45deg);
+}
+
+.line90 {
+  position: absolute;
+  top: 2px;
+  right: -14px;
+  border-radius: 50%;
+  background: #d7c8c8;
+  width: 48px;
+  height: 1px;
+  transform: rotate(45deg);
+}
+
+.autoWrapper24 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: stretch;
+  margin-left: 11px;
+}
+
+.vector11 {
+  background: #f97c8c;
+  width: 5px;
+  height: 5px;
+  transform: rotate(-3deg);
+}
+
+.vector12 {
+  margin-top: 9px;
+  background: #82aed8;
+  width: 3px;
+  height: 3px;
+  transform: rotate(-3deg);
+}
+
+.autoWrapper25 {
+  position: relative;
+  margin-top: 9px;
+  margin-left: 19px;
+  width: 21px;
+  height: 14px;
+}
+
+.vector13 {
+  position: absolute;
+  top: -55px;
+  left: -26px;
+  border-radius: 50%;
+  background: #1a469f;
+  width: 9px;
+  height: 9px;
+  transform: rotate(-3deg);
+}
+
+.vector14 {
+  position: absolute;
+  top: -47px;
+  left: -33px;
+  border-radius: 50%;
+  background: #1a469f;
+  width: 8px;
+  height: 8px;
+  transform: rotate(-3deg);
+}
+
+.vector15 {
+  position: absolute;
+  top: -39px;
+  left: -26px;
+  border-radius: 50%;
+  background: #4584d7;
+  width: 8px;
+  height: 8px;
+  transform: rotate(-3deg);
+}
+
+.vector16 {
+  position: absolute;
+  top: -32px;
+  left: -18px;
+  border-radius: 50%;
+  background: #cf4353;
+  width: 8px;
+  height: 8px;
+  transform: rotate(-3deg);
+}
+
+.vector17 {
+  position: absolute;
+  top: -25px;
+  left: -11px;
+  border-radius: 50%;
+  background: #f97c8c;
+  width: 8px;
+  height: 8px;
+  transform: rotate(-3deg);
+}
+
+.vector18 {
+  position: absolute;
+  top: -18px;
+  left: -4px;
+  border-radius: 50%;
+  background: #82aed8;
+  width: 8px;
+  height: 8px;
+  transform: rotate(-3deg);
+}
+
+.vector19 {
+  position: absolute;
+  top: -39px;
+  left: -39px;
+  background: #1a469f;
+  width: 6px;
+  height: 6px;
+  transform: rotate(-3deg);
+}
+
+.vector20 {
+  position: absolute;
+  top: -31px;
+  left: -32px;
+  background: #4584d7;
+  width: 6px;
+  height: 6px;
+  transform: rotate(-3deg);
+}
+
+.vector21 {
+  position: absolute;
+  top: -24px;
+  left: -25px;
+  background: #cf4353;
+  width: 6px;
+  height: 6px;
+  transform: rotate(-3deg);
+}
+
+.vector22 {
+  position: absolute;
+  top: -17px;
+  left: -18px;
+  background: #f97c8c;
+  width: 6px;
+  height: 6px;
+  transform: rotate(-3deg);
+}
+
+.vector23 {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  background: #82aed8;
+  width: 6px;
+  height: 6px;
+  transform: rotate(-3deg);
+}
+
+.vector24 {
+  position: absolute;
+  top: -2px;
+  left: -17px;
+  background: #82aed8;
+  width: 5px;
+  height: 5px;
+  transform: rotate(-3deg);
+}
+
+.vector25 {
+  position: absolute;
+  top: -48px;
+  left: -18px;
+  border-radius: 50%;
+  background: #4584d7;
+  width: 9px;
+  height: 9px;
+  transform: rotate(-3deg);
+}
+
+.vector26 {
+  position: absolute;
+  top: -41px;
+  left: -11px;
+  border-radius: 50%;
+  background: #cf4353;
+  width: 9px;
+  height: 9px;
+  transform: rotate(-3deg);
+}
+
+.vector27 {
+  position: absolute;
+  top: -34px;
+  left: -4px;
+  border-radius: 50%;
+  background: #f97c8c;
+  width: 9px;
+  height: 9px;
+  transform: rotate(-3deg);
+}
+
+.vector28 {
+  position: absolute;
+  top: -26px;
+  left: 3px;
+  border-radius: 50%;
+  background: #82aed8;
+  width: 9px;
+  height: 9px;
+  transform: rotate(-3deg);
+}
+
+.sIze {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 21px;
+  height: 14px;
+  line-height: 14px;
+  letter-spacing: 0;
+  color: #6e6262;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  font-weight: 300;
+  transform: rotate(-45deg);
+}
+
+.line91 {
+  position: absolute;
+  top: -1px;
+  right: -8px;
+  border-radius: 50%;
+  background: #d7c8c8;
+  width: 48px;
+  height: 1px;
+  transform: rotate(-45deg);
+}
+
+.line93 {
+  position: absolute;
+  right: -8px;
+  bottom: -4px;
+  border-radius: 50%;
+  background: #d7c8c8;
+  width: 12px;
+  height: 1px;
+  transform: rotate(42deg);
+}
+
+.autoWrapper27 {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.text30 {
+  line-height: 11px;
+  letter-spacing: 0;
+  color: #6e6262;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 8px;
+  font-weight: 300;
+}
+
+.group204 {
+  display: flex;
+  position: absolute;
+  bottom: -28px;
+  left: 608px;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 109px;
+  height: 52px;
+}
+
+.text32 {
+  width: 81px;
+  height: 10px;
+  letter-spacing: 0;
+  color: #6e6262;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 8px;
+  font-weight: 300;
+}
+
+.autoWrapper28 {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  justify-content: space-between;
+}
+
+.vector29 {
+  border-radius: 2px;
+  background: #1a469f;
+  width: 9px;
+  height: 9px;
+}
+
+.text31 {
+  width: 95px;
+  height: 10px;
+  letter-spacing: 0;
+  color: #6e6262;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 8px;
+  font-weight: 300;
+}
+
+.autoWrapper29 {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  justify-content: space-between;
+  margin-top: 4px;
+  padding-right: 14px;
+}
+
+.vector30 {
+  border-radius: 2px;
+  background: #4584d7;
+  width: 9px;
+  height: 9px;
+}
+
+.autoWrapper30 {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  justify-content: space-between;
+  margin-top: 4px;
+  padding-right: 14px;
+}
+
+.vector31 {
+  border-radius: 2px;
+  background: #cf4353;
+  width: 9px;
+  height: 9px;
+}
+
+.autoWrapper31 {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  justify-content: space-between;
+  margin-top: 4px;
+  padding-right: 14px;
+}
+
+.vector32 {
+  border-radius: 2px;
+  background: #f97c8c;
+  width: 9px;
+  height: 9px;
+}
+
+.text35 {
+  position: absolute;
+  top: 506px;
+  left: 34px;
+  width: 172px;
+  height: 34px;
+  line-height: 17px;
+  letter-spacing: 0;
+  color: #6e6262;
+  font-size: 0;
+}
+
+.text33 {
+  letter-spacing: 0;
+  color: #6e6262;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 12px;
+}
+
+.text34 {
+  line-height: 16px;
+  letter-spacing: 0;
+  color: #6e6262;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 8px;
+  font-weight: 300;
+}
+
+.group15521 {
+  display: flex;
+  position: absolute;
+  bottom: -74px;
+  left: 102px;
+  align-items: flex-start;
+  padding: 245px 242px 93px 9px;
+  width: 356px;
+  height: 347px;
+  background-image: url(../image/page2_x/mp3mmtco-jqh8r0w.png);
+  background-position: 0px -1px;
+  background-size: 100% 100.38%;
+  background-repeat: no-repeat;
+}
+
+.text36 {
+  width: 105px;
+  height: 9px;
+  letter-spacing: 0;
+  color: #6e6262;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 6px;
+}
+
+.group {
+  position: absolute;
+  top: 451px;
+  left: 9px;
+  width: 271px;
+  height: 257px;
+}
+
+.vector33 {
+  margin-top: 133px;
+  margin-left: 295px;
+  border-radius: 50%;
+  width: 30px;
+  height: 23px;
+  transform: rotate(-49deg);
+  background-image: linear-gradient(228.55deg, #ff696d 14.86%, #f7f9fa 85.23%);
+}
+
+.text37 {
+  z-index: 1;
+  margin: 250px 0px 0px 999px;
+  width: 134px;
+  height: 269px;
+  letter-spacing: 0;
+  color: #8f7f7f;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  font-weight: 300;
+}
+
+.autoWrapper34 {
+  display: flex;
+  align-items: flex-start;
+  align-self: stretch;
+  justify-content: space-between;
+  z-index: 1;
+  padding-right: 4px;
+  padding-left: 7px;
+}
+
+.text38 {
+  width: 230px;
+  height: 25px;
+  letter-spacing: 0;
+  color: rgba(178, 153, 153, 0.88);
+  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.vector34 {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: rgba(82, 35, 36, .32);
+  font-size: 48px;
+  line-height: 1;
+  font-weight: 100;
+  font-family: "Times New Roman", serif;
+  cursor: pointer;
+  user-select: none;
+  transition: color .3s ease, transform .3s ease;
+}
+
+.vector34:hover {
+  color: rgba(82, 35, 36, .7);
+  transform: translateX(6px);
+}
+
+.visualizationOfWildG {
+  z-index: 2;
+  margin: 0px 0px 0px 7px;
+  width: 1011px;
+  height: 59px;
+  letter-spacing: 0;
+  color: rgba(87, 44, 44, 0.72);
+  font-family: "EB Garamond", "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 18px;
+}
+
+/* Animation Keyframes - following page2.html style */
+@keyframes titleDrop {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes featuresSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-60px);
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes centerFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.98);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes chartInfoFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes bottomSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(40px);
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes chartGrowIn {
+  0% {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+/* Animation triggers when body becomes visible */
+body.visible .anim-title {
+  animation: titleDrop 1.2s cubic-bezier(.19,1,.22,1) 0s both;
+}
+
+body.visible .anim-features {
+  animation: featuresSlideIn 1.8s cubic-bezier(.19,1,.22,1) 1.9s both;
+}
+
+body.visible .anim-center {
+  animation: centerFadeIn 1.4s cubic-bezier(.19,1,.22,1) .85s both;
+}
+
+body.visible .anim-chart-grow {
+  animation: chartGrowIn 1.4s cubic-bezier(.19,1,.22,1) .85s both;
+}
+
+body.visible .anim-chart-sync {
+  animation: chartInfoFadeIn 1.4s cubic-bezier(.19,1,.22,1) .85s both;
+}
+
+body.visible .anim-monthly-count {
+  animation: chartInfoFadeIn 1.4s cubic-bezier(.19,1,.22,1) .85s both;
+}
+
+body.visible .anim-bottom {
+  animation: bottomSlideIn 1s cubic-bezier(.19,1,.22,1) 1.8s both;
+}
+
+body.visible .anim-bottom-last {
+  animation: bottomSlideIn 1s cubic-bezier(.19,1,.22,1) 3.05s both;
+}
+
+.curveChartGroup.is-hovered,
+.curveChartGroup:hover {
+  opacity: 1;
+}
+
+.group208.is-hovered,
+.group208:hover {
+  opacity: 1;
+}
+
+</style>
+</head>
+<body>
+<canvas id="ripple"></canvas>
+<div id="stage">
+  <div id="board">
+    <div class="slide16912">
+      <img src="../image/page2_x/mp3mmtco-zfudhxt.png" class="group18821 anim-chart-grow" />
+      <div class="group208 anim-chart-sync" id="curve-chart-info">
+        <div class="ellipse181"></div>
+        <div class="autoWrapper8">
+          <p class="text3">
+            <span class="text">| 2025 典型雁类月度观测记录<br /></span>
+            <span class="text2">纵轴为观测条数 · 弧线代表月度变化趋势</span>
+          </p>
+          <div class="group201">
+            <p class="text4">方块图示</p>
+            <div class="autoWrapper">
+              <img src="../image/page2_x/mp3mmtcj-oeyboye.svg" class="vector" />
+              <p class="text5">当月各物种总计（大小∝总量）</p>
+            </div>
+            <div class="autoWrapper2">
+              <img src="../image/page2_x/mp3mmtcj-fjfcljo.svg" class="vector2" />
+              <p class="text6">当月数量最多的物种（颜色编码）</p>
+            </div>
+          </div>
+          <div class="group200">
+            <p class="text7">物种图例</p>
+            <div class="autoWrapper3">
+              <img src="../image/page2_x/mp3mmtcj-evgh0j5.svg" class="group191" />
+              <p class="text8">豆雁</p>
+            </div>
+            <div class="autoWrapper4">
+              <img src="../image/page2_x/mp3mmtcj-h4a82s8.svg" class="group192" />
+              <p class="text9">灰雁</p>
+            </div>
+            <div class="autoWrapper6">
+              <img src="../image/page2_x/mp3mmtcj-xgqrmaq.svg" class="group191" />
+              <div class="autoWrapper5">
+                <p class="text10">鸿雁</p>
+                <p class="text11">白额雁</p>
+              </div>
+            </div>
+            <img src="../image/page2_x/mp3mmtcj-2gcwn2h.svg" class="group194" />
+            <div class="autoWrapper7">
+              <img src="../image/page2_x/mp3mmtcj-7ysqu91.svg" class="group191" />
+              <p class="text12">斑头雁</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="wildGeeseFlySouth anim-title">Wild geese fly south</p>
+      <div class="titleLockup anim-title">
+        <div class="autoWrapper9">
+          <img src="../image/page2_x/mp3mmtcj-ah47c6f.png" class="group7" />
+          <p class="text13">典型雁类年度境内分布情况</p>
+        </div>
+        <!-- <div class="vector3"></div> -->
+      </div>
+      <img src="../image/page2_x/mp3mmtcj-x95uzku.png" class="group1 anim-center" />
+      <img src="../image/page2_x/mp3mmtcj-gbotmfk.png" class="group190 anim-center" />
+      <div class="rectangle29 anim-features">
+        <p class="text14">| 核心特征总结</p>
+      </div>
+      <div class="autoWrapper33 ">
+        <div class="group199 anim-features">
+          <div class="autoWrapper17">
+            <div class="vector59">
+              <div class="ellipse187"></div>
+              <div class="autoWrapper16">
+                <div class="autoWrapper12">
+                  <p class="text17">
+                    <span class="text15">迁徙距离</span>
+                    <span class="text16">最长（可达5000 km）</span>
+                    <span class="text15">，春季行程比秋季慢一倍以上</span>
+                  </p>
+                  <div class="autoWrapper11">
+                    <div class="ellipse182"></div>
+                    <img src="../image/page2_x/mp3mmtco-5xg195j.png" class="group981" />
+                    <div class="rectangle52"></div>
+                    <p class="text18">白额雁</p>
+                  </div>
+                </div>
+                <div class="autoWrapper14">
+                  <div class="autoWrapper13">
+                    <div class="ellipse183"></div>
+                    <div class="ellipse188"></div>
+                    <img src="../image/page2_x/mp3mmtco-3rzuv30.png" class="group1001" />
+                    <div class="rectangle53"></div>
+                    <p class="text19">斑头雁</p>
+                  </div>
+                  <p class="text20">
+                    <span class="text15">世界</span>
+                    <span class="text16">最高</span>
+                    <span class="text15">海拔迁徙物种，最高飞行记录</span>
+                    <span class="text16">7290 m，</span>
+                    <span class="text15">拥有特化血红蛋白适应低氧飞行</span>
+                  </p>
+                </div>
+                <p class="text21">
+                  <span class="text15">春季提速明显，单次可完成</span>
+                  <span class="text16">1400 km</span>
+                  <span class="text15">不停歇飞行，全球受威胁物种</span>
+                </p>
+                <div class="autoWrapper15">
+                  <div class="ellipse185"></div>
+                  <div class="rectangle55"></div>
+                </div>
+              </div>
+            </div>
+            <div class="ellipse1812"></div>
+            <div class="ellipse186"></div>
+            <div class="ellipse190"></div>
+            <img src="../image/page2_x/mp3mmtco-b5u0vs4.png" class="group951" />
+            <img src="../image/page2_x/mp3mmtco-p142zy2.png" class="group961" />
+            <img src="../image/page2_x/mp3mmtco-dzc0qhc.png" class="group1021" />
+            <p class="text22">
+              <span class="text15">两条迁飞</span>
+              <span class="text16">通道并用</span>
+              <span class="text15">（东线/西线）<br />春秋速度差异显著</span>
+            </p>
+          </div>
+          <div class="autoWrapper20">
+            <p class="text23">
+              <span class="text15">数量最多，走东北平原低空走廊，在东北</span>
+              <span class="text16">停留时间最长</span>
+            </p>
+            <div class="autoWrapper18">
+              <div class="rectangle51"></div>
+              <p class="text24">豆雁</p>
+            </div>
+            <div class="autoWrapper19">
+              <div class="rectangle54"></div>
+              <p class="text24">鸿雁</p>
+            </div>
+            <p class="text25">灰雁</p>
+          </div>
+        </div>
+        <div class="monthlyCountAccent anim-features">
+          <div class="ellipse189"></div>
+          <div class="ellipse184"></div>
+        </div>
+        <div class="group202 anim-center">
+          <img src="../image/page2_x/mp3mmtcj-mbbgsi4.svg" class="line109" />
+          <div class="autoWrapper21">
+            <p class="text27">
+              <span class="text">| 2021-2025 典型雁类迁徙条件对比<br /></span>
+              <span class="text26">数值越大代表该维度越突出</span>
+            </p>
+            <p class="text28">
+              <span class="text">| 2021-2025 典型雁类月度条数统计<br /></span>
+              <span class="text26">折线面积图·横轴月度·纵轴鸟种条数</span>
+            </p>
+            <p class="text29">
+              数据来源：<br />
+              中国观鸟记录中心（2021-2025）<br />
+              eBird数据库（2025）<br />
+              GPS遥测研究 · IUCN · Wetlands International 2022<br />
+            </p>
+          </div>
+          <div class="autoWrapper32">
+            <div class="curveChartGroup" id="curve-chart-group">
+              <div class="ellipse180"></div>
+              <div class="group206">
+                <div class="ellipse169"></div>
+                <div class="ellipse170"></div>
+                <div class="ellipse171"></div>
+                <img src="../image/page2_x/mp3mmtco-66dclk7.png" class="group1851" />
+              </div>
+              <div class="line92"></div>
+              <div class="group203">
+                <div class="vector4"></div>
+                <div class="autoWrapper22">
+                  <div class="vector5"></div>
+                  <div class="vector6"></div>
+                </div>
+                <div class="autoWrapper26">
+                  <div class="autoWrapper23">
+                    <div class="vector7"></div>
+                    <div class="vector8"></div>
+                    <div class="vector9"></div>
+                    <div class="vector10"></div>
+                    <p class="cOlor">COLOR</p>
+                    <div class="line90"></div>
+                  </div>
+                  <div class="autoWrapper24">
+                    <div class="vector11"></div>
+                    <div class="vector12"></div>
+                  </div>
+                  <div class="autoWrapper25">
+                    <div class="vector13"></div>
+                    <div class="vector14"></div>
+                    <div class="vector15"></div>
+                    <div class="vector16"></div>
+                    <div class="vector17"></div>
+                    <div class="vector18"></div>
+                    <div class="vector19"></div>
+                    <div class="vector20"></div>
+                    <div class="vector21"></div>
+                    <div class="vector22"></div>
+                    <div class="vector23"></div>
+                    <div class="vector24"></div>
+                    <div class="vector25"></div>
+                    <div class="vector26"></div>
+                    <div class="vector27"></div>
+                    <div class="vector28"></div>
+                    <p class="sIze">SIZE</p>
+                    <div class="line91"></div>
+                    <div class="line93"></div>
+                  </div>
+                </div>
+                <div class="autoWrapper27">
+                  <p class="text30">不同雁种</p>
+                  <p class="text30">观测数量</p>
+                </div>
+              </div>
+            </div>
+            <div class="group204">
+              <div class="autoWrapper28">
+                <div class="vector29"></div>
+                <p class="text31">东北 繁殖集结区</p>
+              </div>
+              <div class="autoWrapper29">
+                <div class="vector30"></div>
+                <p class="text32">华北 春秋过境</p>
+              </div>
+              <div class="autoWrapper30">
+                <div class="vector31"></div>
+                <p class="text32">华东 越冬核心</p>
+              </div>
+              <div class="autoWrapper31">
+                <div class="vector32"></div>
+                <p class="text32">华南 南端越冬</p>
+              </div>
+            </div>
+            <p class="text35">
+              <span class="text33">| 2025 典型雁类迁飞走廊热场图<br /></span>
+              <span class="text34">走廊方向：东北 → 华东 → 华南</span>
+            </p>
+            <div class="group15521">
+              <p class="text36">2026 AutoNavi - GS(2019)756号</p>
+            </div>
+          </div>
+          <img src="../image/page2_x/mp3mmtcj-tqfo848.svg" class="group" />
+        </div>
+        <div class="vector33 anim-monthly-count"></div>
+        <p class="text37 anim-bottom-last">
+          雁类的迁徙并非单一模式的远程移动，而是多种行为策略的集合。飞行高度、巡航速度、编队结构、耐力阈值以及停歇地依赖——这些参数共同构成了不同物种应对环境变化的先决条件。
+          <br /><br />
+          它们在系统发育上相近，却在迁徙习性上表现出明显分化。
+          <br /><br />
+          通过对比飞行高度区间、巡航速度、编队协作程度、最长连续飞行时间及栖息地特异性，可以识别出：哪些习性特征赋予物种更高的行为可塑性，哪些特征使其成为全球变化下的脆弱方。
+          <br />
+        </p>
+      </div>
+      <div class="autoWrapper34">
+        <p class="text38">2025年雁类迁徙信息可视化</p>
+        <span class="vector34" id="next-page" role="button" aria-label="下一页">›</span>
+      </div>
+      <p class="visualizationOfWildG">Visualization of Wild Goose Migration Information</p>
+    </div>
+  </div>
+</div>
+<script>
+'use strict';
+const board = document.getElementById('board');
+const nextPage = document.getElementById('next-page');
+const canvas = document.getElementById('ripple');
+const curveChartGroup = document.getElementById('curve-chart-group');
+const curveChartInfo = document.getElementById('curve-chart-info');
+const rctx = canvas.getContext('2d');
+function fitBoard() {
+  const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+  const offsetX = (window.innerWidth - 1920 * scale) / 2;
+  const offsetY = (window.innerHeight - 1080 * scale) / 2;
+  board.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
+}
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+class RippleSet {
+  constructor(x, y) {
+    this.x = x; this.y = y;
+    this.born = performance.now();
+    const base = Math.min(canvas.width, canvas.height);
+    this.rings = [
+      { delay: 0, maxR: base * 0.18, dur: 1800, lw: 1.4 },
+      { delay: 120, maxR: base * 0.12, dur: 1500, lw: 1.0 },
+      { delay: 240, maxR: base * 0.07, dur: 1200, lw: 0.7 },
+    ];
+    this.alive = true;
+  }
+  draw(now) {
+    const age = now - this.born;
+    let anyAlive = false;
+    for (const ring of this.rings) {
+      const rAge = age - ring.delay;
+      if (rAge < 0) { anyAlive = true; continue; }
+      const p = rAge / ring.dur;
+      if (p >= 1) continue;
+      anyAlive = true;
+      rctx.beginPath();
+      rctx.arc(this.x, this.y, ring.maxR * Math.sqrt(p), 0, Math.PI * 2);
+      rctx.strokeStyle = `rgba(186,218,255,${(Math.pow(1 - p, 1.75) * 0.46).toFixed(3)})`;
+      rctx.lineWidth = ring.lw * (1 - p * 0.6);
+      rctx.stroke();
+    }
+    this.alive = anyAlive;
+  }
+}
+
+const rippleSets = [];
+function spawnRipple(x, y) {
+  rippleSets.push(new RippleSet(x, y));
+}
+
+(function loop(now) {
+  requestAnimationFrame(loop);
+  rctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (let i = rippleSets.length - 1; i >= 0; i--) {
+    rippleSets[i].draw(now);
+    if (!rippleSets[i].alive) rippleSets.splice(i, 1);
+  }
+})();
+
+function spawnRippleAtCenter(el) {
+  const r = el.getBoundingClientRect();
+  spawnRipple(r.left + r.width / 2, r.top + r.height / 2);
+}
+
+let lastHoverMove = 0;
+function onHoverMove(e) {
+  const t = Date.now();
+  if (t - lastHoverMove < 180) return;
+  lastHoverMove = t;
+  spawnRipple(e.clientX, e.clientY);
+}
+window.addEventListener('resize', fitBoard);
+fitBoard();
+
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+requestAnimationFrame(() => requestAnimationFrame(() => {
+  document.body.classList.add('visible');
+}));
+
+nextPage.addEventListener('mouseenter', () => spawnRippleAtCenter(nextPage));
+nextPage.addEventListener('mousemove', onHoverMove);
+nextPage.addEventListener('click', () => {
+  const mask = document.createElement('div');
+  mask.style.cssText = 'position:fixed;inset:0;background:#F5F6F7;z-index:9999;';
+  document.body.appendChild(mask);
+  requestAnimationFrame(() => { window.location.href = 'page2_2.html'; });
+});
+
+if (curveChartGroup) {
+  curveChartGroup.addEventListener('mouseenter', () => {
+    curveChartGroup.classList.add('is-hovered');
+    if (curveChartInfo) curveChartInfo.classList.add('is-hovered');
+  });
+  curveChartGroup.addEventListener('mouseleave', () => {
+    curveChartGroup.classList.remove('is-hovered');
+    if (curveChartInfo) curveChartInfo.classList.remove('is-hovered');
+  });
+}
+</script>
+</body>
+</html>
